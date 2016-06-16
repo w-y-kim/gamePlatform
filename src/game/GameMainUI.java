@@ -1,4 +1,4 @@
-package game.client.ui;
+package game;
 
 import java.applet.Applet;
 
