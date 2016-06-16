@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.chart.*?>
+<?import java.net.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.media.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.web.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import game.client.*?>
+<?import game.client.ui.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="674.0" prefWidth="810.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.client.ui.FXMLDocumentController">
+   <children>
+      <SplitPane fx:id="splitPane" dividerPositions="0.6596534653465347" layoutX="47.0" prefHeight="674.0" prefWidth="810.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane id="좌측패널" minHeight="0.0" minWidth="530.0" prefHeight="617.0" prefWidth="530.0">
+               <children>
+                  <AnchorPane id="상단명령창" layoutX="1.0" prefHeight="46.0" prefWidth="682.0" AnchorPane.leftAnchor="-151.0" AnchorPane.rightAnchor="0.0">
+                     <children>
+                        <HBox layoutX="462.0" layoutY="5.0" spacing="5.0" AnchorPane.rightAnchor="24.0">
+                           <children>
+                              <Button graphicTextGap="40.0" layoutX="440.0" layoutY="5.0" mnemonicParsing="false" onAction="#CloseAction" prefHeight="32.0" prefWidth="54.0" style="-fx-background-color: #facd5a; -fx-border-color: #000000; -fx-border-style-border: 5;" text="검색" AnchorPane.rightAnchor="188.0">
+                                 <font>
+                                    <Font name="NanumBarunpen" size="12.0" />
+                                 </font>
+                              </Button>
+                              <TextArea layoutX="503.0" layoutY="5.0" prefHeight="32.0" prefWidth="137.0" AnchorPane.leftAnchor="503.0" AnchorPane.rightAnchor="42.0" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="169.0" layoutY="5.0" spacing="1.0" AnchorPane.bottomAnchor="9.0">
+                           <children>
+                              <Button graphicTextGap="40.0" mnemonicParsing="false" onAction="#CloseAction" prefHeight="32.0" prefWidth="54.0" style="-fx-background-color: #facd5a; -fx-border-color: #000000; -fx-border-style-border: 5;" text="메인">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button graphicTextGap="40.0" layoutX="73.0" layoutY="5.0" mnemonicParsing="false" onAction="#CloseAction" prefHeight="32.0" prefWidth="54.0" style="-fx-background-color: #facd5a; -fx-border-color: #000000; -fx-border-style-border: 5;" text="작성">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button graphicTextGap="40.0" layoutX="145.0" layoutY="5.0" mnemonicParsing="false" onAction="#CloseAction" prefHeight="32.0" prefWidth="54.0" style="-fx-background-color: #facd5a; -fx-border-color: #000000; -fx-border-style-border: 5;" text="수정">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button graphicTextGap="40.0" layoutX="211.0" layoutY="5.0" mnemonicParsing="false" onAction="#CloseAction" prefHeight="32.0" prefWidth="54.0" style="-fx-background-color: #facd5a; -fx-border-color: #000000; -fx-border-style-border : 5;" text="삭제">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <ToolBar id="toolbar" fx:id="toolbar" layoutX="516.0" layoutY="-4.0" prefHeight="50.0" prefWidth="21.0" style="-fx-background-color: #323232;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
+                          <items>
+                              <Button id="profile" mnemonicParsing="false" onAction="#CloseAction" prefWidth="65.0" style="-fx-background-color: RED;" stylesheets="@Main.css" text="Profile" textFill="WHITE" />
+                              <Button id="admin" mnemonicParsing="false" onAction="#CloseAction" prefWidth="65.0" style="-fx-background-color: RED;" stylesheets="@Main.css" text="Admin" textFill="WHITE" />
+                          </items>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </ToolBar>
+                        <ImageView blendMode="OVERLAY" fitHeight="28.0" fitWidth="29.0" layoutX="433.0" layoutY="7.0" AnchorPane.rightAnchor="220.0">
+                           <image>
+                              <Image url="@../data/img/arrow-symbols-icons.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView blendMode="OVERLAY" fitHeight="28.0" fitWidth="29.0" layoutX="388.0" layoutY="7.0" nodeOrientation="RIGHT_TO_LEFT" AnchorPane.leftAnchor="388.0" AnchorPane.rightAnchor="265.0">
+                           <image>
+                              <Image url="@../data/img/arrow-symbols-icons.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane id="메인창" layoutY="46.0" prefHeight="626.0" prefWidth="530.0" style="-fx-background-color: #323232;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="46.0">
+                     <children>
+                        <AnchorPane id="로딩창" fx:id="loadingPane" disable="true" layoutX="-6.0" prefHeight="626.0" prefWidth="540.0" style="-fx-background-color: #000000;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Pane layoutX="7.0" layoutY="8.0" prefHeight="618.0" prefWidth="530.0" AnchorPane.rightAnchor="5.0">
+                                 <children>
+                                    <Group layoutY="169.0">
+                                       <children>
+                                          <Text fill="WHITE" layoutX="32.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOW LOADING ···">
+                                             <font>
+                                                <Font size="57.0" />
+                                             </font>
+                                          </Text>
+                                          <ProgressIndicator fx:id="ProgressIndicator" layoutX="178.0" layoutY="125.0" prefHeight="292.0" prefWidth="189.0" />
+                                          <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="175.0" layoutY="99.0">
+                                             <image>
+                                                <Image url="@../data/img/loading.gif" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </Group>
+                                 </children>
+                                 <padding>
+                                    <Insets right="50.0" />
+                                 </padding>
+                              </Pane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="6.0" layoutY="6.0" prefHeight="618.0" prefWidth="530.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <TilePane layoutX="52.0" layoutY="14.0" prefHeight="604.0" prefWidth="274.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="52.0" AnchorPane.rightAnchor="204.0" AnchorPane.topAnchor="14.0">
+                                 <children>
+                                    <ImageView fitHeight="200.0" fitWidth="200.0">
+                                       <image>
+                                          <Image url="@../../../../../../../../../Desktop/bmo_phone_wallpaper_by_doodleshoppe-d6ogpoi.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="200.0" fitWidth="200.0">
+                                       <image>
+                                          <Image url="@../../../../../../../../../Desktop/bmo_phone_wallpaper_by_doodleshoppe-d6ogpoi.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="200.0" fitWidth="200.0">
+                                       <image>
+                                          <Image url="@../../../../../../../../../Desktop/bmo_phone_wallpaper_by_doodleshoppe-d6ogpoi.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="200.0" fitWidth="200.0">
+                                       <image>
+                                          <Image url="@../../../../../../../../../Desktop/bmo_phone_wallpaper_by_doodleshoppe-d6ogpoi.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </TilePane>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane id="회원가입창" fx:id="Anchro" layoutY="47.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1011.0" prefWidth="530.0" styleClass="root" visible="false" AnchorPane.bottomAnchor="-386.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="47.0">
+                     <children>
+                        <Pane prefHeight="1059.0" prefWidth="530.0" AnchorPane.bottomAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="-1.0">
+                           <children>
+                              <Group>
+                                 <children>
+                                    <ImageView fitHeight="1122.0" fitWidth="774.0" layoutX="-112.0" layoutY="-119.0">
+                                       <image>
+                                          <Image url="@../data/img/loing03.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Group layoutX="-15.0" layoutY="19.0">
+                                       <children>
+                                          <Text layoutX="75.0" layoutY="273.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User ID" textAlignment="CENTER" visible="false">
+                                             <font>
+                                                <Font size="20.0" />
+                                             </font>
+                                          </Text>
+                                          <CheckBox layoutX="347.0" layoutY="261.0" mnemonicParsing="false" text="중복검사" />
+                                          <Text layoutX="289.0" layoutY="455.0" strokeType="OUTSIDE" strokeWidth="0.0" text="기본 이미지 사용">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Text>
+                                          <Text layoutX="346.0" layoutY="424.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\@">
+                                             <font>
+                                                <Font size="30.0" />
+                                             </font>
+                                          </Text>
+                                          <Text layoutX="336.0" layoutY="323.0" strokeType="OUTSIDE" strokeWidth="0.0" text="비밀번호는 영문만 가능">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Text>
+                                          <ComboBox layoutX="374.0" layoutY="397.0" prefHeight="32.0" prefWidth="82.0" />
+                                          <Text layoutX="51.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Agreement">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Text>
+                                          <PasswordField layoutX="196.0" layoutY="302.0" prefHeight="32.0" prefWidth="138.0" />
+                                          <Button layoutX="197.0" layoutY="439.0" mnemonicParsing="false" text="등록" />
+                                          <PasswordField layoutX="196.0" layoutY="349.0" prefHeight="32.0" prefWidth="138.0" />
+                                          <Text layoutX="53.0" layoutY="372.0" lineSpacing="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PW Confirm">
+                                             <font>
+                                                <Font size="20.0" />
+                                             </font>
+                                          </Text>
+                                          <Text layoutX="55.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Text>
+                                    
+                                                                        <Text id="welcome-text" layoutX="44.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="회원가입">
+                                             <font>
+                                                <Font size="42.0" />
+                                             </font>
+                                          </Text>
+                                          <Text layoutX="339.0" layoutY="370.0" strokeType="OUTSIDE" strokeWidth="0.0" text="한번 더 입력해주세요 ">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Text>
+                                          <Button layoutX="244.0" layoutY="439.0" mnemonicParsing="false" text="취소" />
+                                          <HBox alignment="CENTER" layoutX="128.0" layoutY="512.0" spacing="30.0">
+                                             <children>
+                                                <Button fx:id="btnOK" layoutX="128.0" layoutY="518.0" mnemonicParsing="false" onAction="#ButtonAction" prefHeight="48.0" prefWidth="122.0" text="회원가입" />
+                                                <Button fx:id="btnCancel" layoutX="267.0" layoutY="512.0" mnemonicParsing="false" onAction="#CloseAction" prefHeight="48.0" prefWidth="122.0" text="취소" />
+                                             </children>
+                                          </HBox>
+                                          <ScrollPane layoutX="54.0" layoutY="128.0" prefHeight="86.0" prefWidth="419.0">
+                                             <content>
+                                                <TextArea prefHeight="84.0" prefWidth="416.0" text="제 1 장 총 칙&#10;&#10;제1조 목적&#10;본 약관은 서비스 이용자가 서비스에 회원으로 가입하고 이를 이용함에 있어 회원의 권리•의무 및 책임사항을 규정함을 &#10;목적으로 합니다.&#10;&#10;제2장 회원의 가입 및 관리&#10;&#10;제 3 조 (회원가입절차)&#10;① 서비스 이용자가 본 약관을 읽고 “동의” 버튼을 누르거나 “확인”&#10;    등에 체크하는 방법을 취한 경우 본 약관에 동의한 것으로   &#10;    간주합니다.&#10;② 카카오톡에서 제공하는 API를 통한 소셜로그인을 행한 경우도 &#10;    동일  사항으로 간주됩니다. &#10;&#10;제 3 조 (회원 ID 등의 관리책임)&#10;① 회원은 서비스 이용을 위한 회원 ID, 비밀번호의 관리 과정에서 &#10;    고의∙과실로 인해 발생하는 모든 불이익에 대한 책임은   &#10;    사용자가 부담합니다. &#10;② 회원은 회원 ID, 비밀번호 및 추가정보 등을 도난 당하거나 &#10;    제3자가 사용하고 있음을 인지한 경우에는 즉시 본인의 비밀번호를 &#10;    수정하는 등의 조치를 취하여야 하여야 합니다. &#10;&#10;제 4 조 (개인정보의 수집 등)&#10;① 이메일 주소를 수집하며 이는 메일링 서비스에 동의한 것으로 &#10;    간주하여 프로그램의 소식을 전하는데 사용됩니다.&#10;② 상업적 목적으로는 사용되지 않습니다. &#10;&#10;제3장 서비스의 이용&#10;&#10;제 5조 (서비스의 종료)&#10;본 서비스는 예고없이 종료될 수 있음을 알려드립니다." wrapText="true" />
+                                             </content>
+                                          </ScrollPane>
+                                          <CheckBox layoutX="414.0" layoutY="218.0" mnemonicParsing="false" text="Agree" />
+                                          <TextField layoutX="196.0" layoutY="396.0" prefHeight="32.0" prefWidth="138.0" />
+                                          <TextField layoutX="195.0" layoutY="253.0" prefHeight="32.0" prefWidth="138.0" />
+                                          <Text layoutX="46.0" layoutY="458.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile Image">
+                                             <font>
+                                                <Font size="20.0" />
+                                             </font>
+                                          </Text>
+                                          <Text layoutX="42.0" layoutY="420.0" lineSpacing="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="eMail Address" textAlignment="CENTER">
+                                             <font>
+                                                <Font size="20.0" />
+                                             </font>
+                                          </Text>
+                                          <Group />
+                                       </children>
+                                    </Group>
+                                 </children>
+                              </Group>
+                           </children>
+                        </Pane>
+                     </children>
+                  
+                                    </AnchorPane>
+                  <Button fx:id="btnFold" layoutX="497.0" layoutY="600.0" mnemonicParsing="false" onAction="#ButtonAction" prefHeight="67.0" prefWidth="42.0" style="-fx-background-color: RED;" text="&gt;&gt;" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="-9.0" />
+               </children></AnchorPane>
+          <AnchorPane id="우측패널" maxWidth="490.0" minHeight="0.0" minWidth="120.0" prefHeight="672.0" prefWidth="230.0" style="-fx-background-color: #323232;">
+               <children>
+                  <AnchorPane id="로그인창" layoutX="-1.0" minWidth="-Infinity" prefHeight="46.0" prefWidth="278.0" style="-fx-background-color: #ffe145;" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <HBox layoutX="14.0" layoutY="2.0" prefHeight="32.0" prefWidth="265.0" spacing="6.0" AnchorPane.bottomAnchor="1.0" AnchorPane.rightAnchor="-5.0" AnchorPane.topAnchor="2.0">
+                           <children>
+                              <Label layoutX="352.0" layoutY="15.0" text="ID">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="3.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField layoutX="379.0" layoutY="10.0" prefHeight="23.0" prefWidth="95.0" />
+                              <Label layoutX="510.0" layoutY="15.0" text="PW">
+                                 <HBox.margin>
+                                    <Insets top="3.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <PasswordField layoutX="538.0" layoutY="10.0" prefHeight="23.0" prefWidth="106.0" />
+                           </children>
+                           <padding>
+                              <Insets top="12.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane id="접속자목록 " layoutX="282.0" layoutY="64.0" prefHeight="465.0" prefWidth="-20.0" AnchorPane.leftAnchor="282.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="64.0">
+                     <children>
+                        <TabPane prefHeight="148.0" prefWidth="200.0" style="-fx-background-color: #ffffff;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
+                          <tabs>
+                            <Tab text="전체접속자">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="412.0" prefWidth="110.0">
+                                       <children>
+                                          <ListView prefHeight="436.0" style="-fx-background-color: yellow;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                            </Tab>
+                            <Tab text="친구목록">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="412.0" prefWidth="110.0">
+                                       <children>
+                                          <ListView prefHeight="436.0" style="-fx-background-color: #323232;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" />
+                                       </children></AnchorPane>
+                              </content>
+                            </Tab>
+                          </tabs>
+                        </TabPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane id="회원" layoutY="46.0" prefHeight="488.0" prefWidth="280.0">
+                     <children>
+                        <Group layoutX="-6.0" layoutY="-51.0">
+                           <children>
+                              <ImageView fitHeight="138.0" fitWidth="93.0" layoutX="24.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../../game/src/game/client/ui/profile_img.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Pane layoutX="117.0" layoutY="64.0" prefHeight="148.0" prefWidth="145.0">
+                                 <children>
+                                    <Pane layoutX="5.0" layoutY="5.0" prefHeight="139.0" prefWidth="141.0">
+                                       <children>
+                                          <Button fx:id="btnSplit1121" layoutX="81.0" layoutY="31.0" mnemonicParsing="false" onAction="#ButtonAction" prefHeight="23.0" prefWidth="64.0" style="-fx-background-color: #ffe145;" text="즐겨찾기" />
+                                          <Button fx:id="btnSplit11" layoutX="4.0" mnemonicParsing="false" onAction="#ButtonAction" prefHeight="23.0" prefWidth="66.0" style="-fx-background-color: #ffe145;" text="로그인" />
+                                          <Button fx:id="btnSplit1" layoutX="81.0" mnemonicParsing="false" onAction="#ButtonAction" prefHeight="23.0" prefWidth="64.0" style="-fx-background-color: #ffe145;" text="로그아웃" />
+                                          <Button fx:id="btnSplit112" layoutX="5.0" layoutY="31.0" mnemonicParsing="false" onAction="#ButtonAction" prefHeight="23.0" prefWidth="66.0" style="-fx-background-color: #ffe145;" text="쪽지" />
+                                          <TextArea layoutX="6.0" layoutY="66.0" prefHeight="72.0" prefWidth="141.0" />
+                                       </children>
+                                    </Pane>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </Group>
+                        <TextArea editable="false" layoutX="9.0" layoutY="165.0" prefHeight="269.0" prefWidth="254.0" wrapText="true" AnchorPane.leftAnchor="9.0" AnchorPane.topAnchor="165.0" />
+                        <Group layoutX="3.0" layoutY="159.0">
+                           <children>
+                              <Button fx:id="btnSplit111" layoutX="197.0" layoutY="282.0" mnemonicParsing="false" onAction="#ButtonAction" prefHeight="31.0" prefWidth="64.0" style="-fx-background-color: #ffe145;" text="전송" />
+                              <TextField layoutX="6.0" layoutY="282.0" prefHeight="32.0" prefWidth="182.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="59.0" AnchorPane.topAnchor="282.0" />
+                           </children>
+                        </Group>
+                     </children>
+                  </AnchorPane>
+                  <ScrollPane id="게시판목록" layoutX="11.0" layoutY="528.0" maxWidth="470.0" prefHeight="279.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="528.0">
+                    <content>
+                      <AnchorPane maxWidth="470.0" minHeight="0.0" minWidth="0.0" prefHeight="153.0" prefWidth="470.0">
+                           <children>
+                              <TableView maxWidth="470.0" minWidth="255.0" prefHeight="797.0" prefWidth="464.0" AnchorPane.bottomAnchor="-644.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
+                                <columns>
+                                  <TableColumn prefWidth="75.0" text="글쓴이" />
+                                    <TableColumn prefWidth="75.0" text="제목" />
+                                  <TableColumn prefWidth="392.0" text="내용" />
+                                </columns>
+                              </TableView>
+                           </children></AnchorPane>
+                    </content>
+                  </ScrollPane>
+                  <Button fx:id="btnSpread" layoutX="-10.0" layoutY="618.0" mnemonicParsing="false" onAction="#ButtonAction" prefHeight="67.0" prefWidth="42.0" style="-fx-background-color: #ffe145;" text="&lt;&lt;" visible="false" AnchorPane.bottomAnchor="-2.0" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+      <Group id="확장패널" AnchorPane.rightAnchor="1.0">
+         <children>
+            <Pane layoutX="814.0" layoutY="48.0" prefHeight="482.0" prefWidth="0.0" AnchorPane.leftAnchor="950.0" AnchorPane.rightAnchor="-15.0" />
+         </children>
+      </Group>
+   </children>
+</AnchorPane>

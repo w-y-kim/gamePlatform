@@ -1,0 +1,12 @@
+
+admin {
+    -fx-background-color: transparent, transparent, transparent, transparent;
+}
+
+.admin:hover{
+    -fx-background-color: transparent, rgba(0,0,0,.1), rgba(0,0,0,.1), transparent;
+}
+
+.admin:armed {
+    -fx-background-color: transparent, rgba(0,0,0,.1), rgba(0,0,0,.1), rgba(0,0,0,.2);
+}
