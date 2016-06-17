@@ -20,7 +20,6 @@ public class Server {
 			Socket socket = ss.accept();
 			System.out.println("New User accepted!");
 			
-			System.out.println("New User accepted!");
 		ServerThread gst = new ServerThread(socket);
 		Thread thread = new Thread(gst);
 		thread.start();

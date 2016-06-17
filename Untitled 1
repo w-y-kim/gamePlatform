@@ -1,0 +1,43 @@
+<package 정리>
+클래스 만들기
+dao - connection mannager, dao,
+server - servermain, serverThread
+client- 
+   vo - user, Friend, clientMessage,  maininfo,roomInfo,                 gameInfo,gameRoom,  >Data (command)
+   data - img 
+   ui - 
+<서버 만들기 >
+서버 쓰레드 - 분기처리, 브로드캐스팅 메소드
+
+<UI>
+키면 바로 서버 접속
+command CONNECTION 만들기
+서버에서는, 전체 접속자 정보 보냄
+
+
+
+<회원가입 UI>
+회원가입 버튼 >
+
+ 1. id, pw, em, pfimg 선택(랜덤), 받아서 User 객체 만들기
+ 2. 서버 접속 > user 정보 넘겨주기  
+ 3. 유저 정보 받아서 DB에 저장
+ 4. 가입 허가 넘겨주기 
+ 5. 유저 UI에서는  
+
+
+<로그인>
+1. 아이디 패스워드 받아서 로그인
+2. 아이디와 패스워드 일치하는 지 검사해야함. > 데이터베이스 
+   - 아이디와 패스워드를 담은 user 객체 서버로 보내기 oos.write 
+   1)일치할 경우 : 서버에서 getUser해서 유저정보(친구리스트),현재 로            그인 리스트 전송
+   2)일치하지 않을 경우 :Null보내고 클라이언트는 null 받으면 "비밀번         호를 잘못 입력하셨습니다." 띄우기
+   
+   
+   ===============
+   
+  /game/src/game/client/CleintMain.java  서버연결 / 스레드 생성 / 리스너에서 서버에서 받은 정보UI출력(접속자리스트) 해야함
+  
+  
+  
+  
