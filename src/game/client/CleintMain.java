@@ -12,7 +12,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-import game.client.ui.FXMLDocumentController;
+import game.client.ui.FXMLController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,7 +33,7 @@ public class CleintMain extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("./ui/FXMLDocument.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("./ui/FXMLDoc.fxml"));
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		// stage.initStyle(StageStyle.UTILITY);//스테이지 모양
