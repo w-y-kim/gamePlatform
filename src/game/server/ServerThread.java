@@ -11,6 +11,8 @@ import java.util.HashMap;
 import game.vo.RoomInfo;
 import game.dao.Database;
 import game.errors.DuplicateIDException;
+import game.errors.RecordNotFoundException;
+import game.vo.ClientMessage;
 import game.vo.Data;
 import game.vo.Friend;
 import game.vo.User;
@@ -84,8 +86,36 @@ public class ServerThread implements Runnable {
             
             oos.writeObject(data);
             break;
+         case Data.ADDFRIEND:
+        	Friend fr = data.getFriend();
+        	boolean faddrs =db.addFriend(fr); //friend add result
+        	 break;
+         case Data.SEND_NOTE:
+        	 /*- 받은 message db에 저장
+			  *- 특정 아이디의 oos에만 보내는 메소드 만들기 
+			  * 1. 받는 user가 로그아웃 중일 때는 db에만 저장
+			  * 2. 로그인 중일 때는 ClientMessage의 id의 oos로 보내기
+        	  */
+        	 ClientMessage cm = data.getClientMessage();
+        	 db.saveMessage(cm);
+        	 String rcid = cm.getId(); //받는 유저 아이디
+        	boolean ss = false;
+        	User rcUser= null; 
+        	for (int i = 0; i < connectedUserList.size(); i++) {
+				if(connectedUserList.get(i).equals(rcid)){
+					ss = true;
+					rcUser = connectedUserList.get(i);
+				}
+			}
+        	 if(ss){ //그인 중일 때는 ClientMessage의 id의 oos로 보내기
+        		 sendMemo(rcUser);
+        	 } 
+        	 //ss가 false면 안보냄.
+        	 
+        	 break;
+         case Data.CHAT_MESSAGE:
+             break;
          case Data.JOIN:
-            
             break;
          case Data.MAKE_ROOM:
             break;
@@ -97,8 +127,8 @@ public class ServerThread implements Runnable {
             break;
          case Data.SEND_WINNING_RESULT:
             break;
-         case Data.CHAT_MESSAGE:
-            break;
+        
+         
          case Data.EXIT://로그 아웃 currentUserList에서 빼고 갱신된 유저리스트 브로드캐스팅 해주기.
         	 String id = data.getUser().getId();
         	 for (int i = 0; i < connectedUserList.size(); i++) {
@@ -124,11 +154,18 @@ public class ServerThread implements Runnable {
       } catch (SQLException e) {
          // TODO Auto-generated catch block
          e.printStackTrace();
-      }
+      } catch (RecordNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
       }//while
    }//run
+   public void sendMemo(User rcUser) throws IOException{ //받는 사람 user id
+	   // 로그인한 유저에게 쪽지 보냄
+	   rcUser.getOos().writeObject(data);
+   }
    
-   public void sendDataRoommate(Data datar){
+   public void sendDataRoommate(Data data){
       
    }
    

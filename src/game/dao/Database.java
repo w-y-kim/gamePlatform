@@ -225,15 +225,20 @@ public class Database {
       return mok;
    }
    
+   /**
+    * id, sid, ct 너서 보냄
+    * @param id
+    * @return ArrayList<ClientMessage> cml
+    */
    public ArrayList getAllMessages(String id){
    ArrayList<ClientMessage> cml = new ArrayList<>();
    Connection con = ConnectionManager.getConnection();
-   String sql = "SELECT * FROM MESSAGES WHERE id = ?";
+   String sql = "SELECT * FROM MESSAGES WHERE id = ? OR sid = ?";
    ClientMessage cm = null;
    try{
       PreparedStatement pt = con.prepareStatement(sql);
       pt.setString(1, id);
-      
+      pt.setString(2, id);
       ResultSet rs = pt.executeQuery();
       while(rs.next()){
          String uid = rs.getString(1);
@@ -241,8 +246,8 @@ public class Database {
          String cnt = rs.getString(3);
          cm = new ClientMessage(uid, sid, cnt);
          cml.add(cm);
-         System.out.println(cm.toString());
-         System.out.println(cml.toString());
+        // System.out.println(cm.toString());
+         //System.out.println(cml.toString());
       }
    }catch(SQLException e){
       e.printStackTrace();
@@ -256,8 +261,9 @@ public class Database {
     * Friend Table에 유저 id와 친구 id를 같이 등록한다
     * @param fr
     */
-   public void addFriend(Friend fr){
-      Connection con = ConnectionManager.getConnection();
+   public boolean addFriend(Friend fr){
+      boolean faddrs=false;
+	   Connection con = ConnectionManager.getConnection();
       String sql = "INSERT INTO friends VALUES(?,?)";
       try{
          PreparedStatement pt = con.prepareStatement(sql);
@@ -265,11 +271,13 @@ public class Database {
          pt.setString(2, fr.getFid());
          int row = pt.executeUpdate();
          if(row>0){
+        	 faddrs = true;
             System.out.println(row );
          }
       }catch(SQLException e){e.printStackTrace();}finally{
          ConnectionManager.close(con);
       }
+	return faddrs;
    }
    
    /**
@@ -301,4 +309,5 @@ public class Database {
       return flist;
       
    }
+  
 }
