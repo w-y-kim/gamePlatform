@@ -99,7 +99,15 @@ public class ServerThread implements Runnable {
             break;
          case Data.CHAT_MESSAGE:
             break;
-         case Data.EXIT:
+         case Data.EXIT://로그 아웃 currentUserList에서 빼고 갱신된 유저리스트 브로드캐스팅 해주기.
+        	 String id = data.getUser().getId();
+        	 for (int i = 0; i < connectedUserList.size(); i++) {
+        		 if(connectedUserList.get(i).getId().equals(id)){
+        			 connectedUserList.remove(i);
+        		 }
+			}
+        	 data.setUserList(connectedUserList);
+        	 broadCasting(data);
             break;
          default:
             break;
