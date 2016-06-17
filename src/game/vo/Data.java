@@ -22,6 +22,7 @@ public class Data implements Serializable {
    public static final int MAKE_ROOM = 20;                     //게임방 생성
    public static final int JOIN = 30;                              //게임방 입장
    public static final int CHAT_MESSAGE = 40;               //게임방 내 채팅
+   public static final int SEND_NOTE = 41;
    public static final int SEND_BINGO_DATA = 50;            //선택한 빙고 단어 전송
    public static final int SEND_WINNING_RESULT = 60;      //5개의 빙고가 완성됐을 시 승리결과 전송
    public static final int GAME_READY = 70;                  //25개 빙고단어 입력 완료 후 준비
@@ -31,6 +32,7 @@ public class Data implements Serializable {
    public static final int CONNECTION = 11;
    public static final int SIGNUP = 10;//로그인
    public static final int LOGIN = 0;
+   public static final int ADDFRIEND = 12;
    public Data(int command) {
       this.command = command;
    }
