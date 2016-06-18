@@ -17,8 +17,10 @@ import java.util.ResourceBundle;
 import javax.swing.JOptionPane;
 
 import game.vo.Data;
+import game.vo.Friend;
 import game.vo.RoomInfo;
 import game.vo.User;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -56,6 +58,11 @@ public class FXMLController implements Runnable, Initializable {
 	// 접속단계
 	@FXML
 	private ListView<User> allUserList;
+	@FXML
+	private AnchorPane loadingPane;
+	@FXML
+	private ProgressIndicator ProgressIndicator;
+
 	// 로그인
 	@FXML
 	private Button loginList;
@@ -98,10 +105,7 @@ public class FXMLController implements Runnable, Initializable {
 	private Button btnFold;
 	@FXML
 	private Button btnSpread;
-	@FXML
-	private ProgressIndicator ProgressIndicator;
-	@FXML
-	private AnchorPane loadingPane;
+	
 
 	// 게임방
 	@FXML
@@ -118,10 +122,7 @@ public class FXMLController implements Runnable, Initializable {
 	private ObjectInputStream ois;
 
 	static ArrayList<User> connectedUserList = new ArrayList<>(); // 서버에 접속된
-	// 클라이언트, 각
-	// 클라이언트의
-	// ObjectOutputStream이
-	// 저정되어 있음
+	// 클라이언트, 각 // 클라이언트의 // ObjectOutputStream이 // 저정되어 있음
 	static HashMap<String, RoomInfo> gameRoomList = new HashMap<>();
 	private Data data;
 	private User user;
@@ -218,6 +219,10 @@ public class FXMLController implements Runnable, Initializable {
 		}
 	}
 
+	/**자잘한 버튼 이벤트 
+	 * @param e
+	 * @throws IOException
+	 */
 	@FXML
 	private void ButtonAction(ActionEvent e) throws IOException {
 		boolean toggle = true;
@@ -251,7 +256,9 @@ public class FXMLController implements Runnable, Initializable {
 			String pw = field_pw.getText();
 			User loginUser = new User(id, pw, "", 0);
 			Data data = new Data(Data.LOGIN);
+			data.setUser(loginUser);
 			this.sendData(data);
+			System.out.println("1. 로그인명령 전송완료");
 		}
 	}
 
@@ -276,23 +283,33 @@ public class FXMLController implements Runnable, Initializable {
 		}
 	}
 
+	/**그림 지우기 버튼 메소드 
+	 * @param e
+	 */
 	@FXML
 	private void clearAction(ActionEvent e) {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		gc.setStroke(Color.BLACK);
+		gc.setLineWidth(5);//선 굵기 
+//		gc.fill();
 	}
 
+	
+	
+	
 	/**
 	 * 소켓 연결 후 실행되는 리스너스레드, 변화를 반영
 	 */
 	@Override
 	public void run() {
 
+	
 		System.out.println("리스너 스레드 접속");
 		// 접속하자마자 접속자 리스트 불러올 command 보냄 (Command만 들어있음)
 		// data.setCommand(Data.CONNECTION);
 		data = new Data(Data.CONNECTION);// 데이터 객체 최초 생성
 		this.sendData(data);
+		System.out.println("CONNECTION명령보냄");
 		while (!exit) {
 			try {
 				data = (Data) ois.readObject();
@@ -301,16 +318,27 @@ public class FXMLController implements Runnable, Initializable {
 					connectedUserList = data.getUserList();
 					// TODO:userList 갱신 메소드 만들기
 
-					if (connectedUserList.isEmpty() == false) {
-						renewalConUserList();
-					} else {
-						// Thread.sleep(2000);
-						// JOptionPane.showMessageDialog(null, "아직 너 혼자야! 힘내 ...
-						// 살다보면 그럴수도있지뭐");
-					}
+//					loadingPane.setVisible(false);
+					Platform.runLater(new Runnable(){
+
+						@Override
+						public void run() {
+							if (connectedUserList.isEmpty() == false) {
+								System.out.println("입력스레드시작");
+								renewalConUserList();
+							} else {
+								// Thread.sleep(2000);
+								// JOptionPane.showMessageDialog(null, "아직 너 혼자야! 힘내 ...
+								// 살다보면 그럴수도있지뭐");
+							}
+							loadingPane.setVisible(false);
+						}
+						
+					});
+					System.out.println("CONNECTION명령 리슨 완료");
 					break;
 				case Data.SIGNUP:
-
+					System.out.println("SIGNUP 명령 받음");
 					/**
 					 * 회원가입 버튼 눌렀을 때 UI 액션리스너에서 서버에 oos로 넘길 내용 TODO: id, pw, em,
 					 * pfimg 선택(랜덤), 받아서 User 객체 만들기 하나라도 입력 안하면 오류남! 에러 처리 해줄것!
@@ -326,12 +354,22 @@ public class FXMLController implements Runnable, Initializable {
 						// 회원가입 textfield 아이디 창만 리셋해주기
 						JOptionPane.showMessageDialog(null, "이미 등록된 아이디입니다. ");
 					}
+					System.out.println("SIGNUP 처리완료");
 					break;
 				case Data.LOGIN:
 					/**
 					 * 로그인 버튼
 					 *
 					 */
+					System.out.println("2. 로그인명령 처리결과 들어옴");
+					
+					User user = data.getUser();//로그인한사람
+					System.out.println(user+"로그인명령에서 받아온 유저데이터");
+					connectedUserList = data.getUserList(); 
+					System.out.println(connectedUserList+"로그인명령에서 받아온 유저리스트");
+					ArrayList<Friend> friendList = data.getFriendList();
+					renewalConUserList();
+					System.out.println("3. 로그인명령 처리 결과 UI반영");
 					break;
 				case Data.JOIN:
 					break;
@@ -381,8 +419,9 @@ public class FXMLController implements Runnable, Initializable {
 		// TODO: connectedUserList 전체 접속자 리스트에 띄우기
 
 		ObservableList<User> ob = FXCollections.observableArrayList(connectedUserList);
+		System.out.println(ob);
 		allUserList.setItems(ob);
-
+		System.out.println(allUserList);
 	}
 
 	// //그림 그리는 메소드 연결해놓음

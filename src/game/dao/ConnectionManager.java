@@ -9,6 +9,7 @@ import java.sql.SQLException;
 public class ConnectionManager {
 	//utility 클래스
 	private static String url  = "jdbc:oracle:thin:@203.233.194.251:1521:XE";
+//	private static String url  = "jdbc:oracle:thin:@localhost:1521:XE";
 	private static String driver = "oracle.jdbc.driver.OracleDriver";
 	private static String user ="hr";
 	private static String password = "hr";

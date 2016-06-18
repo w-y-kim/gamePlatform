@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.shape.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.*?>
@@ -8,6 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
@@ -21,6 +21,7 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -34,6 +35,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -111,7 +115,7 @@
                   </AnchorPane>
                   <AnchorPane id="메인창" layoutY="46.0" prefHeight="626.0" prefWidth="530.0" style="-fx-background-color: #323232;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="46.0">
                      <children>
-                        <AnchorPane id="로딩창" fx:id="loadingPane" disable="true" layoutX="-6.0" prefHeight="626.0" prefWidth="540.0" style="-fx-background-color: #000000;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane id="로딩창" fx:id="loadingPane" disable="true" layoutX="-6.0" prefHeight="626.0" prefWidth="540.0" style="-fx-background-color: #000000;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Pane layoutX="7.0" layoutY="8.0" prefHeight="618.0" prefWidth="530.0" AnchorPane.rightAnchor="5.0">
                                  <children>
@@ -137,31 +141,35 @@
                               </Pane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="게임창" layoutX="6.0" layoutY="6.0" prefHeight="626.0" prefWidth="530.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane id="게임창" layoutX="6.0" layoutY="6.0" prefHeight="626.0" prefWidth="530.0" style="-fx-background-color: #ffffff;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Region layoutX="24.0" layoutY="48.0" prefHeight="497.0" prefWidth="493.0" style="-fx-background-color: #dddddd;" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="48.0" />
-                              <HBox layoutX="24.0" layoutY="569.0" prefHeight="37.0" prefWidth="511.0" spacing="15.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="-1.0">
+                              <Canvas fx:id="canvas" height="497.0" layoutX="20.0" layoutY="58.0" onMouseDragged="#mouserDrag" onMousePressed="#mousePress" onMouseReleased="#mouseRelease" width="500.0" AnchorPane.topAnchor="48.0" />
+                              <AnchorPane id="그림도구" layoutX="5.0" layoutY="554.0" prefHeight="51.0" prefWidth="530.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="-5.0">
                                  <children>
-                                    <Pane prefHeight="37.0" prefWidth="597.0">
+                                    <VBox layoutX="389.0" layoutY="17.0" maxWidth="200.0" minWidth="-Infinity" prefHeight="50.0" prefWidth="106.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="35.0">
                                        <children>
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="28.0" layoutX="289.0" stroke="BLACK" strokeType="INSIDE" width="29.0" />
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" height="28.0" layoutX="69.0" stroke="BLACK" strokeType="INSIDE" width="29.0" />
-                                          <Button fx:id="clearCanvas" mnemonicParsing="false" onAction="#clearAction" prefHeight="36.0" prefWidth="54.0" style="-fx-background-color: #facd5a; -fx-border-color: #000000; -fx-border-style-border: 5;" text="지우기">
+                                          <Text layoutX="380.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="선굵기" AnchorPane.leftAnchor="381.0" AnchorPane.rightAnchor="48.0" />
+                                          <Slider layoutX="381.0" layoutY="43.0" max="20.0" min="1.0" prefHeight="36.0" prefWidth="150.0" showTickLabels="true" showTickMarks="true" AnchorPane.leftAnchor="381.0" AnchorPane.rightAnchor="48.0" />
+                                       </children>
+                                    </VBox>
+                                    <HBox alignment="CENTER" layoutX="30.0" layoutY="15.0" prefHeight="37.0" prefWidth="346.0" spacing="10.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="154.0">
+                                       <children>
+                                          <Button fx:id="clearCanvas" layoutX="14.0" layoutY="22.0" mnemonicParsing="false" onAction="#clearAction" prefHeight="36.0" prefWidth="54.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000; -fx-border-style-border: 5;" text="지우기">
                                              <font>
                                                 <Font name="System Bold" size="12.0" />
                                              </font>
                                           </Button>
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="28.0" layoutX="157.0" stroke="BLACK" strokeType="INSIDE" width="29.0" />
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d41fff" height="28.0" layoutX="333.0" stroke="BLACK" strokeType="INSIDE" width="29.0" />
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="28.0" layoutX="113.0" stroke="BLACK" strokeType="INSIDE" width="29.0" />
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#12ff31" height="28.0" layoutX="245.0" stroke="BLACK" strokeType="INSIDE" width="29.0" />
-                                          <ColorPicker layoutX="377.0" prefHeight="37.0" prefWidth="82.0" />
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f7ef00" height="28.0" layoutX="201.0" stroke="BLACK" strokeType="INSIDE" width="29.0" />
+                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="28.0" layoutX="86.0" layoutY="26.0" stroke="BLACK" strokeType="INSIDE" width="29.0" />
+                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f7ef00" height="28.0" layoutX="119.0" layoutY="26.0" stroke="BLACK" strokeType="INSIDE" width="29.0" />
+                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#12ff31" height="28.0" layoutX="152.0" layoutY="26.0" stroke="BLACK" strokeType="INSIDE" width="29.0" />
+                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="28.0" layoutX="185.0" layoutY="26.0" stroke="BLACK" strokeType="INSIDE" width="29.0" />
+                                          <Rectangle arcHeight="5.0" arcWidth="5.0" height="28.0" layoutX="251.0" layoutY="26.0" stroke="BLACK" strokeType="INSIDE" width="29.0" />
+                                          <ColorPicker layoutX="284.0" layoutY="21.0" prefHeight="37.0" prefWidth="82.0" />
                                        </children>
-                                    </Pane>
+                                    </HBox>
                                  </children>
-                              </HBox>
-                              <Canvas fx:id="canvas" height="497.0" layoutX="20.0" layoutY="58.0" onMouseDragged="#mouserDrag" onMousePressed="#mousePress" onMouseReleased="#mouseRelease" width="493.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="48.0" />
+                              </AnchorPane>
                            </children></AnchorPane>
                      </children>
                   </AnchorPane>
