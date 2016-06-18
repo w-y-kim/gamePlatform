@@ -29,10 +29,11 @@ public class CleintMain extends Application {
 	public CleintMain() {
 //		Sound("Shooting Range_1.wav", true);
 		
-
+//
 		
 	}
 
+	
 	@Override
 	public void start(Stage stage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("./ui/FXMLDoc.fxml"));

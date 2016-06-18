@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server {
+public class Server {//
 
 	private static Socket socket;
 
@@ -32,3 +32,4 @@ public class Server {
 	}
 
 }
+

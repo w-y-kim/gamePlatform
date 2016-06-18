@@ -131,7 +131,7 @@ public class FXMLController implements Runnable, Initializable {
 	private boolean exit;
 	private FXMLController fxControl;// FX의 컴포넌트 갱신 위해 스레드 실행 시 받아옴
 
-	public FXMLController() {
+	public FXMLController() {//
 
 		try {
 			// 서버연결

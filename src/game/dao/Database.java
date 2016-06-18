@@ -45,6 +45,7 @@ public class Database {
       }
       return exist;
    }
+   
    /**
     * 1. login시 사용, 
     * @param id

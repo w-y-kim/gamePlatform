@@ -32,6 +32,7 @@ public class ConnectionManager {
 		}
 		
 	}
+	
 	public static Connection getConnection(){
 		Connection con = null;
 		try {

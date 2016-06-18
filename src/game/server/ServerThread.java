@@ -48,6 +48,7 @@ public class ServerThread implements Runnable {
 			e.printStackTrace();
 		}
 	}
+	
 
 	/**
 	 * Data Command 별 분기처리 broadCasting 메소드 만들기
@@ -70,6 +71,7 @@ public class ServerThread implements Runnable {
 					/*
 					 * 유저 정보 받아서 DB에 저장 가입 허가 넘겨주기
 					 */
+					//
 					boolean addrs = false;
 					loginUser = data.getUser();
 					System.out.println(loginUser);
