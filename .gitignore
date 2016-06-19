@@ -12,3 +12,6 @@
 /JavaApplication1/build/
 /fxTest/nbproject/private/
 /fxTest2/nbproject/private/
+*.ini
+*.prefs
+*.gitignore
