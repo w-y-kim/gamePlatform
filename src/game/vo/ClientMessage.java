@@ -1,5 +1,6 @@
 package game.vo;
 
+
 public class ClientMessage {
 	
 	private String id;
