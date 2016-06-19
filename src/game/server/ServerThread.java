@@ -8,15 +8,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import game.vo.RoomInfo;
 import game.dao.Database;
 import game.errors.DuplicateIDException;
 import game.errors.RecordNotFoundException;
 import game.vo.ClientMessage;
 import game.vo.Data;
 import game.vo.Friend;
+import game.vo.GameInfo;
+import game.vo.GameRoom;
 import game.vo.User;
-import game.vo.RoomInfo;
 
 public class ServerThread implements Runnable {
 
@@ -27,10 +27,10 @@ public class ServerThread implements Runnable {
 																	// 클라이언트의
 																	// ObjectOutputStream이
 																	// 저정되어 있음
-	static HashMap<String, RoomInfo> gameRoomList = new HashMap<>();
+	static HashMap<String, GameRoom> gameRoomList = new HashMap<>();
 	private Data data;
 	private User loginUser;
-	private RoomInfo ri;
+	private GameRoom ri;
 	private String roomTitle;
 	private Socket socket;
 	private boolean exit; // exit이 true 면 나가기
@@ -65,6 +65,7 @@ public class ServerThread implements Runnable {
 					data.setUserList(connectedUserList);
 					data.setAllUserIds(db.getAllUserId());
 					oos.writeObject(data); // 자신한테만 보내는 것이라서 broadcasting 안씀
+					oos.reset();
 					System.out.println(connectedUserList + "받아온 접속자 목록");
 					break;
 				case Data.SIGNUP:
@@ -79,7 +80,7 @@ public class ServerThread implements Runnable {
 													// 안됐으면 false 넘김
 					data.setUserAddrs(addrs);
 					oos.writeObject(data);
-
+					oos.reset();
 					break;
 				case Data.LOGIN:
 					User user = data.getUser();
@@ -95,16 +96,20 @@ public class ServerThread implements Runnable {
 						 *그래서 서버에서 담아줌  
 						 */
 						System.out.println("접속 유저 있는데 왜 안들어와");
+						user.setOos(oos);
 						connectedUserList.add(user);
 						System.out.println(connectedUserList+"서버에서 추가한 유저리스트");
 						friendList = db.getFriendList(user.getId());
 						data.setFriendList(friendList);
 						data.setUser(user);
 						data.setUserList(connectedUserList);
+						System.out.println(data+"데이터");
+						System.out.println(data.getUserList()+"유저리스트");
 					} else {
 					}
 
 					oos.writeObject(data);
+					oos.reset();
 					break;
 				case Data.ADDFRIEND:
 					Friend fr = data.getFriend();
@@ -142,6 +147,12 @@ public class ServerThread implements Runnable {
 				case Data.GAME_READY:
 					break;
 				case Data.GAME_START:
+					GameInfo ginfo = data.getGameInfo();
+					System.out.println(ginfo+" ginfo");
+					User painter = data.getUser();
+//					connectedUserList.add(painter);//로그인시 들어가니까 안넣어도 됨 
+					data.setUserList(connectedUserList);
+					broadCasting(data); 
 					break;
 				case Data.SEND_TURN:
 					break;
@@ -189,10 +200,15 @@ public class ServerThread implements Runnable {
 
 	}
 
-	public void broadCasting(Object obj) throws IOException {
+	public void broadCasting(Data data) throws IOException {
 		for (User userr : connectedUserList) {
 			System.out.println("broadcasting");
-			userr.getOos().writeObject(obj);
+			System.out.println(data.getGameInfo()+"좌표방송");
+			System.out.println(data.getUser()+"그린이");
+			System.out.println(connectedUserList+"서버유저목록");
+			System.out.println(userr+"방송보낸대상");
+			System.out.println(data+"데이터");
+			userr.getOos().writeObject(data);
 			userr.getOos().reset();
 		}
 	}

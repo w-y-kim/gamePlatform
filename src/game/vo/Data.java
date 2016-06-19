@@ -7,13 +7,13 @@ import java.util.HashMap;
 public class Data implements Serializable {
    private String message; //채팅 대화내용
    private int command; //요청 명령 상수
-   private RoomInfo gameRoom; //게임방 정보
+   private GameRoom gameRoom; //게임방 정보
    private GameInfo gameInfo; //게임 정보
    private User user; //Data객체를 발송하는 사용자 정보
    private boolean userAddrs; //user 가입 결과 보내주는 정보
    private ArrayList<Friend> friendList;
    private ArrayList<User> userList; //서버에 접속되어있는 사용자 목록
-   private HashMap<String, RoomInfo> roomList; //게설된 방 목록
+   private HashMap<String, GameRoom> roomList; //게설된 방 목록
    private ClientMessage clientMessage;
    private Friend friend;
    private MainInfo mainInfo;
@@ -94,11 +94,11 @@ public class Data implements Serializable {
       this.userList = userList;
    }
 
-   public HashMap<String, RoomInfo> getRoomList() {
+   public HashMap<String, GameRoom> getRoomList() {
       return roomList;
    }
 
-   public void setRoomList(HashMap<String, RoomInfo> roomList) {
+   public void setRoomList(HashMap<String, GameRoom> roomList) {
       this.roomList = roomList;
    }
 
@@ -110,11 +110,11 @@ public class Data implements Serializable {
       this.gameInfo = gameInfo;
    }
 
-   public RoomInfo getGameRoom() {
+   public GameRoom getGameRoom() {
       return gameRoom;
    }
 
-   public void setGameRoom(RoomInfo gameRoom) {
+   public void setGameRoom(GameRoom gameRoom) {
       this.gameRoom = gameRoom;
    }
 
