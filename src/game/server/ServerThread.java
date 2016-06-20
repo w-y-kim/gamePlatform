@@ -91,7 +91,7 @@ public class ServerThread implements Runnable {
 												// 안하면 user null
 					System.out.println(user+" 서버: 로그인 명령한 유저(ID체크후)");
 					if (user != null) {
-						
+						user.setOos(oos);//FIXME 여기 맞나? 
 						boolean exist = doubleLoginCheck(user); //이 유저가 로그인한 상태인지 체크! 
 						if(exist){//true이면 이미 로그인한 상태라는 것
 							data.setError("이미 로그인 중");
@@ -188,6 +188,7 @@ public class ServerThread implements Runnable {
 			} catch (ClassNotFoundException | IOException e) {
 				e.printStackTrace();
 				System.out.println(socket.getPort() + "번 서버스레드 종료");
+				connectedUserList.remove(loginUser);//FIXME 접속종료하면 배열에서도 빼기
 				exit = true;
 			} // catch
 			catch (DuplicateIDException e) {

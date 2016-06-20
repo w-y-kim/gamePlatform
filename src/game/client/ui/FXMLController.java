@@ -40,11 +40,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -85,6 +88,10 @@ public class FXMLController implements Runnable, Initializable {
 	private HBox loginBox;
 	@FXML
 	private ListView<Object> friendList;
+	@FXML
+	private StackPane loginInfoPane;
+	@FXML
+	private Text welcomeTxt;
 
 	// 로그아웃
 	@FXML
@@ -123,9 +130,23 @@ public class FXMLController implements Runnable, Initializable {
 	@FXML
 	private Button btnSpread;
 
-	// 방만들기
+	// 게임선택
 	@FXML
-	private Button btnCreateRoom;
+	private AnchorPane mainPane;
+	@FXML
+	private ImageView main01;
+	@FXML
+	private ImageView main02;
+	@FXML
+	private TextArea txtArea_main01; 
+	@FXML
+	private TextArea txtArea_main02; 
+	@FXML
+	private TextArea txtArea_main03; 
+	
+
+	// 방만들기
+	@FXML private Button btnCreateRoom;
 	@FXML
 	private Button btnMkRoom;
 	@FXML
@@ -154,7 +175,9 @@ public class FXMLController implements Runnable, Initializable {
 	private ColorPicker colorPicker;
 	@FXML
 	private Button btnOut;
-
+	@FXML
+	private Text TxtAnswer; //제시어 
+	
 	private GraphicsContext gc;
 	private int i;
 
@@ -175,7 +198,7 @@ public class FXMLController implements Runnable, Initializable {
 	private User loginUser;// 나나나 미미미
 
 	private GameInfo ginfo;
-	
+
 	public FXMLController() {//
 
 		try {
@@ -292,8 +315,8 @@ public class FXMLController implements Runnable, Initializable {
 			// canvas.setWidth(1000);
 			// canvas.setHeight(canvasReign.getHeight());
 			canvas.autosize();
-			RestartDraw(gc);
-			
+			startDraw(gc);
+
 		}
 	}
 
@@ -305,12 +328,17 @@ public class FXMLController implements Runnable, Initializable {
 		if (e.getSource() == btnLogin) {
 			String id = field_id.getText();
 			String pw = field_pw.getText();
-			loginUser = new User(id, pw, "", 0);
-			Data data = new Data(Data.LOGIN);
-			data.setUser(loginUser);
-			this.sendData(data);
-			System.out.println("1. 로그인명령 전송완료");
-			loadingPane.setVisible(true);// 전송 중에 로그인창
+			if (id.equals("") || pw.equals("")) {
+				JOptionPane.showMessageDialog(null, "아이디와 패스워드를 입력해주세요");
+			} else {
+
+				loginUser = new User(id, pw, "", 0);
+				Data data = new Data(Data.LOGIN);
+				data.setUser(loginUser);
+				this.sendData(data);
+				System.out.println("1. 로그인명령 전송완료");
+
+			}
 		}
 	}
 
@@ -325,7 +353,7 @@ public class FXMLController implements Runnable, Initializable {
 			loadingPane.setOpacity(1.d);
 			for (int i = 0; i < 10; i++) {
 				try {
-					Thread.sleep(200);
+					Thread.sleep(3000);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
@@ -333,6 +361,44 @@ public class FXMLController implements Runnable, Initializable {
 			loadingPane.setOpacity(0);
 			loadingPane.setVisible(false);
 		}
+	}
+
+	/**
+	 * 외부 프로그램 실행
+	 * 
+	 * @param e
+	 */
+	@FXML
+	public void exeCuteGameAction(MouseEvent e) {
+		loadingPane.setVisible(true);
+		// TODO 외부파일 실행 스레드 생성
+		JOptionPane.showMessageDialog(null, "게임을 실행 중 입니다. 잠시만 기다려주세요");
+		txtArea_main01.setDisable(false);//선택한 게임의 설명 텍스트에리어 활성화 
+		txtArea_main02.setDisable(true);
+		txtArea_main03.setDisable(true);
+		
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * 캐치마인드 실행
+	 * 
+	 * @param e
+	 */
+	@FXML
+	public void catchmindExeAction(MouseEvent e) {
+		// TODO 테이블에 방 들어감
+
+		JOptionPane.showMessageDialog(null, "아재마인드 게임에 입장하셨습니다. 들어갈 방을 선택해주세요");
+		txtArea_main01.setDisable(true);//선택한 게임의 설명 텍스트에리어 활성화 
+		txtArea_main02.setDisable(false);
+		txtArea_main03.setDisable(true);		
 	}
 
 	/**
@@ -350,10 +416,12 @@ public class FXMLController implements Runnable, Initializable {
 				1000, // width of the rectangle
 				gamePane.getHeight()); // height of the rectangle
 
-		data.setCommand(Data.CLEAR_CANVAS);//TODO 유저정보를 안넣어주었는걸? 왜냐면 귀찮아서 .. 안넣어도 잘 되었으면...
-		sendData(data); 
+		data.setCommand(Data.CLEAR_CANVAS);// TODO 유저정보를 안넣어주었는걸? 왜냐면 귀찮아서 ..
+											// 안넣어도 잘 되었으면...
+		sendData(data);
 	}
-	private void clearActionOrder(){
+
+	private void clearActionOrder() {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		gc.setStroke(Color.BLACK);
 		gc.setLineWidth(1);// 선 굵기
@@ -361,10 +429,9 @@ public class FXMLController implements Runnable, Initializable {
 				0, // y of the upper left corner
 				1000, // width of the rectangle
 				gamePane.getHeight()); // height of the rectangle
-		
+
 	}
-	
-	
+
 	/**
 	 * 방만드는데 필요한 버튼메소드
 	 * 
@@ -372,6 +439,7 @@ public class FXMLController implements Runnable, Initializable {
 	 */
 	@FXML
 	public void mkRoomAction(ActionEvent e) {
+		mainPane.setVisible(false);
 		Object s = e.getSource();
 		if (s == btnCreateRoom) {// 방만들기창 열기
 			RoomPane.setVisible(true);
@@ -439,6 +507,7 @@ public class FXMLController implements Runnable, Initializable {
 	/**
 	 * 소켓 연결 후 실행되는 리스너스레드, 변화를 반영
 	 */
+	@FXML
 	@Override
 	public void run() {
 
@@ -465,10 +534,7 @@ public class FXMLController implements Runnable, Initializable {
 								System.out.println("입력스레드시작");
 								renewalConUserList();
 							} else {
-								// Thread.sleep(2000);
-								// JOptionPane.showMessageDialog(null, "아직 너
-								// 혼자야! 힘내 ...
-								// 살다보면 그럴수도있지뭐");
+
 							}
 							loadingPane.setVisible(false);
 						}
@@ -510,15 +576,14 @@ public class FXMLController implements Runnable, Initializable {
 					// renewalConUserList();
 					System.out.println("3. 로그인명령 처리 결과 UI반영");
 					// GUI 로그인 안보이도록 함
-					loginBox.setVisible(false);
-					try {
-						Thread.sleep(3000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					loadingPane.setVisible(false);
 
+					loginBox.setVisible(false);// 로그인 정보 입력 패널 숨기기
+					loginInfoPane.setVisible(true);
+					welcomeTxt.setText("아이디 : " + loginUser.getId());
+
+					this.showloadingPane(3000);// 스트림 보내고 리스너 기다리는 동안
+					JOptionPane.showMessageDialog(null, loginUser.getId() + "님 접속을 환영합니다.");
+					mainPane.setVisible(true);
 					break;
 				case Data.JOIN:
 					break;
@@ -531,39 +596,41 @@ public class FXMLController implements Runnable, Initializable {
 				case Data.DRAW_READY:
 					if (loginUser.getId().equals(data.getUser().getId()) == false) {
 						System.out.println("새 패스 시작");
-						x = data.getGameInfo().getX_point(); 
+						x = data.getGameInfo().getX_point();
 						y = data.getGameInfo().getY_point();
 						gc.moveTo(x, y);
-//						gc.stroke();
-						System.out.println("[시작 x,y :"+x + ","+y+"]");
+						// gc.stroke();
+						System.out.println("[시작 x,y :" + x + "," + y + "]");
 					}
-					break; 
+					break;
 				case Data.DRAW_START:
 					if (loginUser.getId().equals(data.getUser().getId()) == false) {
-//						System.out.println(i + "수신");
+						// System.out.println(i + "수신");
 						GameInfo received_ginfo = data.getGameInfo();
-						System.out.println(x +","+ y+"새패스정보 드래그시 수신");//찍는 위치 
+						System.out.println(x + "," + y + "새패스정보 드래그시 수신");// 찍는
+																			// 위치
 						xyArray = received_ginfo.getGeographicInfo();
-//						gc.moveTo(x, y);
+						// gc.moveTo(x, y);
 
-						
-						//배열로 받기 
+						// 배열로 받기
 						for (double[] e : xyArray) {
-							System.out.println(x +","+ y+"새패스정보 드래그시 수신(for)");//찍는 위치 
+							System.out.println(x + "," + y + "새패스정보 드래그시 수신(for)");// 찍는
+																					// 위치
 							double x = e[0];
 							double y = e[1];
 							gc.lineTo(x, y);
 							gc.stroke();
-							System.out.println(x +","+ y+"새패스정보 드래그시 수신(for122222)");
-//							gc.closePath();//쓰면 채워지는 문제, 되지도 않고 
-//							gc.beginPath();//흐려지는 문제
-						
+							System.out.println(x + "," + y + "새패스정보 드래그시 수신(for122222)");
+							// gc.closePath();//쓰면 채워지는 문제, 되지도 않고
+							// gc.beginPath();//흐려지는 문제
+
 						}
 						xyArray.removeAll(xyArray);
 						xyArray.clear();
 						System.out.println("패스완성");
-//						xyArray.removeAll(xyArray);//지워도 소용없네, 일단 배열의 초기화는 선언시 하는게 나을지도
-						
+						// xyArray.removeAll(xyArray);//지워도 소용없네, 일단 배열의 초기화는
+						// 선언시 하는게 나을지도
+
 						// 드래그 끝나서 하나의 패스 완성
 						i++;
 
@@ -574,7 +641,7 @@ public class FXMLController implements Runnable, Initializable {
 					if (loginUser.getId().equals(data.getUser().getId()) == false) {
 						this.clearActionOrder();
 					}
-					break; 
+					break;
 				case Data.SEND_TURN:
 					break;
 				case Data.SEND_WINNING_RESULT:
@@ -600,6 +667,19 @@ public class FXMLController implements Runnable, Initializable {
 				}
 			} // catch
 		} // while
+	}
+
+	private void showloadingPane(long time) {
+
+		loadingPane.setVisible(true);
+
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		loadingPane.setVisible(false);
+
 	}
 
 	/**
@@ -648,13 +728,14 @@ public class FXMLController implements Runnable, Initializable {
 		gc.beginPath();
 		gc.moveTo(event.getX(), event.getY());
 		gc.stroke();
-		System.out.println(event.getX() +","+ event.getY()+"프레스송신");//찍는 위치 
-		ginfo = new GameInfo(event.getX(),event.getY());
+		System.out.println(event.getX() + "," + event.getY() + "프레스송신");// 찍는 위치
+		ginfo = new GameInfo(event.getX(), event.getY());
 		data.setUser(loginUser);
 		data.setCommand(Data.DRAW_READY);
 		data.setGameInfo(ginfo);
 		this.sendData(data);
-		geographicInfo = new ArrayList<double[]>();//패스 발생 시점마다 배열 초기화되도록 flushing 
+		geographicInfo = new ArrayList<double[]>();// 패스 발생 시점마다 배열 초기화되도록
+													// flushing
 
 	}
 
@@ -671,38 +752,40 @@ public class FXMLController implements Runnable, Initializable {
 		gc.lineTo(event.getX(), event.getY());
 		gc.stroke();
 		// ginfo = new GameInfo(event);
-			double x = event.getX();
-			double y = event.getY();
-			double[] xy = {x,y}; 
-			geographicInfo.add(xy);
-			
+		double x = event.getX();
+		double y = event.getY();
+		double[] xy = { x, y };
+		geographicInfo.add(xy);
+
 	}
 
 	// 마우스 놓을 때의 액션, 딱히 내용 없을 듯
 	@FXML
 	public void mouseRelease(MouseEvent event) {
-//		for (double[][] e : geographicInfo) {
-//			int i = e.
-//			double x = xy[0][0];
-//			double y = xy[0][1]; 
-//			
-//		}
-//		for (double[] e : geographicInfo) {
-//			double x = e[0];
-//			double y = e[1]; 
-//			ginfo.setX_point(x);
-//			ginfo.setY_point(y);
-//			
-//		}
-	System.out.println(geographicInfo+"드레그시 담긴 정보");//mouserPressed에서 한개의 패스의 경로가 매번 새로 담긴다.
+		// for (double[][] e : geographicInfo) {
+		// int i = e.
+		// double x = xy[0][0];
+		// double y = xy[0][1];
+		//
+		// }
+		// for (double[] e : geographicInfo) {
+		// double x = e[0];
+		// double y = e[1];
+		// ginfo.setX_point(x);
+		// ginfo.setY_point(y);
+		//
+		// }
+		System.out.println(geographicInfo + "드레그시 담긴 정보");// mouserPressed에서 한개의
+															// 패스의 경로가 매번 새로
+															// 담긴다.
 		ginfo.setGeographicInfo(geographicInfo);
 
 		// data.setUser(loginUser);
 		data.setCommand(Data.DRAW_START);
 		data.setGameInfo(ginfo);
 		this.sendData(data);
-		ginfo.setGeographicInfo(null);//VO에 안쌓이도록 flushing  
-		
+		ginfo.setGeographicInfo(null);// VO에 안쌓이도록 flushing
+
 	}
 
 	// 초기 설정할 때 필요 한 듯 ...? 그런데 FXML에서 이미 초기설정 해주어서 바꿀 필요 있는 부분만 하면 될 듯
