@@ -91,27 +91,21 @@ public class ServerThread implements Runnable {
 												// 안하면 user null
 					System.out.println(user+" 서버: 로그인 명령한 유저(ID체크후)");
 					if (user != null) {
-						//FIXME connectedUserList.add(user); 
-						/*클라에서 로긴 시 컨리스트를 담아보낼 필요가 없다. 
-						 *로그인이 정말 되는지는 서버를 거쳐서 결정되기 때문에
-						 *대신 클라 리스너에서는 로그인 결과 출력할 때 필요하다.
-						 *그래서 서버에서 담아줌  
-						 */
-						System.out.println("접속 유저 있는데 왜 안들어와");
-						user.setOos(oos);
+						
+						boolean exist = doubleLoginCheck(user); //이 유저가 로그인한 상태인지 체크! 
+						if(exist){//true이면 이미 로그인한 상태라는 것
+							data.setError("이미 로그인 중");
+							data.setUser(null);
+						}else{//false 이면 로그인 안한 상태라는 것
 						connectedUserList.add(user);
 						System.out.println(connectedUserList+"서버에서 추가한 유저리스트");
 						friendList = db.getFriendList(user.getId());
 						data.setFriendList(friendList);
 						data.setUser(user);
 						data.setUserList(connectedUserList);
-						System.out.println(data+"데이터");
-						System.out.println(data.getUserList()+"유저리스트");
-					} else {
+						}
 					}
-
-					oos.writeObject(data);
-					oos.reset();
+					send(data);
 					break;
 				case Data.ADDFRIEND:
 					Friend fr = data.getFriend();
@@ -229,5 +223,17 @@ public class ServerThread implements Runnable {
 			userr.getOos().reset();
 		}
 	}
-
+	public void send (Data data) throws IOException{
+		oos.writeObject(data); // 자신한테만 보내는 것이라서 broadcasting 안씀
+		oos.reset();
+	}
+	public boolean doubleLoginCheck(User user){
+		boolean exist= false;
+		for (User conUser : connectedUserList) {
+		if(conUser.getId().equals(user.getId())){
+			exist = true;
+		}
+		}
+		return exist;
+	}
 }

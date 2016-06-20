@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 public class Data implements Serializable {
 	private String message; // 채팅 대화내용
+	private String error;
 	private int command; // 요청 명령 상수
 	private GameRoom gameRoom; // 게임방 정보
 	private GameInfo gameInfo; // 게임 정보
@@ -39,6 +40,14 @@ public class Data implements Serializable {
 
 	public Data(int command) {
 		this.command = command;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
 	}
 
 	public ArrayList<String> getAllUserIds() {
