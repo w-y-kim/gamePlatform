@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.canvas.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.Group?>
@@ -34,16 +25,20 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="674.0" prefWidth="810.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.client.ui.FXMLController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="674.0" prefWidth="810.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.client.ui.FXMLController">
    <children>
       <SplitPane fx:id="splitPane" dividerPositions="0.5" layoutX="47.0" prefHeight="674.0" prefWidth="810.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -53,7 +48,7 @@
                      <children>
                         <StackPane layoutX="150.0" layoutY="8.0" prefHeight="28.0" prefWidth="531.0" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="0.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="제시어" textAlignment="CENTER" />
+                              <Text fx:id="TxtAnswer" strokeType="OUTSIDE" strokeWidth="0.0" text="제시어" textAlignment="CENTER" />
                            </children>
                         </StackPane>
                         <Group id="방만들기" AnchorPane.rightAnchor="31.0">
@@ -77,7 +72,7 @@
                         </Group>
                         <HBox alignment="CENTER" layoutX="152.0" layoutY="-4.0" prefHeight="49.0" prefWidth="200.0" spacing="5.0">
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="54.0" style="-fx-background-color: #facd5a; -fx-border-color: #000000; -fx-border-style-border: 5;" text="메인">
+                              <Button fx:id="btnMain" mnemonicParsing="false" prefHeight="36.0" prefWidth="54.0" style="-fx-background-color: #facd5a; -fx-border-color: #000000; -fx-border-style-border: 5;" text="메인">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
@@ -129,8 +124,17 @@
                         </Group>
                      </children>
                   </AnchorPane>
-                  <AnchorPane id="메인창" layoutY="46.0" prefHeight="626.0" prefWidth="530.0" style="-fx-background-color: #323232;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="46.0">
+                  <AnchorPane id="메인창" fx:id="mainPane" layoutY="46.0" prefHeight="626.0" prefWidth="530.0" style="-fx-background-color: #32d1a7;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="46.0">
                      <children>
+                        <BorderPane id="기본창" layoutX="-7.0" layoutY="86.0" prefHeight="540.0" prefWidth="530.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                           <center>
+                              <ImageView fitHeight="422.0" fitWidth="529.0" BorderPane.alignment="CENTER">
+                                 <image>
+                                    <Image url="@../data/img/logo.png" />
+                                 </image>
+                              </ImageView>
+                           </center>
+                        </BorderPane>
                         <AnchorPane id="로딩창" fx:id="loadingPane" disable="true" layoutX="-6.0" prefHeight="626.0" prefWidth="540.0" style="-fx-background-color: #000000;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Pane layoutX="7.0" layoutY="8.0" prefHeight="618.0" prefWidth="530.0" AnchorPane.rightAnchor="5.0">
@@ -157,7 +161,7 @@
                               </Pane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="게임창" fx:id="gamePane" layoutX="6.0" layoutY="6.0" prefHeight="626.0" prefWidth="530.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane id="게임창" fx:id="gamePane" layoutX="6.0" layoutY="6.0" prefHeight="626.0" prefWidth="530.0" style="-fx-background-color: #ffffff;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Region fx:id="canvasRegion" layoutX="24.0" layoutY="48.0" prefHeight="497.0" prefWidth="493.0" style="-fx-background-color: #dddddd;" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="48.0" />
                               <Canvas fx:id="canvas" height="497.0" layoutX="20.0" layoutY="58.0" onMouseDragged="#mouseDrag" onMousePressed="#mousePress" onMouseReleased="#mouseRelease" width="500.0" AnchorPane.topAnchor="48.0">
@@ -244,6 +248,54 @@
                               </Pane>
                            </children>
                         </AnchorPane>
+                        <AnchorPane id="홈화면" fx:id="mainPane" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <GridPane layoutX="59.0" layoutY="179.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <ImageView fx:id="main02" fitHeight="177.0" fitWidth="256.0" onMouseClicked="#catchmindExeAction" GridPane.rowIndex="1">
+                                       <image>
+                                          <Image url="@../data/img/main02.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fx:id="main01" fitHeight="176.0" fitWidth="255.0" onMouseClicked="#exeCuteGameAction">
+                                       <image>
+                                          <Image url="@../data/img/main01.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <TextArea fx:id="txtArea_main01" cacheShape="false" disable="true" editable="false" focusTraversable="false" prefHeight="202.0" prefWidth="292.0" scaleShape="false" text="슈팅게임 프로젝트 기간의 3일을 투자해 개발한 Dev.CHOI의 작품 . 기존 슈팅게임의 관념을 &quot;새로 쓴&quot; 회심의 역작   " wrapText="true" GridPane.columnIndex="1" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </TextArea>
+                                    <TextArea fx:id="txtArea_main02" disable="true" editable="false" prefHeight="200.0" prefWidth="200.0" text="&#10;&#10;&#10;당신의사악한 아재개그를 온 세상에 퍼트려라 ! " wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </TextArea>
+                                    <ImageView fitHeight="180.0" fitWidth="255.0" GridPane.rowIndex="2">
+                                       <image>
+                                          <Image url="@../data/img/main03.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <TextArea fx:id="txtArea_main03" disable="true" editable="false" prefHeight="200.0" prefWidth="200.0" text="&#10;&#10;사악한 제시어로 &#10;사악한 당신의 마음을 &#10;표현한다 ! &#10;본격 사악한 게임  " wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </TextArea>
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </AnchorPane>
+             
                      </children>
                   </AnchorPane>
                   <AnchorPane id="회원가입창" fx:id="AnchorSignUp" layoutY="47.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1011.0" prefWidth="1194.0" styleClass="root" visible="false" AnchorPane.bottomAnchor="-386.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="47.0">
@@ -402,6 +454,15 @@
                               <Insets top="12.0" />
                            </padding>
                         </HBox>
+                        <StackPane fx:id="loginInfoPane" layoutX="-4.0" prefHeight="48.0" prefWidth="280.0" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Text fx:id="welcomeTxt" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Arial Bold" size="27.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </StackPane>
                      </children>
                   </AnchorPane>
                   <AnchorPane id="접속자목록 " layoutX="282.0" layoutY="64.0" prefHeight="465.0" prefWidth="-20.0" AnchorPane.leftAnchor="282.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="64.0">

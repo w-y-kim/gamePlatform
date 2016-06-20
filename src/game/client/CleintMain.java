@@ -38,7 +38,7 @@ public class CleintMain extends Application {
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		// stage.initStyle(StageStyle.UTILITY);//스테이지 모양
-		stage.show();
+	 	stage.show();
 	
 		stage.setOnHiding(new EventHandler<WindowEvent>() {
 
