@@ -10,6 +10,7 @@ public class User implements Serializable {
 	private String em;//email
 	private int pfimg; //프로필 이미지 
 	
+	
 	public final static int IMAGE1 = 10;
 	public final static int IMAGE2 = 20;
 	public final static int IMAGE3 = 30;

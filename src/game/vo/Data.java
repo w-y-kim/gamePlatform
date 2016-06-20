@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
+
 public class Data implements Serializable {
 	private String message; // 채팅 대화내용
 	private String error;
@@ -22,6 +24,7 @@ public class Data implements Serializable {
 
 	public static final int MAKE_ROOM = 20; // 게임방 생성
 	public static final int JOIN = 30; // 게임방 입장
+	
 	public static final int CHAT_MESSAGE = 40; // 게임방 내 채팅
 	public static final int SEND_NOTE = 41;
 	public static final int SEND_BINGO_DATA = 50; // 선택한 빙고 단어 전송

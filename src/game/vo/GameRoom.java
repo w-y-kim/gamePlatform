@@ -1,13 +1,14 @@
 package game.vo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class GameRoom implements Serializable{
 
-	User user; 
-	String roomId; 
-	String roomPw; 
-	String port;
+	private User user; //방장
+	private String roomId; 
+	private String roomPw; 
+	private ArrayList<User> userList;
 	
 	public GameRoom(User loginUser, String roomId, String roomPw) {
 		this.user = loginUser; 
@@ -39,12 +40,14 @@ public class GameRoom implements Serializable{
 		this.roomPw = roomPw;
 	}
 
-	public String getPort() {
-		return port;
+	public ArrayList<User> getUserList() {
+		return userList;
 	}
 
-	public void setPort(String port) {
-		this.port = port;
+	public void setUserList(ArrayList<User> userList) {
+		this.userList = userList;
 	}
+
+	
 
 }

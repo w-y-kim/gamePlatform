@@ -9,9 +9,14 @@ public class GameInfo implements Serializable {
 
 	private double x_point;
 	private double y_point;
+	
+	
+	
 	private ArrayList<double[]> geographicInfo = new ArrayList<double[]>();
 	
-	
+	public GameInfo (){
+		
+	}
 	public ArrayList<double[]> getGeographicInfo() {
 		return geographicInfo;
 	}
