@@ -36,6 +36,8 @@ public class ServerThread implements Runnable {
 	private boolean exit; // exit이 true 면 나가기
 	private Database db = new Database();
 	private ArrayList<Friend> friendList;
+	private GameInfo ginfo;
+	private User painter;
 
 	public ServerThread(Socket socket) {
 		super();
@@ -147,13 +149,27 @@ public class ServerThread implements Runnable {
 				case Data.GAME_READY:
 					break;
 				case Data.GAME_START:
-					GameInfo ginfo = data.getGameInfo();
+					break;
+				case Data.DRAW_READY:
+					ginfo = data.getGameInfo();
 					System.out.println(ginfo+" ginfo");
-					User painter = data.getUser();
+					painter = data.getUser();
+//					connectedUserList.add(painter);//로그인시 들어가니까 안넣어도 됨 
+					data.setUserList(connectedUserList);
+					broadCasting(data); 
+					
+					break;
+				case Data.DRAW_START:
+					ginfo = data.getGameInfo();
+					System.out.println(ginfo+" ginfo");
+					painter = data.getUser();
 //					connectedUserList.add(painter);//로그인시 들어가니까 안넣어도 됨 
 					data.setUserList(connectedUserList);
 					broadCasting(data); 
 					break;
+				case Data.CLEAR_CANVAS:
+					broadCasting(data); 
+					break; 
 				case Data.SEND_TURN:
 					break;
 				case Data.SEND_WINNING_RESULT:
@@ -176,6 +192,7 @@ public class ServerThread implements Runnable {
 				}// switch
 
 			} catch (ClassNotFoundException | IOException e) {
+				e.printStackTrace();
 				System.out.println(socket.getPort() + "번 서버스레드 종료");
 				exit = true;
 			} // catch

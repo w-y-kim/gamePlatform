@@ -1,19 +1,38 @@
 package game.vo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+
+import javafx.scene.input.MouseEvent;
 
 public class GameInfo implements Serializable {
 
-	double x_point;
-	double y_point; 
+	private double x_point;
+	private double y_point;
+	private ArrayList<double[]> geographicInfo = new ArrayList<double[]>();
 	
-	public GameInfo(double x, double y) {
-		x_point = x;
-		y_point = y; 
+	
+	public ArrayList<double[]> getGeographicInfo() {
+		return geographicInfo;
 	}
+
+
+
+	public void setGeographicInfo(ArrayList<double[]> geographicInfo) {
+		this.geographicInfo = geographicInfo;
+	}
+
+
 
 	
 	
+	public GameInfo(double x, double y) {
+		this.x_point =x;
+		this.y_point=y;
+	}
+
+
+
 	public double getX_point() {
 		return x_point;
 	}
