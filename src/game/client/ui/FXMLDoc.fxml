@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.Group?>
@@ -34,7 +43,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="674.0" prefWidth="810.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.client.ui.FXMLController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="674.0" prefWidth="810.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.client.ui.FXMLController">
    <children>
       <SplitPane fx:id="splitPane" dividerPositions="0.5" layoutX="47.0" prefHeight="674.0" prefWidth="810.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -151,7 +160,7 @@
                         <AnchorPane id="게임창" fx:id="gamePane" layoutX="6.0" layoutY="6.0" prefHeight="626.0" prefWidth="530.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Region fx:id="canvasRegion" layoutX="24.0" layoutY="48.0" prefHeight="497.0" prefWidth="493.0" style="-fx-background-color: #dddddd;" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="48.0" />
-                              <Canvas fx:id="canvas" height="497.0" layoutX="20.0" layoutY="58.0" onMouseClicked="#mousePress" onMouseDragged="#mouseDrag" onMousePressed="#mousePress" onMouseReleased="#mouseRelease" width="500.0" AnchorPane.topAnchor="48.0">
+                              <Canvas fx:id="canvas" height="497.0" layoutX="20.0" layoutY="58.0" onMouseDragged="#mouseDrag" onMousePressed="#mousePress" onMouseReleased="#mouseRelease" width="500.0" AnchorPane.topAnchor="48.0">
                                  <cursor>
                                     <Cursor fx:constant="CROSSHAIR" />
                                  </cursor></Canvas>

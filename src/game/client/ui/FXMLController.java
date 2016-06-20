@@ -82,14 +82,14 @@ public class FXMLController implements Runnable, Initializable {
 	@FXML
 	private Button btnLogin;
 	@FXML
-	private HBox loginBox; 
+	private HBox loginBox;
 	@FXML
-	private ListView<Object> friendList; 
-	
-	// 로그아웃 
+	private ListView<Object> friendList;
+
+	// 로그아웃
 	@FXML
 	private Button btnLogOut;
-	
+
 	// 회원가입
 	@FXML
 	private CheckBox checkAgree;
@@ -122,24 +122,22 @@ public class FXMLController implements Runnable, Initializable {
 	private Button btnFold;
 	@FXML
 	private Button btnSpread;
-	
-	//방만들기
-	@FXML 
+
+	// 방만들기
+	@FXML
 	private Button btnCreateRoom;
-	@FXML 
+	@FXML
 	private Button btnMkRoom;
-	@FXML 
+	@FXML
 	private Button btnMkCancel;
-	@FXML 
+	@FXML
 	private Button btnCreateCancel;
-	@FXML 
+	@FXML
 	private TextField field_RoomTitle;
-	@FXML 
+	@FXML
 	private TextField field_RoomPW;
 	@FXML
-	private AnchorPane RoomPane; 
-
-	
+	private AnchorPane RoomPane;
 
 	// 게임방
 	@FXML
@@ -147,21 +145,19 @@ public class FXMLController implements Runnable, Initializable {
 	@FXML
 	private Button clearCanvas;
 	@FXML
-	private Region canvasReign; 
+	private Region canvasReign;
 	@FXML
-	private AnchorPane gamePane; 
+	private AnchorPane gamePane;
 	@FXML
-	private Slider slider; 
+	private Slider slider;
 	@FXML
 	private ColorPicker colorPicker;
 	@FXML
-	private Button btnOut; 
-	
-	
+	private Button btnOut;
+
 	private GraphicsContext gc;
 	private int i;
 
-	
 	// 스레드 실행 위함
 	private Socket socket;
 	private ObjectInputStream ois;
@@ -176,8 +172,10 @@ public class FXMLController implements Runnable, Initializable {
 	private String roomTitle;
 	private boolean exit;
 	private FXMLController fxControl;// FX의 컴포넌트 갱신 위해 스레드 실행 시 받아옴
-	private User loginUser;//나나나 미미미
+	private User loginUser;// 나나나 미미미
 
+	private GameInfo ginfo;
+	
 	public FXMLController() {//
 
 		try {
@@ -266,7 +264,9 @@ public class FXMLController implements Runnable, Initializable {
 		}
 	}
 
-	/**자잘한 버튼 이벤트 
+	/**
+	 * 자잘한 버튼 이벤트
+	 * 
 	 * @param e
 	 * @throws IOException
 	 */
@@ -284,13 +284,16 @@ public class FXMLController implements Runnable, Initializable {
 			splitPane.setDividerPosition(0, 1);
 			btnFold.setVisible(false);
 			btnSpread.setVisible(true);
+			canvas.autosize();
 		} else if (e.getSource() == btnSpread) {
 			splitPane.setDividerPosition(0, 0.5);
 			btnFold.setVisible(true);
 			btnSpread.setVisible(false);
-//			canvas.setWidth(1000);
-//			canvas.setHeight(canvasReign.getHeight());
+			// canvas.setWidth(1000);
+			// canvas.setHeight(canvasReign.getHeight());
+			canvas.autosize();
 			RestartDraw(gc);
+			
 		}
 	}
 
@@ -307,7 +310,7 @@ public class FXMLController implements Runnable, Initializable {
 			data.setUser(loginUser);
 			this.sendData(data);
 			System.out.println("1. 로그인명령 전송완료");
-			loadingPane.setVisible(true);//전송 중에 로그인창 
+			loadingPane.setVisible(true);// 전송 중에 로그인창
 		}
 	}
 
@@ -332,99 +335,113 @@ public class FXMLController implements Runnable, Initializable {
 		}
 	}
 
-	/**그림 지우기 버튼 메소드 
+	/**
+	 * 그림 지우기 버튼 메소드
+	 * 
 	 * @param e
 	 */
 	@FXML
 	private void clearAction(ActionEvent e) {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		gc.setStroke(Color.BLACK);
-		gc.setLineWidth(1);//선 굵기 
+		gc.setLineWidth(1);// 선 굵기
 		gc.strokeRect(0, // x of the upper left corner
 				0, // y of the upper left corner
 				1000, // width of the rectangle
 				gamePane.getHeight()); // height of the rectangle
 
+		data.setCommand(Data.CLEAR_CANVAS);//TODO 유저정보를 안넣어주었는걸? 왜냐면 귀찮아서 .. 안넣어도 잘 되었으면...
+		sendData(data); 
+	}
+	private void clearActionOrder(){
+		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		gc.setStroke(Color.BLACK);
+		gc.setLineWidth(1);// 선 굵기
+		gc.strokeRect(0, // x of the upper left corner
+				0, // y of the upper left corner
+				1000, // width of the rectangle
+				gamePane.getHeight()); // height of the rectangle
+		
 	}
 	
-	/**방만드는데 필요한 버튼메소드 
+	
+	/**
+	 * 방만드는데 필요한 버튼메소드
+	 * 
 	 * @param e
 	 */
 	@FXML
-	public void mkRoomAction(ActionEvent e){
+	public void mkRoomAction(ActionEvent e) {
 		Object s = e.getSource();
-		if (s == btnCreateRoom) {//방만들기창 열기 
+		if (s == btnCreateRoom) {// 방만들기창 열기
 			RoomPane.setVisible(true);
-			
-		}else if(s == btnCreateCancel){//방만들기 취소
+
+		} else if (s == btnCreateCancel) {// 방만들기 취소
 			RoomPane.setVisible(false);
 			field_RoomTitle.setText("");
 			field_RoomPW.setText("");
-		}
-		else if (s == btnMkRoom) {//방생성 
-			
+		} else if (s == btnMkRoom) {// 방생성
+
 			String roomTitle = field_RoomTitle.getText();
-			String roomPw = field_RoomPW.getText(); 
-			if(roomTitle.equals("") != true){
-			GameRoom room = new GameRoom(loginUser,roomTitle, roomPw);
-			data.setCommand(Data.MAKE_ROOM);
-			data.setGameRoom(room);
-			RoomPane.setVisible(false);
-			gamePane.setVisible(true);
-			
-			btnCreateRoom.setDisable(true);
-			btnCreateCancel.setDisable(true);
-			
-			
-			}else JOptionPane.showMessageDialog(null, "정보를 입력해주세요");
-		}
-		else if (s == btnMkCancel) {//방만들기 취소 
+			String roomPw = field_RoomPW.getText();
+			if (roomTitle.equals("") != true) {
+				GameRoom room = new GameRoom(loginUser, roomTitle, roomPw);
+				data.setCommand(Data.MAKE_ROOM);
+				data.setGameRoom(room);
+				RoomPane.setVisible(false);
+				gamePane.setVisible(true);
+
+				btnCreateRoom.setDisable(true);
+				btnCreateCancel.setDisable(true);
+
+			} else
+				JOptionPane.showMessageDialog(null, "정보를 입력해주세요");
+		} else if (s == btnMkCancel) {// 방만들기 취소
 			RoomPane.setVisible(false);
 			field_RoomTitle.setText("");
 			field_RoomPW.setText("");
 		}
-		
-		else if (s == btnOut){//방나가기 
+
+		else if (s == btnOut) {// 방나가기
 			btnCreateRoom.setDisable(false);
 			btnCreateCancel.setDisable(false);
 			gamePane.setVisible(false);
 			this.makeNewCanvas();
 			field_RoomTitle.setText("");
 			field_RoomPW.setText("");
-			
+
 		}
 	}
 
 	private void makeNewCanvas() {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		gc.setStroke(Color.BLACK);
-		gc.setLineWidth(1);//선 굵기 
+		gc.setLineWidth(1);// 선 굵기
 		gc.strokeRect(0, // x of the upper left corner
 				0, // y of the upper left corner
 				1000, // width of the rectangle
 				gamePane.getHeight()); // height of the rectangle
 
-		
 	}
 
-	/**그리는 펜 굵기 바꿔줌
+	/**
+	 * 그리는 펜 굵기 바꿔줌
+	 * 
 	 * @param e
 	 */
-	@FXML 
-	private void setDrawLine(DragEvent e){
-		double val = slider.getValue();//슬라이더 선택한 숫자
+	@FXML
+	private void setDrawLine(DragEvent e) {
+		double val = slider.getValue();// 슬라이더 선택한 숫자
 		System.out.println(val);
-		
+
 	}
-	
-	
+
 	/**
 	 * 소켓 연결 후 실행되는 리스너스레드, 변화를 반영
 	 */
 	@Override
 	public void run() {
 
-	
 		System.out.println("리스너 스레드 접속");
 		// 접속하자마자 접속자 리스트 불러올 command 보냄 (Command만 들어있음)
 		// data.setCommand(Data.CONNECTION);
@@ -439,8 +456,8 @@ public class FXMLController implements Runnable, Initializable {
 					connectedUserList = data.getUserList();
 					// TODO:userList 갱신 메소드 만들기
 
-//					loadingPane.setVisible(false);
-					Platform.runLater(new Runnable(){
+					// loadingPane.setVisible(false);
+					Platform.runLater(new Runnable() {
 
 						@Override
 						public void run() {
@@ -449,12 +466,13 @@ public class FXMLController implements Runnable, Initializable {
 								renewalConUserList();
 							} else {
 								// Thread.sleep(2000);
-								// JOptionPane.showMessageDialog(null, "아직 너 혼자야! 힘내 ...
+								// JOptionPane.showMessageDialog(null, "아직 너
+								// 혼자야! 힘내 ...
 								// 살다보면 그럴수도있지뭐");
 							}
 							loadingPane.setVisible(false);
 						}
-						
+
 					});
 					System.out.println("CONNECTION명령 리슨 완료");
 					break;
@@ -483,15 +501,15 @@ public class FXMLController implements Runnable, Initializable {
 					 *
 					 */
 					System.out.println("2. 로그인명령 처리결과 들어옴");
-					
-					User user = data.getUser();//로그인한사람
-					System.out.println(user+"로그인명령에서 받아온 유저데이터");
-					connectedUserList = data.getUserList(); 
-					System.out.println(connectedUserList+"로그인명령에서 받아온 유저리스트");
+
+					User user = data.getUser();// 로그인한사람
+					System.out.println(user + "로그인명령에서 받아온 유저데이터");
+					connectedUserList = data.getUserList();
+					System.out.println(connectedUserList + "로그인명령에서 받아온 유저리스트");
 					ArrayList<Friend> friendList = data.getFriendList();
-//					renewalConUserList();
+					// renewalConUserList();
 					System.out.println("3. 로그인명령 처리 결과 UI반영");
-					//GUI 로그인 안보이도록 함 
+					// GUI 로그인 안보이도록 함
 					loginBox.setVisible(false);
 					try {
 						Thread.sleep(3000);
@@ -500,7 +518,7 @@ public class FXMLController implements Runnable, Initializable {
 						e.printStackTrace();
 					}
 					loadingPane.setVisible(false);
-					
+
 					break;
 				case Data.JOIN:
 					break;
@@ -509,20 +527,54 @@ public class FXMLController implements Runnable, Initializable {
 				case Data.GAME_READY:
 					break;
 				case Data.GAME_START:
+					break;
+				case Data.DRAW_READY:
 					if (loginUser.getId().equals(data.getUser().getId()) == false) {
-						System.out.println(i+"수신");
+						System.out.println("새 패스 시작");
+						x = data.getGameInfo().getX_point(); 
+						y = data.getGameInfo().getY_point();
+						gc.moveTo(x, y);
+//						gc.stroke();
+						System.out.println("[시작 x,y :"+x + ","+y+"]");
+					}
+					break; 
+				case Data.DRAW_START:
+					if (loginUser.getId().equals(data.getUser().getId()) == false) {
+//						System.out.println(i + "수신");
 						GameInfo received_ginfo = data.getGameInfo();
-						double x = received_ginfo.getX_point();
-						double y = received_ginfo.getY_point();
-						gc.beginPath();
-						gc.lineTo(x, y);
-						gc.stroke();
+						System.out.println(x +","+ y+"새패스정보 드래그시 수신");//찍는 위치 
+						xyArray = received_ginfo.getGeographicInfo();
+//						gc.moveTo(x, y);
+
 						
+						//배열로 받기 
+						for (double[] e : xyArray) {
+							System.out.println(x +","+ y+"새패스정보 드래그시 수신(for)");//찍는 위치 
+							double x = e[0];
+							double y = e[1];
+							gc.lineTo(x, y);
+							gc.stroke();
+							System.out.println(x +","+ y+"새패스정보 드래그시 수신(for122222)");
+//							gc.closePath();//쓰면 채워지는 문제, 되지도 않고 
+//							gc.beginPath();//흐려지는 문제
+						
+						}
+						xyArray.removeAll(xyArray);
+						xyArray.clear();
+						System.out.println("패스완성");
+//						xyArray.removeAll(xyArray);//지워도 소용없네, 일단 배열의 초기화는 선언시 하는게 나을지도
+						
+						// 드래그 끝나서 하나의 패스 완성
 						i++;
-						
-					}//게임데이터 송신자 이외 사람만 값 뽑아냄 
+
+					} // 게임데이터 송신자 이외 사람만 값 뽑아냄
 
 					break;
+				case Data.CLEAR_CANVAS:
+					if (loginUser.getId().equals(data.getUser().getId()) == false) {
+						this.clearActionOrder();
+					}
+					break; 
 				case Data.SEND_TURN:
 					break;
 				case Data.SEND_WINNING_RESULT:
@@ -530,7 +582,7 @@ public class FXMLController implements Runnable, Initializable {
 				case Data.CHAT_MESSAGE:
 					break;
 				case Data.EXIT:
-					
+
 					loginBox.setVisible(true);
 					break;
 				default:
@@ -563,23 +615,23 @@ public class FXMLController implements Runnable, Initializable {
 	}
 
 	@FXML
-	public void logOutAction(){
+	public void logOutAction() {
 		data.setCommand(Data.EXIT);
 		data.setUser(loginUser);
-		sendData(data); 
+		sendData(data);
 	}
-	
+
 	@FXML
 	private void renewalConUserList() {
 		// TODO: connectedUserList 전체 접속자 리스트에 띄우기
-		allUserList.setItems(null);//FIXEM 지워주는 용도, 잘 작동할지는 모름
-		ArrayList<String> connUserName = new ArrayList<String>(); 
-		
+		allUserList.setItems(null);// FIXEM 지워주는 용도, 잘 작동할지는 모름
+		ArrayList<String> connUserName = new ArrayList<String>();
+
 		for (User user : connectedUserList) {
 			String name = user.getId();
 			connUserName.add(name);
 		}
-		
+
 		ObservableList<Object> ob = FXCollections.observableArrayList(connUserName);
 		allUserList.setItems(ob);
 	}
@@ -596,34 +648,61 @@ public class FXMLController implements Runnable, Initializable {
 		gc.beginPath();
 		gc.moveTo(event.getX(), event.getY());
 		gc.stroke();
-		
-	}
-
-	// 마우스 드래그할 때는 그래픽이 이어져서 생성
-	int cnt = 1 ;
-	@FXML
-	public void mouseDrag(MouseEvent event) {
-		
-		gc.lineTo(event.getX(), event.getY());
-		gc.stroke();
-//		System.out.println("드래그 시작");
-//		System.out.print(cnt +" 번째 [마우스가 찍는 위치 x : "+event.getX());
-//		System.out.print("  y: "+ event.getY()+"]");
-//		System.out.println("");
-//		System.out.println("드래그 끝");
-//		cnt++; 
-		GameInfo ginfo= new GameInfo(event.getX(), event.getY());
+		System.out.println(event.getX() +","+ event.getY()+"프레스송신");//찍는 위치 
+		ginfo = new GameInfo(event.getX(),event.getY());
 		data.setUser(loginUser);
-		data.setCommand(Data.GAME_START);
+		data.setCommand(Data.DRAW_READY);
 		data.setGameInfo(ginfo);
 		this.sendData(data);
-		
+		geographicInfo = new ArrayList<double[]>();//패스 발생 시점마다 배열 초기화되도록 flushing 
+
+	}
+
+	int cnt = 1;
+	private double x;
+	private double y;
+
+	ArrayList<double[]> geographicInfo;
+	private ArrayList<double[]> xyArray;
+
+	@FXML
+	public void mouseDrag(MouseEvent event) {
+
+		gc.lineTo(event.getX(), event.getY());
+		gc.stroke();
+		// ginfo = new GameInfo(event);
+			double x = event.getX();
+			double y = event.getY();
+			double[] xy = {x,y}; 
+			geographicInfo.add(xy);
+			
 	}
 
 	// 마우스 놓을 때의 액션, 딱히 내용 없을 듯
 	@FXML
 	public void mouseRelease(MouseEvent event) {
+//		for (double[][] e : geographicInfo) {
+//			int i = e.
+//			double x = xy[0][0];
+//			double y = xy[0][1]; 
+//			
+//		}
+//		for (double[] e : geographicInfo) {
+//			double x = e[0];
+//			double y = e[1]; 
+//			ginfo.setX_point(x);
+//			ginfo.setY_point(y);
+//			
+//		}
+	System.out.println(geographicInfo+"드레그시 담긴 정보");//mouserPressed에서 한개의 패스의 경로가 매번 새로 담긴다.
+		ginfo.setGeographicInfo(geographicInfo);
 
+		// data.setUser(loginUser);
+		data.setCommand(Data.DRAW_START);
+		data.setGameInfo(ginfo);
+		this.sendData(data);
+		ginfo.setGeographicInfo(null);//VO에 안쌓이도록 flushing  
+		
 	}
 
 	// 초기 설정할 때 필요 한 듯 ...? 그런데 FXML에서 이미 초기설정 해주어서 바꿀 필요 있는 부분만 하면 될 듯
@@ -631,20 +710,25 @@ public class FXMLController implements Runnable, Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		gc = canvas.getGraphicsContext2D();
 		startDraw(gc);
-		
-		//슬라이더 선택값 변화 리슨 
-		slider.valueProperty().addListener(new ChangeListener<Number>(){
+
+		// 슬라이더 선택값 변화 리슨
+		slider.valueProperty().addListener(new ChangeListener<Number>() {
 
 			@Override
 			public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
 				double val = slider.getValue();
 				gc.setLineWidth(val);
 			}
-			
+
 		});
 
 	}
 
+	/**
+	 * 네모칸 만들기
+	 * 
+	 * @param gc
+	 */
 	private void startDraw(GraphicsContext gc) {
 		double canvasWidth = gc.getCanvas().getWidth();
 		double canvasHeight = gc.getCanvas().getHeight();
@@ -656,12 +740,16 @@ public class FXMLController implements Runnable, Initializable {
 				0, // y of the upper left corner
 				canvasWidth, // width of the rectangle
 				canvasHeight); // height of the rectangle
-		
-		
+
 	}
-	
+
+	/**
+	 * 열고닫기 버튼 눌렀을 때 캔버스 사이즈조절하는 용도
+	 * 
+	 * @param gc
+	 */
 	private void RestartDraw(GraphicsContext gc) {
-		double canvasWidth = 1000;
+		double canvasWidth = canvasReign.getLayoutX();
 		double canvasHeight = canvasReign.getMaxHeight();
 
 		gc.setStroke(Color.BLACK);
@@ -674,5 +762,5 @@ public class FXMLController implements Runnable, Initializable {
 				canvasHeight); // height of the rectangle
 
 	}
-	
+
 }
