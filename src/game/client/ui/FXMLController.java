@@ -100,11 +100,11 @@ public class FXMLController implements Runnable, Initializable {
 	private StackPane loginInfoPane;
 	@FXML
 	private Text welcomeTxt;
-	@FXML 
-	private AnchorPane  CommandPane; 
-	@FXML 
-	private Group  chatGroup; 
-	
+	@FXML
+	private AnchorPane CommandPane;
+	@FXML
+	private Group chatGroup;
+
 	// 로그아웃
 	@FXML
 	private Button btnLogOut;
@@ -148,6 +148,11 @@ public class FXMLController implements Runnable, Initializable {
 	@FXML
 	private Button btn_send;
 
+	// 메인화면(홈)
+	@FXML
+	private Button btnMain;
+	@FXML
+	private Group groupBtnRoom;
 	// 게임선택
 	@FXML
 	private AnchorPane mainPane;
@@ -180,12 +185,12 @@ public class FXMLController implements Runnable, Initializable {
 	@FXML
 	private AnchorPane RoomPane;
 
-	//게임 선택 후 게임방목록 테이블 
-	@FXML 
-	private TableView tableView;  
+	// 게임 선택 후 게임방목록 테이블
+	@FXML
+	private TableView tableView;
 	private TableColumn column01;
 	private TableColumn column02;
-	
+
 	// 게임방
 	@FXML
 	private Canvas canvas;
@@ -343,7 +348,10 @@ public class FXMLController implements Runnable, Initializable {
 			canvas.autosize();
 			startDraw(gc);
 
+		} else if (e.getSource() == btnMain) {// 메인화면
+			mainPane.setVisible(true);
 		}
+
 	}
 
 	/**
@@ -404,7 +412,7 @@ public class FXMLController implements Runnable, Initializable {
 		txtArea_main03.setDisable(true);
 
 		try {
-			Runtime.getRuntime().exec("UnityShooting/");//FIXME 실행파일 경로 수정 
+			Runtime.getRuntime().exec("UnityShooting/");// FIXME 실행파일 경로 수정
 		} catch (IOException e2) {
 			e2.printStackTrace();
 			JOptionPane.showMessageDialog(null, "파일을 찾을 수 없습니다.");
@@ -415,6 +423,7 @@ public class FXMLController implements Runnable, Initializable {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		loadingPane.setVisible(false);
 
 	}
 
@@ -427,7 +436,11 @@ public class FXMLController implements Runnable, Initializable {
 	public void catchmindExeAction(MouseEvent e) {
 		// TODO 테이블에 방 들어감
 
-		JOptionPane.showMessageDialog(null, "아재마인드 게임을 선택하셨습니다. "+"\n"+"우측테이블에서 방을 클릭해주세요");
+		JOptionPane.showMessageDialog(null, "아재마인드 게임을 선택하셨습니다. " + "\n" + "방만들기를 하시거나 우측테이블에서 방을 클릭해주세요");
+
+		groupBtnRoom.setDisable(false);
+		data.getUser().setSelectedGame(Data.GAME_SECOND);//내 정보에도 저장 
+		
 		data.setCommand(Data.SELECT_GAME);
 		data.setGameType(Data.GAME_SECOND);
 		this.sendData(data);
@@ -435,8 +448,11 @@ public class FXMLController implements Runnable, Initializable {
 		txtArea_main02.setDisable(false);
 		txtArea_main03.setDisable(true);
 	}
-	public void saakmindExeAction(MouseEvent e){
-		JOptionPane.showMessageDialog(null, "사악마인드 게임을 선택하셨습니다. "+"\n"+"우측테이블에서 방을 클릭해주세요");
+
+	public void saakmindExeAction(MouseEvent e) {
+		JOptionPane.showMessageDialog(null, "사악마인드 게임을 선택하셨습니다. " + "\n" + "방만들기를 하시거나 우측테이블에서 방을 클릭해주세요");
+		groupBtnRoom.setDisable(false);
+		groupBtnRoom.setDisable(false);
 		data.setCommand(Data.SELECT_GAME);
 		data.setGameType(Data.GAME_THIRD);
 		this.sendData(data);
@@ -500,9 +516,9 @@ public class FXMLController implements Runnable, Initializable {
 				GameRoom room = new GameRoom(loginUser, roomTitle, roomPw);
 				data.setCommand(Data.MAKE_ROOM);
 				data.setGameRoom(room);
-				
+
 				this.sendData(data);
-				
+
 				RoomPane.setVisible(false);
 				gamePane.setVisible(true);
 
@@ -517,13 +533,21 @@ public class FXMLController implements Runnable, Initializable {
 			field_RoomPW.setText("");
 		}
 
-		else if (s == btnOut) {// 방나가기
+		else if (s == btnOut) {// 방나가기 >> 홈이 아닌 메인으로 가게함 , 즉 GUI 초기화 역할
+			// TODO GUI제어만 할게 아니라 게임 중이었으면 내보내서 브로드캐스팅 안받게 해주어야함
+			groupBtnRoom.setDisable(true);// 방만들기 버튼그룹 닫기
+
 			btnCreateRoom.setDisable(false);
 			btnCreateCancel.setDisable(false);
 			gamePane.setVisible(false);
 			this.makeNewCanvas();
 			field_RoomTitle.setText("");
 			field_RoomPW.setText("");
+
+			txtArea_main01.setDisable(true);
+			txtArea_main02.setDisable(true);
+			txtArea_main03.setDisable(true);
+			data.setGameType(0);// 디폴트로 바꿔줌
 
 		}
 	}
@@ -630,28 +654,40 @@ public class FXMLController implements Runnable, Initializable {
 
 					this.showloadingPane(3000);// 스트림 보내고 리스너 기다리는 동안
 					JOptionPane.showMessageDialog(null, loginUser.getId() + "님 접속을 환영합니다.");
-					
-					//GUI활성화
-					CommandPane.setVisible(true);
-					txtArea_chatLog.setVisible(true);
-					chatGroup.setVisible(true);
-					roomListPane.setVisible(true);
-					mainPane.setVisible(true);
+
+					// GUI활성화
+					CommandPane.setDisable(false);
+					txtArea_chatLog.setDisable(false);
+					chatGroup.setDisable(false);
+					roomListPane.setDisable(false);
+					mainPane.setDisable(false);
+					// mainPane.setVisible(true);//바로 홈 보이기, 메인버튼
 					break;
 				case Data.SELECT_GAME:
-					
+					// TODO 선택한 게임에 따른 방만들기, 테이블 보여줄 것
+					// 유니캐스트 받음 
+					HashMap<String, GameRoom> roomList = data.getRoomList();
+					for (Entry<String, GameRoom> entry : roomList.entrySet()) {
+						String roomID = entry.getValue().getRoomId();
+						// String roomID = entry.getValue().
+					}
+
 					break;
 				case Data.JOIN:
 					break;
 				case Data.MAKE_ROOM:
-					//TODO 테이블 갱신 
-					HashMap<String, GameRoom> roomList = data.getRoomList();
-					for (Entry<String, GameRoom> entry : roomList.entrySet()) {
-						String roomID = entry.getValue().getRoomId();
-//						String roomID = entry.getValue().
+					System.out.println(data.getUser().getId()+" 로부터"+loginUser+" 에게 Make_Room리스너 들어옴 ");
+					//만든 사람만 보여줄 퍼포먼스 
+					if (loginUser.getId().equals(data.getUser().getId())) {
+						groupBtnRoom.setDisable(true);// 방만들었으니 만들기 버튼그룹 불활성화
 					}
 					
-					
+					// 방만들어지면 해당 게임 선택한 사람들한테만 리스트 갱신해 줌 
+					if (loginUser.getSelectedGame() == data.getGameType()) {
+						ObservableList<GameRoom> tData = (ObservableList<GameRoom>) data.getGameRoom();
+						tableView.setItems(tData);
+					}
+
 					break;
 				case Data.GAME_READY:
 					break;
@@ -707,15 +743,15 @@ public class FXMLController implements Runnable, Initializable {
 					}
 					break;
 				case Data.SEND_TURN:
-					
+
 					break;
 				case Data.SEND_WINNING_RESULT:
-					
+
 					break;
 				case Data.CHAT_MESSAGE:
-					//TODO 게임룸 만들고 분기처리 
+					// TODO 게임룸 만들고 분기처리
 					String received_msg = data.getMessage();
-					txtArea_chatLog.appendText(received_msg+"\n");
+					txtArea_chatLog.appendText(received_msg + "\n");
 
 					break;
 				case Data.EXIT:
@@ -924,8 +960,8 @@ public class FXMLController implements Runnable, Initializable {
 			// data 보내기
 			userMsg = field_chat.getText();
 
-			if (userMsg.equals("")==false) {
-				data.setMessage("[ "+loginUser.getId()+" ] "+userMsg);
+			if (userMsg.equals("") == false) {
+				data.setMessage("[ " + loginUser.getId() + " ] " + userMsg);
 				data.setCommand(Data.CHAT_MESSAGE);
 				this.sendData(data);
 				field_chat.setText("");
@@ -933,20 +969,21 @@ public class FXMLController implements Runnable, Initializable {
 		}
 
 	}
-	/**전송버튼 눌렀을 때 
+
+	/**
+	 * 전송버튼 눌렀을 때
 	 */
-	@FXML 
-	public void sendAction(ActionEvent e){
+	@FXML
+	public void sendAction(ActionEvent e) {
 		userMsg = field_chat.getText();
 
-		if (userMsg.equals("")==false) {
-			data.setMessage("[ "+loginUser.getId()+" ] "+userMsg);
+		if (userMsg.equals("") == false) {
+			data.setMessage("[ " + loginUser.getId() + " ] " + userMsg);
 			data.setCommand(Data.CHAT_MESSAGE);
 			this.sendData(data);
 			field_chat.setText("");
 		}
 
-		
 	}
 
 }

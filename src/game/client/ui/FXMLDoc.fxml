@@ -60,7 +60,7 @@
                               <Text fx:id="TxtAnswer" strokeType="OUTSIDE" strokeWidth="0.0" text="제시어" textAlignment="CENTER" />
                            </children>
                         </StackPane>
-                        <Group id="방만들기" AnchorPane.rightAnchor="31.0">
+                        <Group id="방만들기" fx:id="groupBtnRoom" disable="true" AnchorPane.rightAnchor="31.0">
                            <children>
                               <HBox layoutX="307.0" layoutY="3.0" prefHeight="36.0" spacing="5.0">
                                  <children>
@@ -81,7 +81,7 @@
                         </Group>
                         <HBox alignment="CENTER" layoutX="152.0" layoutY="-4.0" prefHeight="49.0" prefWidth="200.0" spacing="5.0">
                            <children>
-                              <Button fx:id="btnMain" mnemonicParsing="false" prefHeight="36.0" prefWidth="54.0" style="-fx-background-color: #facd5a; -fx-border-color: #000000; -fx-border-style-border: 5;" text="메인">
+                              <Button fx:id="btnMain" mnemonicParsing="false" onAction="#ButtonAction" prefHeight="36.0" prefWidth="54.0" style="-fx-background-color: #facd5a; -fx-border-color: #000000; -fx-border-style-border: 5;" text="JMO홈">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
