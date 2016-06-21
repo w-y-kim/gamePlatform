@@ -135,11 +135,21 @@ public class ServerThread implements Runnable {
 
 					break;
 				case Data.CHAT_MESSAGE:
+<<<<<<< HEAD
 					this.broadCasting(data);
+=======
+					broadCasting(data);
+>>>>>>> c6088b2dc1f552da03a88b18a81c54440590b018
 					break;
+				
 				case Data.JOIN:
 					break;
 				case Data.MAKE_ROOM:
+					GameRoom gr = data.getGameRoom();
+					gameRoomList.put(gr.getRoomId(), gr);
+					data.setRoomList(gameRoomList);
+					broadCasting(data);
+					
 					break;
 				case Data.GAME_READY:
 					break;
