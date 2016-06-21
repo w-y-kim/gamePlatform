@@ -135,6 +135,7 @@ public class ServerThread implements Runnable {
 
 					break;
 				case Data.CHAT_MESSAGE:
+					this.broadCasting(data);
 					break;
 				case Data.JOIN:
 					break;

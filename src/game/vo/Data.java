@@ -21,7 +21,12 @@ public class Data implements Serializable {
 	private Friend friend;
 	private MainInfo mainInfo;
 	private ArrayList<String> allUserIds;
+	private int gameType;//게임선택 
 
+	public static final int GAME_FIRST = 300; // 게임방 생성
+	public static final int GAME_SECOND = 350; // 게임방 생성
+	public static final int GAME_THIRD = 400; // 게임방 생성
+	
 	public static final int MAKE_ROOM = 20; // 게임방 생성
 	public static final int JOIN = 30; // 게임방 입장
 	
@@ -40,6 +45,7 @@ public class Data implements Serializable {
 	public static final int DRAW_READY = 100;
 	public static final int DRAW_START = 150;
 	public static final int CLEAR_CANVAS = 200;
+	public static final int SELECT_GAME =500;
 
 	public Data(int command) {
 		this.command = command;
@@ -155,6 +161,16 @@ public class Data implements Serializable {
 
 	public void setMainInfo(MainInfo mainInfo) {
 		this.mainInfo = mainInfo;
+	}
+
+	
+	
+	public int getGameType() {
+		return gameType;
+	}
+
+	public void setGameType(int gameType) {
+		this.gameType = gameType;
 	}
 
 	@Override

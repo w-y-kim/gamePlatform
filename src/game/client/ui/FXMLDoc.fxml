@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.Group?>
@@ -38,15 +47,15 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="674.0" prefWidth="810.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.client.ui.FXMLController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="674.0" prefWidth="810.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.client.ui.FXMLController">
    <children>
       <SplitPane fx:id="splitPane" dividerPositions="0.5" layoutX="47.0" prefHeight="674.0" prefWidth="810.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane id="좌측패널" minHeight="0.0" minWidth="530.0" prefHeight="617.0" prefWidth="530.0">
                <children>
-                  <AnchorPane id="상단명령창" layoutX="3.0" prefHeight="46.0" prefWidth="527.0" AnchorPane.leftAnchor="-151.0" AnchorPane.rightAnchor="0.0">
+                  <AnchorPane id="상단명령창" fx:id="CommandPane" disable="true" layoutX="3.0" prefHeight="46.0" prefWidth="527.0" AnchorPane.leftAnchor="-151.0" AnchorPane.rightAnchor="0.0">
                      <children>
-                        <StackPane layoutX="150.0" layoutY="8.0" prefHeight="28.0" prefWidth="531.0" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="0.0">
+                        <StackPane layoutX="150.0" layoutY="8.0" prefHeight="28.0" prefWidth="531.0" visible="false" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="0.0">
                            <children>
                               <Text fx:id="TxtAnswer" strokeType="OUTSIDE" strokeWidth="0.0" text="제시어" textAlignment="CENTER" />
                            </children>
@@ -91,8 +100,8 @@
                         </HBox>
                         <ToolBar id="toolbar" fx:id="toolbar" layoutX="516.0" layoutY="-4.0" prefHeight="50.0" prefWidth="21.0" style="-fx-background-color: #323232;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
                           <items>
-                              <Button id="profile" mnemonicParsing="false" prefWidth="65.0" style="-fx-background-color: RED;" stylesheets="@Main.css" text="Profile" textFill="WHITE" />
-                              <Button id="admin" mnemonicParsing="false" prefWidth="65.0" style="-fx-background-color: RED;" stylesheets="@Main.css" text="Admin" textFill="WHITE" />
+                              <Button id="profile" mnemonicParsing="false" prefWidth="65.0" style="-fx-background-color: RED;" text="Profile" textFill="WHITE" />
+                              <Button id="admin" mnemonicParsing="false" prefWidth="65.0" style="-fx-background-color: RED;" text="Admin" textFill="WHITE" />
                           </items>
                            <opaqueInsets>
                               <Insets />
@@ -248,7 +257,7 @@
                               </Pane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="홈화면" fx:id="mainPane" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane id="홈화면" fx:id="mainPane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <GridPane layoutX="59.0" layoutY="179.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                                 <columnConstraints>
@@ -281,7 +290,7 @@
                                           <Font size="20.0" />
                                        </font>
                                     </TextArea>
-                                    <ImageView fitHeight="180.0" fitWidth="255.0" GridPane.rowIndex="2">
+                                    <ImageView fx:id="main03" fitHeight="180.0" fitWidth="255.0" onMouseClicked="#saakmindExeAction" GridPane.rowIndex="2">
                                        <image>
                                           <Image url="@../data/img/main03.jpg" />
                                        </image>
@@ -514,23 +523,23 @@
                               </Pane>
                            </children>
                         </Group>
-                        <TextArea editable="false" layoutX="9.0" layoutY="165.0" prefHeight="269.0" prefWidth="254.0" wrapText="true" AnchorPane.leftAnchor="9.0" AnchorPane.topAnchor="165.0" />
-                        <Group layoutX="3.0" layoutY="159.0">
+                        <TextArea fx:id="txtArea_chatLog" disable="true" editable="false" layoutX="9.0" layoutY="165.0" prefHeight="269.0" prefWidth="254.0" wrapText="true" AnchorPane.leftAnchor="9.0" AnchorPane.topAnchor="165.0" />
+                        <Group fx:id="chatGroup" disable="true" layoutX="3.0" layoutY="159.0">
                            <children>
-                              <Button fx:id="btnSplit111" layoutX="197.0" layoutY="282.0" mnemonicParsing="false" onAction="#ButtonAction" prefHeight="31.0" prefWidth="64.0" style="-fx-background-color: #ffe145;" text="전송" />
-                              <TextField layoutX="6.0" layoutY="282.0" prefHeight="32.0" prefWidth="182.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="59.0" AnchorPane.topAnchor="282.0" />
+                              <Button fx:id="btn_send" layoutX="197.0" layoutY="282.0" mnemonicParsing="false" onAction="#sendAction" prefHeight="31.0" prefWidth="64.0" style="-fx-background-color: #ffe145;" text="전송" />
+                              <TextField fx:id="field_chat" layoutX="6.0" layoutY="282.0" onKeyPressed="#chatFieldEnterPressed" prefHeight="32.0" prefWidth="182.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="59.0" AnchorPane.topAnchor="282.0" />
                            </children>
                         </Group>
                      </children>
                   </AnchorPane>
-                  <ScrollPane id="게시판목록" layoutX="11.0" layoutY="528.0" maxWidth="470.0" prefHeight="279.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="528.0">
+                  <ScrollPane id="게시판목록" fx:id="roomListPane" disable="true" layoutX="11.0" layoutY="528.0" maxWidth="470.0" prefHeight="279.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="528.0">
                     <content>
                       <AnchorPane maxWidth="470.0" minHeight="0.0" minWidth="0.0" prefHeight="153.0" prefWidth="470.0">
                            <children>
-                              <TableView maxWidth="470.0" minWidth="255.0" prefHeight="797.0" prefWidth="464.0" AnchorPane.bottomAnchor="-644.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
+                              <TableView fx:id="tableView" maxWidth="470.0" minWidth="255.0" prefHeight="797.0" prefWidth="464.0" AnchorPane.bottomAnchor="-644.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
                                 <columns>
-                                  <TableColumn prefWidth="75.0" text="방장아이디" />
-                                    <TableColumn prefWidth="392.0" text="방제목" />
+                                  <TableColumn fx:id="column01" prefWidth="75.0" text="방장아이디" />
+                                    <TableColumn fx:id="column01" prefWidth="392.0" text="방제목" />
                                 </columns>
                               </TableView>
                            </children></AnchorPane>

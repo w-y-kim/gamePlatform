@@ -40,6 +40,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
@@ -54,9 +56,12 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.*;
@@ -92,7 +97,11 @@ public class FXMLController implements Runnable, Initializable {
 	private StackPane loginInfoPane;
 	@FXML
 	private Text welcomeTxt;
-
+	@FXML 
+	private AnchorPane  CommandPane; 
+	@FXML 
+	private Group  chatGroup; 
+	
 	// 로그아웃
 	@FXML
 	private Button btnLogOut;
@@ -120,8 +129,6 @@ public class FXMLController implements Runnable, Initializable {
 	@FXML
 	private ToolBar toolbar;
 	@FXML
-	private Text msg;
-	@FXML
 	private Button btnSplit;
 	@FXML
 	private SplitPane splitPane;
@@ -129,6 +136,14 @@ public class FXMLController implements Runnable, Initializable {
 	private Button btnFold;
 	@FXML
 	private Button btnSpread;
+
+	// 채팅(방 들어가기 전 / 들어간 후 구별해서)
+	@FXML
+	private TextArea txtArea_chatLog;
+	@FXML
+	private TextField field_chat;
+	@FXML
+	private Button btn_send;
 
 	// 게임선택
 	@FXML
@@ -138,15 +153,17 @@ public class FXMLController implements Runnable, Initializable {
 	@FXML
 	private ImageView main02;
 	@FXML
-	private TextArea txtArea_main01; 
+	private TextArea txtArea_main01;
 	@FXML
-	private TextArea txtArea_main02; 
+	private TextArea txtArea_main02;
 	@FXML
-	private TextArea txtArea_main03; 
-	
+	private TextArea txtArea_main03;
+	@FXML
+	private ScrollPane roomListPane;
 
 	// 방만들기
-	@FXML private Button btnCreateRoom;
+	@FXML
+	private Button btnCreateRoom;
 	@FXML
 	private Button btnMkRoom;
 	@FXML
@@ -160,6 +177,12 @@ public class FXMLController implements Runnable, Initializable {
 	@FXML
 	private AnchorPane RoomPane;
 
+	//게임 선택 후 게임방목록 테이블 
+	@FXML 
+	private TableView tableView;  
+	private TableColumn column01;
+	private TableColumn column02;
+	
 	// 게임방
 	@FXML
 	private Canvas canvas;
@@ -176,8 +199,8 @@ public class FXMLController implements Runnable, Initializable {
 	@FXML
 	private Button btnOut;
 	@FXML
-	private Text TxtAnswer; //제시어 
-	
+	private Text TxtAnswer; // 제시어
+
 	private GraphicsContext gc;
 	private int i;
 
@@ -373,10 +396,10 @@ public class FXMLController implements Runnable, Initializable {
 		loadingPane.setVisible(true);
 		// TODO 외부파일 실행 스레드 생성
 		JOptionPane.showMessageDialog(null, "게임을 실행 중 입니다. 잠시만 기다려주세요");
-		txtArea_main01.setDisable(false);//선택한 게임의 설명 텍스트에리어 활성화 
+		txtArea_main01.setDisable(false);// 선택한 게임의 설명 텍스트에리어 활성화
 		txtArea_main02.setDisable(true);
 		txtArea_main03.setDisable(true);
-		
+
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e1) {
@@ -395,10 +418,22 @@ public class FXMLController implements Runnable, Initializable {
 	public void catchmindExeAction(MouseEvent e) {
 		// TODO 테이블에 방 들어감
 
-		JOptionPane.showMessageDialog(null, "아재마인드 게임에 입장하셨습니다. 들어갈 방을 선택해주세요");
-		txtArea_main01.setDisable(true);//선택한 게임의 설명 텍스트에리어 활성화 
+		JOptionPane.showMessageDialog(null, "아재마인드 게임을 선택하셨습니다. "+"\n"+"우측테이블에서 방을 클릭해주세요");
+		data.setCommand(Data.SELECT_GAME);
+		data.setGameType(Data.GAME_FIRST);
+		this.sendData(data);
+		txtArea_main01.setDisable(true);// 선택한 게임의 설명 텍스트에리어 활성화
 		txtArea_main02.setDisable(false);
-		txtArea_main03.setDisable(true);		
+		txtArea_main03.setDisable(true);
+	}
+	public void saakmindExeAction(MouseEvent e){
+		JOptionPane.showMessageDialog(null, "사악마인드 게임을 선택하셨습니다. "+"\n"+"우측테이블에서 방을 클릭해주세요");
+		data.setCommand(Data.SELECT_GAME);
+		data.setGameType(Data.GAME_FIRST);
+		this.sendData(data);
+		txtArea_main01.setDisable(true);// 선택한 게임의 설명 텍스트에리어 활성화
+		txtArea_main02.setDisable(true);
+		txtArea_main03.setDisable(false);
 	}
 
 	/**
@@ -583,7 +618,17 @@ public class FXMLController implements Runnable, Initializable {
 
 					this.showloadingPane(3000);// 스트림 보내고 리스너 기다리는 동안
 					JOptionPane.showMessageDialog(null, loginUser.getId() + "님 접속을 환영합니다.");
+					
+					//GUI활성화
+					CommandPane.setVisible(true);
+					txtArea_chatLog.setVisible(true);
+					chatGroup.setVisible(true);
+					roomListPane.setVisible(true);
 					mainPane.setVisible(true);
+					break;
+				case Data.SELECT_GAME:
+					//TODO 테이블 갱신 
+//					tableView
 					break;
 				case Data.JOIN:
 					break;
@@ -643,10 +688,16 @@ public class FXMLController implements Runnable, Initializable {
 					}
 					break;
 				case Data.SEND_TURN:
+					
 					break;
 				case Data.SEND_WINNING_RESULT:
+					
 					break;
 				case Data.CHAT_MESSAGE:
+					//TODO 게임룸 만들고 분기처리 
+					String received_msg = data.getMessage();
+					txtArea_chatLog.appendText(received_msg+"\n");
+
 					break;
 				case Data.EXIT:
 
@@ -745,6 +796,7 @@ public class FXMLController implements Runnable, Initializable {
 
 	ArrayList<double[]> geographicInfo;
 	private ArrayList<double[]> xyArray;
+	private String userMsg;
 
 	@FXML
 	public void mouseDrag(MouseEvent event) {
@@ -841,9 +893,41 @@ public class FXMLController implements Runnable, Initializable {
 		gc.fill();
 		gc.strokeRect(0, // x of the upper left corner
 				0, // y of the upper left corner
-				canvasWidth, // width of the rectangle
+				canvasWidth, // width oButtonActionf the rectangle
 				canvasHeight); // height of the rectangle
 
+	}
+
+	@FXML
+	public void chatFieldEnterPressed(KeyEvent e) {
+		// textfield에 뭔가 작성하고 나서 엔터 누르면 서버로 넘기게
+		if (e.getCode() == KeyCode.ENTER) {
+			// data 보내기
+			userMsg = field_chat.getText();
+
+			if (userMsg.equals("")==false) {
+				data.setMessage("[ "+loginUser.getId()+" ] "+userMsg);
+				data.setCommand(Data.CHAT_MESSAGE);
+				this.sendData(data);
+				field_chat.setText("");
+			}
+		}
+
+	}
+	/**전송버튼 눌렀을 때 
+	 */
+	@FXML 
+	public void sendAction(ActionEvent e){
+		userMsg = field_chat.getText();
+
+		if (userMsg.equals("")==false) {
+			data.setMessage("[ "+loginUser.getId()+" ] "+userMsg);
+			data.setCommand(Data.CHAT_MESSAGE);
+			this.sendData(data);
+			field_chat.setText("");
+		}
+
+		
 	}
 
 }
