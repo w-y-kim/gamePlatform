@@ -24,8 +24,8 @@ public class Data implements Serializable {
 	private int gameType;//게임선택 
 
 	public static final int GAME_FIRST = 300; // 게임방 생성
-	public static final int GAME_SECOND = 350; // 게임방 생성
-	public static final int GAME_THIRD = 400; // 게임방 생성
+	public static final int GAME_SECOND = 350; // 아재 게임방 생성
+	public static final int GAME_THIRD = 400; // 사악 게임방 생성
 
 	public static final int MAKE_ROOM = 20; // 게임방 생성
 	public static final int JOIN = 30; // 게임방 입장

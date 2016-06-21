@@ -27,7 +27,9 @@ public class ServerThread implements Runnable {
 																	// 클라이언트의
 																	// ObjectOutputStream이
 																	// 저정되어 있음
-	static HashMap<String, GameRoom> gameRoomList = new HashMap<>();
+	static HashMap<String, GameRoom> gameRoomList1 = new HashMap<>(); //game1
+	static HashMap<String, GameRoom> gameRoomList2 = new HashMap<>(); //game2
+	static HashMap<String, GameRoom> gameRoomList3 = new HashMap<>(); //game3
 	private Data data;
 	private User loginUser;
 	private GameRoom ri;
@@ -142,9 +144,17 @@ public class ServerThread implements Runnable {
 				case Data.JOIN:
 					break;
 				case Data.MAKE_ROOM:
+					int type = data.getGameType();
+					System.out.println("게임타입: "+type);
 					GameRoom gr = data.getGameRoom();
-					gameRoomList.put(gr.getRoomId(), gr);
-					data.setRoomList(gameRoomList);
+					
+					if(type==350){//아재 마인드
+					gameRoomList2.put(gr.getUser().getId(), gr);
+					data.setRoomList(gameRoomList2);
+					}else if(type==400){//사악 마인드
+					gameRoomList3.put(gr.getUser().getId(), gr);
+					data.setRoomList(gameRoomList3);
+					}
 					broadCasting(data);
 					
 					break;
