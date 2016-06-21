@@ -6,13 +6,13 @@ import java.util.ArrayList;
 public class GameRoom implements Serializable{
 
 	private User user; //방장
-	private String roomId; 
+	private String title; 
 	private String roomPw; 
 	private ArrayList<User> userList;
 	
 	public GameRoom(User loginUser, String roomId, String roomPw) {
 		this.user = loginUser; 
-		this.roomId = roomId; 
+		this.title = roomId; 
 		this.roomPw = roomPw; 
 	}
 
@@ -25,11 +25,11 @@ public class GameRoom implements Serializable{
 	}
 
 	public String getRoomId() {
-		return roomId;
+		return title;
 	}
 
 	public void setRoomId(String roomId) {
-		this.roomId = roomId;
+		this.title = roomId;
 	}
 
 	public String getRoomPw() {
