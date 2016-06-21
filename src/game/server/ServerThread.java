@@ -108,6 +108,10 @@ public class ServerThread implements Runnable {
 						}
 					}
 					send(data);
+					
+					Data ndata = new Data(Data.GUL);
+					ndata.setUserList(connectedUserList);
+					broadCasting(ndata);
 					break;
 				case Data.ADDFRIEND:
 					Friend fr = data.getFriend();

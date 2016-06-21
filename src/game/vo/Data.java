@@ -46,6 +46,7 @@ public class Data implements Serializable {
 	public static final int DRAW_START = 150;
 	public static final int CLEAR_CANVAS = 200;
 	public static final int SELECT_GAME =500;
+	public static final int GUL = 1100;
 
 	public Data(int command) {
 		this.command = command;
