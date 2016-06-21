@@ -661,8 +661,6 @@ public class FXMLController implements Runnable, Initializable {
 					this.showloadingPane(3000);// 스트림 보내고 리스너 기다리는 동안
 					JOptionPane.showMessageDialog(null, loginUser.getId() + "님 접속을 환영합니다.");
 
-					//접속자갱신
-					this.renewalConUserList();
 					// GUI활성화
 					CommandPane.setDisable(false);
 					txtArea_chatLog.setDisable(false);
@@ -672,6 +670,11 @@ public class FXMLController implements Runnable, Initializable {
 					// mainPane.setVisible(true);//바로 홈 보이기, 메인버튼
 				}
 					break;
+				case Data.GUL:
+					connectedUserList = data.getUserList();
+					//접속자갱신
+					renewalConUserList();
+					break; 
 				case Data.SELECT_GAME:
 					// TODO 선택한 게임에 따른 방만들기, 테이블 보여줄 것
 					// 유니캐스트 받음 
@@ -679,6 +682,7 @@ public class FXMLController implements Runnable, Initializable {
 					for (Entry<String, GameRoom> entry : roomList.entrySet()) {
 						String roomID = entry.getValue().getRoomId();
 						// String roomID = entry.getValue().
+						//TODO 테이블 띄우기 
 					}
 
 					break;
@@ -689,8 +693,9 @@ public class FXMLController implements Runnable, Initializable {
 					//만든 사람만 보여줄 퍼포먼스 
 					if (loginUser.getId().equals(data.getUser().getId())) {
 						groupBtnRoom.setDisable(true);// 방만들었으니 만들기 버튼그룹 불활성화
+
 					}
-					
+					//타입구분, 게임룸 펼치기 
 					// 방만들어지면 해당 게임 선택한 사람들한테만 리스트 갱신해 줌 
 					if (loginUser.getSelectedGame() == data.getGameType()) {
 						ObservableList<GameRoom> tData = (ObservableList<GameRoom>) data.getGameRoom();
