@@ -429,7 +429,7 @@ public class FXMLController implements Runnable, Initializable {
 
 		JOptionPane.showMessageDialog(null, "아재마인드 게임을 선택하셨습니다. "+"\n"+"우측테이블에서 방을 클릭해주세요");
 		data.setCommand(Data.SELECT_GAME);
-		data.setGameType(Data.GAME_FIRST);
+		data.setGameType(Data.GAME_SECOND);
 		this.sendData(data);
 		txtArea_main01.setDisable(true);// 선택한 게임의 설명 텍스트에리어 활성화
 		txtArea_main02.setDisable(false);
@@ -438,7 +438,7 @@ public class FXMLController implements Runnable, Initializable {
 	public void saakmindExeAction(MouseEvent e){
 		JOptionPane.showMessageDialog(null, "사악마인드 게임을 선택하셨습니다. "+"\n"+"우측테이블에서 방을 클릭해주세요");
 		data.setCommand(Data.SELECT_GAME);
-		data.setGameType(Data.GAME_FIRST);
+		data.setGameType(Data.GAME_THIRD);
 		this.sendData(data);
 		txtArea_main01.setDisable(true);// 선택한 게임의 설명 텍스트에리어 활성화
 		txtArea_main02.setDisable(true);
@@ -648,7 +648,7 @@ public class FXMLController implements Runnable, Initializable {
 					HashMap<String, GameRoom> roomList = data.getRoomList();
 					for (Entry<String, GameRoom> entry : roomList.entrySet()) {
 						String roomID = entry.getValue().getRoomId();
-						String roomID = entry.getValue().
+//						String roomID = entry.getValue().
 					}
 					
 					
