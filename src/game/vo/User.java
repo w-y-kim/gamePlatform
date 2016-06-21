@@ -9,6 +9,8 @@ public class User implements Serializable {
 	private String pw;
 	private String em;//email
 	private int pfimg; //프로필 이미지 
+	private int SelectedGame;
+	
 	
 	
 	public final static int IMAGE1 = 10;
@@ -27,6 +29,14 @@ public class User implements Serializable {
 		this.pfimg = pfimg;
 	}
 	
+	public int getSelectedGame() {
+		return SelectedGame;
+	}
+
+	public void setSelectedGame(int selectedGame) {
+		SelectedGame = selectedGame;
+	}
+
 	public ObjectOutputStream getOos() {
 		return oos;
 	}
