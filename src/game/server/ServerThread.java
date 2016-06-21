@@ -141,10 +141,18 @@ public class ServerThread implements Runnable {
 
 					break;
 				case Data.SELECT_GAME:
-					
+					//gametype에 따라 gameRoomList를 보낸다.
+					int gametype = data.getGameType();
+					if(gametype==300){
+					}else if(gametype==350){
+						data.setRoomList(gameRoomList2);
+					}else if(gametype==400){
+						data.setRoomList(gameRoomList3);
+					}
+					broadCasting(data);
 					break; 
 				case Data.CHAT_MESSAGE:
-					this.broadCasting(data);
+					
 					broadCasting(data);
 					break;
 
@@ -154,7 +162,6 @@ public class ServerThread implements Runnable {
 					int type = data.getGameType();
 					System.out.println("게임타입: "+type);
 					GameRoom gr = data.getGameRoom();
-
 					
 					if(type==350){//아재 마인드
 					gameRoomList2.put(gr.getUser().getId(), gr);
