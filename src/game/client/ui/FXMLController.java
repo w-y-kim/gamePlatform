@@ -755,8 +755,24 @@ public class FXMLController implements Runnable, Initializable {
 
 					break;
 				case Data.EXIT:
-
-					loginBox.setVisible(true);
+					System.out.println("로그아웃명령실행");
+					connectedUserList = data.getUserList();
+					renewalConUserList();
+					
+					//로그아웃한 사람만 
+					if (loginUser.getId().equals(data.getUser())) {
+						System.out.println("로그아웃한 사람만 실행");
+						loginBox.setVisible(true);
+						loginInfoPane.setVisible(false);
+						
+						// GUI활성화
+						CommandPane.setDisable(true);
+						txtArea_chatLog.setDisable(true);
+						chatGroup.setDisable(true);
+						roomListPane.setDisable(true);
+						mainPane.setDisable(true);
+					}
+					
 					break;
 				default:
 					break;
@@ -805,6 +821,7 @@ public class FXMLController implements Runnable, Initializable {
 		data.setCommand(Data.EXIT);
 		data.setUser(loginUser);
 		sendData(data);
+		System.out.println("로그아웃 명령 보냄");
 	}
 
 	@FXML

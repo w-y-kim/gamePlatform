@@ -39,8 +39,8 @@ public class Data implements Serializable {
 	public static final int EXIT = -10; // 프로그램 종료
 	public static final int SEND_TURN = 90;
 	public static final int CONNECTION = 11;
-	public static final int SIGNUP = 10;// 로그인
-	public static final int LOGIN = 1000;
+	public static final int SIGNUP = 10;// 회원가입
+	public static final int LOGIN = 1000; // 로그인 
 	public static final int ADDFRIEND = 12;
 	public static final int DRAW_READY = 100;
 	public static final int DRAW_START = 150;

@@ -181,14 +181,17 @@ public class ServerThread implements Runnable {
 
 				case Data.EXIT:// 로그 아웃 currentUserList에서 빼고 갱신된 유저리스트 브로드캐스팅
 								// 해주기.
+					System.out.println("로그아웃 명령 수신");
 					String id = data.getUser().getId();
 					for (int i = 0; i < connectedUserList.size(); i++) {
 						if (connectedUserList.get(i).getId().equals(id)) {
 							connectedUserList.remove(i);
 						}
 					}
+					data.setCommand(Data.EXIT);
 					data.setUserList(connectedUserList);
 					broadCasting(data);
+					System.out.println("방송완료");
 					break;
 				default:
 					break;
