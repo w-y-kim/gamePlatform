@@ -306,7 +306,6 @@ public class FXMLController implements Runnable, Initializable {
 					btnCancel.getScene().getWindow();
 					AnchorSignUp.setVisible(false);
 
-					JOptionPane.showMessageDialog(null, "가입완료");// FIXME 리스너에서
 				} // inner if // outer if
 			} // checkAgree 분기
 		} // btnOK
@@ -640,6 +639,13 @@ public class FXMLController implements Runnable, Initializable {
 					System.out.println("2. 로그인명령 처리결과 들어옴");
 
 					User user = data.getUser();// 로그인한사람
+				if (user == null) {//비번이 틀렸거나 이미 로그인 중일 때 
+					String errorMsg = data.getError();
+					if (errorMsg.equals("이미 로그인 중")) {
+						JOptionPane.showMessageDialog(null, "이미 로그인 중인 아이디 입니다.");
+					}else JOptionPane.showMessageDialog(null, "비밀번호가 틀렸습니다.");
+					
+				}else{//정상로그인
 					System.out.println(user + "로그인명령에서 받아온 유저데이터");
 					connectedUserList = data.getUserList();
 					System.out.println(connectedUserList + "로그인명령에서 받아온 유저리스트");
@@ -655,6 +661,8 @@ public class FXMLController implements Runnable, Initializable {
 					this.showloadingPane(3000);// 스트림 보내고 리스너 기다리는 동안
 					JOptionPane.showMessageDialog(null, loginUser.getId() + "님 접속을 환영합니다.");
 
+					//접속자갱신
+					this.renewalConUserList();
 					// GUI활성화
 					CommandPane.setDisable(false);
 					txtArea_chatLog.setDisable(false);
@@ -662,6 +670,7 @@ public class FXMLController implements Runnable, Initializable {
 					roomListPane.setDisable(false);
 					mainPane.setDisable(false);
 					// mainPane.setVisible(true);//바로 홈 보이기, 메인버튼
+				}
 					break;
 				case Data.SELECT_GAME:
 					// TODO 선택한 게임에 따른 방만들기, 테이블 보여줄 것
