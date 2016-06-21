@@ -12,6 +12,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
@@ -41,7 +42,9 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableFocusModel;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewFocusModel;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
@@ -401,6 +404,12 @@ public class FXMLController implements Runnable, Initializable {
 		txtArea_main03.setDisable(true);
 
 		try {
+			Runtime.getRuntime().exec("UnityShooting/");//FIXME 실행파일 경로 수정 
+		} catch (IOException e2) {
+			e2.printStackTrace();
+			JOptionPane.showMessageDialog(null, "파일을 찾을 수 없습니다.");
+		}
+		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
@@ -491,6 +500,9 @@ public class FXMLController implements Runnable, Initializable {
 				GameRoom room = new GameRoom(loginUser, roomTitle, roomPw);
 				data.setCommand(Data.MAKE_ROOM);
 				data.setGameRoom(room);
+				
+				this.sendData(data);
+				
 				RoomPane.setVisible(false);
 				gamePane.setVisible(true);
 
@@ -627,12 +639,19 @@ public class FXMLController implements Runnable, Initializable {
 					mainPane.setVisible(true);
 					break;
 				case Data.SELECT_GAME:
-					//TODO 테이블 갱신 
-//					tableView
+					
 					break;
 				case Data.JOIN:
 					break;
 				case Data.MAKE_ROOM:
+					//TODO 테이블 갱신 
+					HashMap<String, GameRoom> roomList = data.getRoomList();
+					for (Entry<String, GameRoom> entry : roomList.entrySet()) {
+						String roomID = entry.getValue().getRoomId();
+						String roomID = entry.getValue().
+					}
+					
+					
 					break;
 				case Data.GAME_READY:
 					break;

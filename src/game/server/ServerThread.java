@@ -135,11 +135,8 @@ public class ServerThread implements Runnable {
 
 					break;
 				case Data.CHAT_MESSAGE:
-<<<<<<< HEAD
 					this.broadCasting(data);
-=======
 					broadCasting(data);
->>>>>>> c6088b2dc1f552da03a88b18a81c54440590b018
 					break;
 				
 				case Data.JOIN:
