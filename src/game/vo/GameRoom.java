@@ -3,6 +3,8 @@ package game.vo;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+
+
 public class GameRoom implements Serializable{
 
 	private User user; //방장
@@ -11,12 +13,34 @@ public class GameRoom implements Serializable{
 	private ArrayList<User> userList;
 	private ArrayList<String> words;
 	
+	private User turnUser;
+	private int pointer = 0;
+	private ArrayList<String> turnUserList = new ArrayList<>();
+	private int nowUserNum;
+	
+	
 	public GameRoom(User loginUser, String roomId, String roomPw) {
 		this.user = loginUser; 
 		this.title = roomId; 
 		this.roomPw = roomPw; 
 	}
 
+	//게임 시작 시 실행해 주세요
+	public void turnUserSet(){
+		for (User user1 : userList) {
+			turnUserList.add(user1.getId());
+		}
+		nowUserNum = userList.size();
+	}
+	
+	public void setTurnUser(){
+		int index = pointer % nowUserNum; //0, 1,2 를 반복적으로 가져와 다음 턴 유저를 가져옴
+		pointer++;
+		String userID = turnUserList.get(index);
+		turnUser = userList.get(index);
+		System.out.println(index+" : "+userID);
+	}
+	
 	public User getUser() {
 		return user;
 	}
