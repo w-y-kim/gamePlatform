@@ -78,7 +78,6 @@ public class FXMLController implements Runnable, Initializable {
 
 	ArrayList<String> makerID = new ArrayList<>();
 	ArrayList<String> roomtitlearr = new ArrayList<>();
-	
 
 	// 접속단계
 	@FXML
@@ -202,6 +201,48 @@ public class FXMLController implements Runnable, Initializable {
 
 	private final ObservableList<modelClass> tdata = FXCollections.observableArrayList();
 
+	// 조인 시
+	@FXML
+	private AnchorPane playerPane01;
+	@FXML
+	private AnchorPane playerPane02;
+	@FXML
+	private AnchorPane playerPane03;
+	@FXML
+	private AnchorPane playerPane04;
+	@FXML
+	private AnchorPane playerPane05;
+	@FXML
+	private Text playerID_01;
+	@FXML
+	private Text playerID_02;
+	@FXML
+	private Text playerID_03;
+	@FXML
+	private Text playerID_04;
+	@FXML
+	private Text playerID_05;
+	@FXML
+	private Text playerSTAT_01;
+	@FXML
+	private Text playerSTAT_02;
+	@FXML
+	private Text playerSTAT_03;
+	@FXML
+	private Text playerSTAT_04;
+	@FXML
+	private Text playerSTAT_05;
+	@FXML
+	private ImageView playerIMG_01;
+	@FXML
+	private ImageView playerIMG_02;
+	@FXML
+	private ImageView playerIMG_03;
+	@FXML
+	private ImageView playerIMG_04;
+	@FXML
+	private ImageView playerIMG_05;
+
 	// 게임방
 	@FXML
 	private Canvas canvas;
@@ -219,6 +260,8 @@ public class FXMLController implements Runnable, Initializable {
 	private Button btnOut;
 	@FXML
 	private Text TxtAnswer; // 제시어
+	@FXML
+	private Button btn_gstart;
 
 	private GraphicsContext gc;
 	private int i;
@@ -528,9 +571,9 @@ public class FXMLController implements Runnable, Initializable {
 				data.setGameRoom(room);
 
 				this.sendData(data);
-				
+
 				this.showGamePane();
-				
+
 			} else
 				JOptionPane.showMessageDialog(null, "정보를 입력해주세요");
 		} else if (s == btnMkCancel) {// 방만들기 취소
@@ -554,7 +597,7 @@ public class FXMLController implements Runnable, Initializable {
 			txtArea_main02.setDisable(true);
 			txtArea_main03.setDisable(true);
 			data.setGameType(0);// 디폴트로 바꿔줌
-			
+
 			tdata.clear();
 		}
 	}
@@ -565,7 +608,7 @@ public class FXMLController implements Runnable, Initializable {
 
 		btnCreateRoom.setDisable(true);
 		btnCreateCancel.setDisable(true);
-		
+
 		splitPane.setDividerPosition(0, 0);
 	}
 
@@ -699,24 +742,84 @@ public class FXMLController implements Runnable, Initializable {
 					this.renewAllTable(roomList);
 
 					break;
-				case Data.JOIN: //같은 게임룸에 들어간 사람만 받음. Data에는 gameRoom(userlist,words) 가 있음
-					data.getUser();//방장분기조건 
-					data.getGameType();//게임타입분기조건
-					boolean check1 = this.myjoinRoomID.equals(data.getJoinRoomID());//조인한 사람만(방장제외 들어온 사람)
-					boolean check2 = this.loginUser.equals(data.getJoinRoomID());//내가 만든 방인 경우 
-					if (check1||check2) {
-						//TODO  boolean ready = false;  
-						//userlist size 검사 해서 2명 이상 입장했을 때(gameRoomd의 유저리스트 size가 2이상일 때) 
-						//reay =true 로 바꾸기 
-						//방장의 시작버튼(비활성화 였다가) ready가 true면 활성화
-						//TODO 조인 -- 게임방유저목록 추가해주고 
-						
-						//TODO 채팅창에 알려주고 
-						
-						//게임판 보여주고 
+
+				case Data.JOIN: // 같은 게임룸에 들어간 사람만 받음. Data에는
+								// gameRoom(userlist,words) 가 있음
+					data.getUser();// 방장분기조건
+					data.getGameType();// 게임타입분기조건
+					glist = data.getGameRoom().getUserList();
+					System.out.println(data.getJoinRoomID()+"1111111111111111111"+myjoinRoomID);
+					boolean check1 = this.myjoinRoomID.equals(data.getJoinRoomID());// 조인한
+																					// 사람만(방장제외
+																					// 들어온
+																					// 사람)
+					boolean check2 = this.loginUser.getId().equals(data.getJoinRoomID());// 내가
+																					// 만든
+																					// 방인
+																					// 경우
+					ready = false;
+					System.out.println(check1+"조건1");
+					System.out.println(check2+"조건2");
+					if (check1 || check2) {
+
+						txtArea_chatLog.appendText(data.getUser().getId() + "님이 입장하셨습니다." + "\n");
+						if (glist.size() >= 2) {
+							ready = true;
+							// userlist size 검사 해서 2명 이상 입장했을 때(gameRoomd의 유저리스트
+							// size가 2이상일 때)
+							// ready =true 로 바꾸기
+							if (check2) {// 방장만
+								JOptionPane.showMessageDialog(null, "게임 시작가능합니다.");
+								btn_gstart.setDisable(false);
+							}
+						}
+
+						// 방장의 시작버튼(비활성화 였다가) ready가 true면 활성화
+						// TODO 조인 -- 게임방유저목록 추가해주고
+						// for (User e : glist) {
+						// String myName = e.getId();
+						// int myimg = e.getPfimg();
+						//// playerSTAT_01.
+						//// playerIMG_01.setImage(value);
+						// }
+						for (int i = 0; i < glist.size(); i++) {
+							String myName = glist.get(i).getId();
+							int myimg = glist.get(i).getPfimg();
+
+							switch (i) {
+							case 0:
+								playerPane01.setVisible(true);
+								playerID_01.setText("");
+								playerID_01.setText(myName);
+								break;
+							case 1:
+								playerPane02.setVisible(true);
+								playerID_02.setText("");
+								playerID_02.setText(myName);
+								break;
+							case 2:
+								playerPane03.setVisible(true);
+								playerID_03.setText("");
+								playerID_03.setText(myName);
+								break;
+							case 3:
+								playerPane04.setVisible(true);
+								playerID_04.setText("");
+								playerID_04.setText(myName);
+								break;
+							case 4:
+								playerPane05.setVisible(true);
+								playerID_05.setText("");
+								playerID_05.setText(myName);
+								break;
+
+							default:
+								break;
+							}
+						}
+						// 게임판 보여주고
 						this.showGamePane();
-						
-						
+
 					}
 					break;
 				case Data.MAKE_ROOM:
@@ -727,13 +830,21 @@ public class FXMLController implements Runnable, Initializable {
 					if (loginUser.getId().equals(data.getUser().getId())) {
 						groupBtnRoom.setDisable(true);// 방만들었으니 만들기 버튼그룹 불활성화
 
+						playerPane01.setVisible(true);
+						playerID_01.setText("");
+						playerID_01.setText(loginUser.getId());
+						
+						
+						
+						
+						
 					}
 					// 타입구분, 게임룸 펼치기
 					// 방만들어지면 해당 게임 선택한 사람들한테만 리스트 갱신해 줌
 					if (loginUser.getSelectedGame() == data.getGameType()) {
 						// 지금 내 게임 타입이 서버에서 보내주는 데이터에 기록된 게임 타입과 같은 경우 >>
 						roomList = data.getRoomList();
-						
+
 						this.renewAllTable(roomList);
 
 					}
@@ -833,9 +944,10 @@ public class FXMLController implements Runnable, Initializable {
 		} // while
 	}
 
-	/**테이블 갱신 
-	 * 셀렉트게임, 메이크룸에서 사용 
-	 * @param roomList 
+	/**
+	 * 테이블 갱신 셀렉트게임, 메이크룸에서 사용
+	 * 
+	 * @param roomList
 	 * 
 	 */
 	private void renewAllTable(HashMap<String, GameRoom> roomList) {
@@ -860,7 +972,7 @@ public class FXMLController implements Runnable, Initializable {
 
 			tdata.add(new modelClass(roomMakerId, roomTitle));
 		}
-		tableView.setItems(tdata);		
+		tableView.setItems(tdata);
 	}
 
 	private void showloadingPane(long time) {
@@ -919,6 +1031,7 @@ public class FXMLController implements Runnable, Initializable {
 		ObservableList<Object> ob = FXCollections.observableArrayList(connUserName);
 		allUserList.setItems(ob);
 	}
+
 	@FXML
 	private void renewGameConUserList() {
 		// TODO: connectedUserList 전체 접속자 리스트에 띄우기
@@ -934,8 +1047,6 @@ public class FXMLController implements Runnable, Initializable {
 		allUserList.setItems(ob);
 	}
 
-	
-	
 	// //그림 그리는 메소드 연결해놓음
 	// public void paintAction(MouseEvent event) {
 	// gc.lineTo(event.getX(), event.getY());
@@ -969,6 +1080,8 @@ public class FXMLController implements Runnable, Initializable {
 	private HashMap<String, GameRoom> roomList;
 	private GameRoom room;
 	private String myjoinRoomID;
+	private boolean ready;
+	private ArrayList<User> glist;
 
 	@FXML
 	public void mouseDrag(MouseEvent event) {
