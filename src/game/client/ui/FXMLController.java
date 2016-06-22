@@ -1079,7 +1079,7 @@ public class FXMLController implements Runnable, Initializable {
 	private String userMsg;
 	private HashMap<String, GameRoom> roomList;
 	private GameRoom room;
-	private String myjoinRoomID;
+	private static String myjoinRoomID = "1";
 	private boolean ready;
 	private ArrayList<User> glist;
 

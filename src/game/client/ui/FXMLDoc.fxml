@@ -86,7 +86,7 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Button>
-                              <Button disable="true" layoutX="145.0" layoutY="5.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="54.0" style="-fx-background-color: #facd5a; -fx-border-color: #000000; -fx-border-style-border: 5;" text="시작">
+                              <Button fx:id="btn_gstart" disable="true" layoutX="145.0" layoutY="5.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="54.0" style="-fx-background-color: #facd5a; -fx-border-color: #000000; -fx-border-style-border: 5;" text="시작">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
@@ -183,7 +183,6 @@
                                                       <Font size="19.0" />
                                                    </font>
                                                 </Text>
-                                                <Text fx:id="joinerID01111" layoutX="96.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" />
                                                 <Text fx:id="playerID_01" layoutX="100.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID input">
                                                    <font>
                                                       <Font size="19.0" />
@@ -213,7 +212,6 @@
                                                       <Font size="19.0" />
                                                    </font>
                                                 </Text>
-                                                <Text fx:id="playerID_02" layoutX="96.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" />
                                                 <Text fx:id="playerID_02" layoutX="100.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID input">
                                                    <font>
                                                       <Font size="19.0" />
@@ -239,7 +237,6 @@
                                                       <Font size="19.0" />
                                                    </font>
                                                 </Text>
-                                                <Text fx:id="joinerID0111111" layoutX="96.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" />
                                                 <Text fx:id="playerID_03" layoutX="100.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID input">
                                                    <font>
                                                       <Font size="19.0" />
@@ -291,7 +288,6 @@
                                                       <Font size="19.0" />
                                                    </font>
                                                 </Text>
-                                                <Text fx:id="joinerID011111111" layoutX="96.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" />
                                                 <Text fx:id="playerID_05" layoutX="100.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID input">
                                                    <font>
                                                       <Font size="19.0" />
