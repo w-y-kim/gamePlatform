@@ -748,7 +748,6 @@ public class FXMLController implements Runnable, Initializable {
 					data.getUser();// 방장분기조건
 					data.getGameType();// 게임타입분기조건
 					glist = data.getGameRoom().getUserList();
-					System.out.println(data.getJoinRoomID()+"1111111111111111111"+myjoinRoomID);
 					boolean check1 = this.myjoinRoomID.equals(data.getJoinRoomID());// 조인한
 																					// 사람만(방장제외
 																					// 들어온
@@ -818,9 +817,11 @@ public class FXMLController implements Runnable, Initializable {
 							}
 						}
 						// 게임판 보여주고
+						System.out.println("게임판 보여주기 시작");
 						this.showGamePane();
+						System.out.println("게임판 보여주기 완료");
 
-					}
+					}	
 					break;
 				case Data.MAKE_ROOM:
 					System.out.println(data.getUser() + "서버에서 보내는 데이터의 유저(최초생성자)");
@@ -844,7 +845,7 @@ public class FXMLController implements Runnable, Initializable {
 					if (loginUser.getSelectedGame() == data.getGameType()) {
 						// 지금 내 게임 타입이 서버에서 보내주는 데이터에 기록된 게임 타입과 같은 경우 >>
 						roomList = data.getRoomList();
-
+						System.out.println("실행되나요? ㄴㅇㄴㅇㄴ");
 						this.renewAllTable(roomList);
 
 					}
@@ -855,7 +856,9 @@ public class FXMLController implements Runnable, Initializable {
 				case Data.GAME_START:
 					break;
 				case Data.DRAW_READY:
-					if (loginUser.getId().equals(data.getUser().getId()) == false) {
+					System.out.println(loginUser + "그림그리기 리슨");
+					//FIXME 왜 바뀜? 조인에서 getUser가 바뀌면서 꼬인 듯 
+					if (loginUser.getId().equals(data.getUser().getId()) == true) {
 						System.out.println("새 패스 시작");
 						x = data.getGameInfo().getX_point();
 						y = data.getGameInfo().getY_point();
@@ -865,7 +868,8 @@ public class FXMLController implements Runnable, Initializable {
 					}
 					break;
 				case Data.DRAW_START:
-					if (loginUser.getId().equals(data.getUser().getId()) == false) {
+					System.out.println(loginUser + "그림패스 리슨");
+					if (loginUser.getId().equals(data.getUser().getId()) == true) {
 						// System.out.println(i + "수신");
 						GameInfo received_ginfo = data.getGameInfo();
 						System.out.println(x + "," + y + "새패스정보 드래그시 수신");// 찍는
@@ -1215,6 +1219,7 @@ public class FXMLController implements Runnable, Initializable {
 			data.setCommand(Data.CHAT_MESSAGE);
 			this.sendData(data);
 			field_chat.setText("");
+			
 		}
 
 	}

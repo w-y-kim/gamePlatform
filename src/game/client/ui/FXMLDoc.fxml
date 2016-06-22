@@ -170,7 +170,108 @@
                               </Pane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="게임창" fx:id="gamePane" layoutX="6.0" layoutY="6.0" prefHeight="626.0" prefWidth="530.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane id="방만들기창" fx:id="RoomPane" layoutY="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="334.0" prefWidth="530.0" styleClass="root" visible="false" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="334.0" stroke="#ffc642" strokeType="INSIDE" strokeWidth="5.0" width="529.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0" />
+                              <Pane layoutX="3.0" layoutY="44.0" prefHeight="334.0" prefWidth="526.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <Group>
+                                       <children>
+                                          <Group layoutX="-31.0" layoutY="8.0">
+                                             <children>
+                                                <Text id="welcome-text" layoutX="210.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="방만들기">
+                                                   <font>
+                                                      <Font size="42.0" />
+                                                   </font>
+                                                </Text>
+                                                <HBox alignment="CENTER" layoutX="170.0" layoutY="241.0" spacing="30.0">
+                                                   <children>
+                                                      <Button fx:id="btnMkRoom" layoutX="128.0" layoutY="518.0" mnemonicParsing="false" onAction="#mkRoomAction" prefHeight="48.0" prefWidth="122.0" style="-fx-background-color: #10a093;" text="만들기" textFill="#faffff" />
+                                                      <Button fx:id="btnMkCancel" layoutX="267.0" layoutY="512.0" mnemonicParsing="false" onAction="#mkRoomAction" prefHeight="48.0" prefWidth="122.0" style="-fx-background-color: #10a093;" text="취소" textFill="#faffff" />
+                                                   </children>
+                                                </HBox>
+                                                <Group />
+                                                <ImageView fitHeight="281.0" fitWidth="184.0" layoutX="76.0" layoutY="30.0">
+                                                   <image>
+                                                      <Image url="@../data/img/BMO_Xo.png" />
+                                                   </image>
+                                                </ImageView>
+                                                <HBox alignment="CENTER" layoutX="225.0" layoutY="113.0" spacing="15.0">
+                                                   <children>
+                                                      <Text layoutX="94.0" layoutY="278.00390625" strokeType="OUTSIDE" strokeWidth="0.0" text="방 제목">
+                                                         <font>
+                                                            <Font size="20.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <TextField fx:id="field_RoomTitle" layoutX="195.0" layoutY="253.0" prefHeight="32.0" prefWidth="138.0" promptText="생성할 방제목 입력" />
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" layoutX="222.0" layoutY="168.0" spacing="15.0">
+                                                   <children>
+                                                      <Text layoutX="94.0" layoutY="322.00390625" strokeType="OUTSIDE" strokeWidth="0.0" text="입장PW">
+                                                         <font>
+                                                            <Font size="20.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <PasswordField fx:id="field_RoomPW" layoutX="195.0" layoutY="305.0" prefHeight="32.0" prefWidth="138.0" promptText="비밀방 만들경우 입력" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </Group>
+                                       </children>
+                                    </Group>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane id="홈화면" fx:id="mainPane" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <GridPane layoutX="59.0" layoutY="179.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <ImageView fx:id="main02" fitHeight="177.0" fitWidth="256.0" onMouseClicked="#catchmindExeAction" GridPane.rowIndex="1">
+                                       <image>
+                                          <Image url="@../data/img/main02.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fx:id="main01" fitHeight="176.0" fitWidth="255.0" onMouseClicked="#exeCuteGameAction">
+                                       <image>
+                                          <Image url="@../data/img/main01.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <TextArea fx:id="txtArea_main01" cacheShape="false" disable="true" editable="false" focusTraversable="false" prefHeight="202.0" prefWidth="292.0" scaleShape="false" text="슈팅게임 프로젝트 기간의 3일을 투자해 개발한 Dev.CHOI의 작품 . 기존 슈팅게임의 관념을 &quot;새로 쓴&quot; 회심의 역작   " wrapText="true" GridPane.columnIndex="1" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </TextArea>
+                                    <TextArea fx:id="txtArea_main02" disable="true" editable="false" prefHeight="200.0" prefWidth="200.0" text="&#10;&#10;&#10;당신의사악한 아재개그를 온 세상에 퍼트려라 ! " wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </TextArea>
+                                    <ImageView fx:id="main03" fitHeight="180.0" fitWidth="255.0" onMouseClicked="#saakmindExeAction" GridPane.rowIndex="2">
+                                       <image>
+                                          <Image url="@../data/img/main03.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <TextArea fx:id="txtArea_main03" disable="true" editable="false" prefHeight="200.0" prefWidth="200.0" text="&#10;&#10;사악한 제시어로 &#10;사악한 당신의 마음을 &#10;표현한다 ! &#10;본격 사악한 게임  " wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </TextArea>
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane id="게임창" fx:id="gamePane" layoutX="6.0" layoutY="6.0" prefHeight="626.0" prefWidth="530.0" style="-fx-background-color: #ffffff;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane id="플레이어창" layoutX="286.0" layoutY="18.0" prefHeight="712.0" prefWidth="222.0" style="-fx-background-color: #ffffff; -fx-border-color: BLACK;" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="18.0">
                                  <children>
@@ -337,107 +438,6 @@
                                  </children>
                               </AnchorPane>
                            </children></AnchorPane>
-                        <AnchorPane id="방만들기창" fx:id="RoomPane" layoutY="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="334.0" prefWidth="530.0" styleClass="root" visible="false" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="334.0" stroke="#ffc642" strokeType="INSIDE" strokeWidth="5.0" width="529.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0" />
-                              <Pane layoutX="3.0" layoutY="44.0" prefHeight="334.0" prefWidth="526.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <Group>
-                                       <children>
-                                          <Group layoutX="-31.0" layoutY="8.0">
-                                             <children>
-                                                <Text id="welcome-text" layoutX="210.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="방만들기">
-                                                   <font>
-                                                      <Font size="42.0" />
-                                                   </font>
-                                                </Text>
-                                                <HBox alignment="CENTER" layoutX="170.0" layoutY="241.0" spacing="30.0">
-                                                   <children>
-                                                      <Button fx:id="btnMkRoom" layoutX="128.0" layoutY="518.0" mnemonicParsing="false" onAction="#mkRoomAction" prefHeight="48.0" prefWidth="122.0" style="-fx-background-color: #10a093;" text="만들기" textFill="#faffff" />
-                                                      <Button fx:id="btnMkCancel" layoutX="267.0" layoutY="512.0" mnemonicParsing="false" onAction="#mkRoomAction" prefHeight="48.0" prefWidth="122.0" style="-fx-background-color: #10a093;" text="취소" textFill="#faffff" />
-                                                   </children>
-                                                </HBox>
-                                                <Group />
-                                                <ImageView fitHeight="281.0" fitWidth="184.0" layoutX="76.0" layoutY="30.0">
-                                                   <image>
-                                                      <Image url="@../data/img/BMO_Xo.png" />
-                                                   </image>
-                                                </ImageView>
-                                                <HBox alignment="CENTER" layoutX="225.0" layoutY="113.0" spacing="15.0">
-                                                   <children>
-                                                      <Text layoutX="94.0" layoutY="278.00390625" strokeType="OUTSIDE" strokeWidth="0.0" text="방 제목">
-                                                         <font>
-                                                            <Font size="20.0" />
-                                                         </font>
-                                                      </Text>
-                                                      <TextField fx:id="field_RoomTitle" layoutX="195.0" layoutY="253.0" prefHeight="32.0" prefWidth="138.0" promptText="생성할 방제목 입력" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox alignment="CENTER" layoutX="222.0" layoutY="168.0" spacing="15.0">
-                                                   <children>
-                                                      <Text layoutX="94.0" layoutY="322.00390625" strokeType="OUTSIDE" strokeWidth="0.0" text="입장PW">
-                                                         <font>
-                                                            <Font size="20.0" />
-                                                         </font>
-                                                      </Text>
-                                                      <PasswordField fx:id="field_RoomPW" layoutX="195.0" layoutY="305.0" prefHeight="32.0" prefWidth="138.0" promptText="비밀방 만들경우 입력" />
-                                                   </children>
-                                                </HBox>
-                                             </children>
-                                          </Group>
-                                       </children>
-                                    </Group>
-                                 </children>
-                              </Pane>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane id="홈화면" fx:id="mainPane" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <GridPane layoutX="59.0" layoutY="179.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                                 <children>
-                                    <ImageView fx:id="main02" fitHeight="177.0" fitWidth="256.0" onMouseClicked="#catchmindExeAction" GridPane.rowIndex="1">
-                                       <image>
-                                          <Image url="@../data/img/main02.jpg" />
-                                       </image>
-                                    </ImageView>
-                                    <ImageView fx:id="main01" fitHeight="176.0" fitWidth="255.0" onMouseClicked="#exeCuteGameAction">
-                                       <image>
-                                          <Image url="@../data/img/main01.jpg" />
-                                       </image>
-                                    </ImageView>
-                                    <TextArea fx:id="txtArea_main01" cacheShape="false" disable="true" editable="false" focusTraversable="false" prefHeight="202.0" prefWidth="292.0" scaleShape="false" text="슈팅게임 프로젝트 기간의 3일을 투자해 개발한 Dev.CHOI의 작품 . 기존 슈팅게임의 관념을 &quot;새로 쓴&quot; 회심의 역작   " wrapText="true" GridPane.columnIndex="1" GridPane.valignment="CENTER">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </TextArea>
-                                    <TextArea fx:id="txtArea_main02" disable="true" editable="false" prefHeight="200.0" prefWidth="200.0" text="&#10;&#10;&#10;당신의사악한 아재개그를 온 세상에 퍼트려라 ! " wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </TextArea>
-                                    <ImageView fx:id="main03" fitHeight="180.0" fitWidth="255.0" onMouseClicked="#saakmindExeAction" GridPane.rowIndex="2">
-                                       <image>
-                                          <Image url="@../data/img/main03.jpg" />
-                                       </image>
-                                    </ImageView>
-                                    <TextArea fx:id="txtArea_main03" disable="true" editable="false" prefHeight="200.0" prefWidth="200.0" text="&#10;&#10;사악한 제시어로 &#10;사악한 당신의 마음을 &#10;표현한다 ! &#10;본격 사악한 게임  " wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </TextArea>
-                                 </children>
-                              </GridPane>
-                           </children>
-                        </AnchorPane>
              
                      </children>
                   </AnchorPane>

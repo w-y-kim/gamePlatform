@@ -215,7 +215,7 @@ public class ServerThread implements Runnable {
 					ginfo = data.getGameInfo();
 					System.out.println(ginfo + " ginfo");
 					// FIXME 게임 시작 시 넣어준 데이터를 유지하니 안해도 됨
-					// painter = data.getUser();
+					 painter = data.getUser();
 					// data.setUserList(connectedUserList);
 					broadCasting(data);
 					break;
