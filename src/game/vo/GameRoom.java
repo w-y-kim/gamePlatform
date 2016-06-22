@@ -9,6 +9,7 @@ public class GameRoom implements Serializable{
 	private String title; 
 	private String roomPw; 
 	private ArrayList<User> userList;
+	private ArrayList<String> words;
 	
 	public GameRoom(User loginUser, String roomId, String roomPw) {
 		this.user = loginUser; 
@@ -48,6 +49,12 @@ public class GameRoom implements Serializable{
 		this.userList = userList;
 	}
 
-	
+	public ArrayList<String> getWords() {
+		return words;
+	}
+
+	public void setWords(ArrayList<String> words) {
+		this.words = words;
+	}
 
 }

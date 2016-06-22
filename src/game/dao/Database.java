@@ -311,4 +311,32 @@ public class Database {
       
    }
   
+   /**
+    * 
+    * @param game type!
+    * @return ArrayList<String> words
+    */
+   public ArrayList<String> getSugWords(String game){
+	   ArrayList<String> words = new ArrayList<>();
+	   Connection con = ConnectionManager.getConnection();
+	      String sql = "SELECT word FROM sug_words where game = ?";
+	      try{
+	          PreparedStatement pt = con.prepareStatement(sql);
+	          pt.setString(1, game);
+	          ResultSet rs = pt.executeQuery();
+	          while(rs.next()){
+	           String sugword = rs.getString("WORD");
+	           words.add(sugword);
+	          }
+	       }catch(SQLException e){
+	          e.printStackTrace();
+	       }finally{
+	          ConnectionManager.close(con);
+	       }
+	   return words;
+   }
+   public static void main(String[] args) {
+	Database db = new Database();
+	System.out.println(db.getSugWords("아재마인드"));
+}
 }

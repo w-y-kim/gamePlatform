@@ -99,6 +99,7 @@ public class ServerThread implements Runnable {
 							data.setError("이미 로그인 중");
 							data.setUser(null);
 						} else {// false 이면 로그인 안한 상태라는 것
+							loginUser = user;
 							connectedUserList.add(user);
 							System.out.println(connectedUserList + "서버에서 추가한 유저리스트");
 							friendList = db.getFriendList(user.getId());
@@ -203,9 +204,9 @@ public class ServerThread implements Runnable {
 				case Data.EXIT:// 로그 아웃 currentUserList에서 빼고 갱신된 유저리스트 브로드캐스팅
 								// 해주기.
 					System.out.println("로그아웃 명령 수신");
-					String id = data.getUser().getId();
+					
 					for (int i = 0; i < connectedUserList.size(); i++) {
-						if (connectedUserList.get(i).getId().equals(id)) {
+						if (connectedUserList.get(i).getId().equals(loginUser.getId())) {
 							connectedUserList.remove(i);
 						}
 					}
@@ -220,10 +221,14 @@ public class ServerThread implements Runnable {
 				}// switch
 
 			} catch (ClassNotFoundException | IOException e) {
-				e.printStackTrace();
 				System.out.println(socket.getPort() + "번 서버스레드 종료");
-				connectedUserList.remove(loginUser);// FIXME 접속종료하면 배열에서도 빼기
+				for (int i = 0; i < connectedUserList.size(); i++) {
+					if (connectedUserList.get(i).getId().equals(loginUser.getId())) {
+						connectedUserList.remove(i);
+					}
+				}
 				exit = true;
+				e.printStackTrace();
 			} // catch
 			catch (DuplicateIDException e) {
 				e.printStackTrace();

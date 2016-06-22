@@ -9,7 +9,7 @@ public class User implements Serializable {
 	private String pw;
 	private String em;//email
 	private int pfimg; //프로필 이미지 
-	private int SelectedGame;//유저별 게임타입 
+	private int SelectedGame;//유저별 게임타입 :처음 게임 선택할 때 담김 게임 방 목록 보여주기 용
 	
 	
 	
