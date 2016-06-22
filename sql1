@@ -1,0 +1,15 @@
+commit
+
+create table sug_words(
+windex NUMBER (5) , 
+game varchar2(20) ,
+word varchar2(20) NOT NULL,
+constraint sug_word_windex_pk PRIMARY KEY(windex)
+)
+
+DROP table sug_word
+ALTER table sug_word ALTER word_index number(10)
+
+INSERT INTO sug_word VALUES(아재마인드,철렁,1)
+
+commit
