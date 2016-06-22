@@ -40,6 +40,7 @@ public class ServerThread implements Runnable {
 	private ArrayList<Friend> friendList;
 	private GameInfo ginfo;
 	private User painter;
+	private int gametype;
 
 	public ServerThread(Socket socket) {
 		super();
@@ -142,8 +143,7 @@ public class ServerThread implements Runnable {
 
 					break;
 				case Data.SELECT_GAME:
-					// gametype에 따라 gameRoomList를 보낸다.
-					int gametype = data.getGameType();
+					gametype = data.getGameType();
 					if (gametype == 300) {
 
 					} else if (gametype == 350) {
@@ -158,12 +158,12 @@ public class ServerThread implements Runnable {
 					break;
 
 				case Data.JOIN:
-					int gmtype = data.getGameType();
+//					int gmtype = data.getGameType();
 					String roomId = data.getGameRoom().getRoomId();
-					if(gmtype == Data.GAME_SECOND){
+					if(gametype == Data.GAME_SECOND){
 						gameRoomList2.get(roomId).getUserList().add(loginUser);
 						data.setRoomList(gameRoomList2);
-					}else if(gmtype == Data.GAME_THIRD){
+					}else if(gametype == Data.GAME_THIRD){
 						gameRoomList3.get(roomId).getUserList().add(loginUser);
 						data.setRoomList(gameRoomList3);
 					}
