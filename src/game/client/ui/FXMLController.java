@@ -198,6 +198,8 @@ public class FXMLController implements Runnable, Initializable {
 	@FXML
 	private TableColumn column03;
 
+	private final ObservableList<modelClass> tdata = FXCollections.observableArrayList();
+
 	// 게임방
 	@FXML
 	private Canvas canvas;
@@ -690,7 +692,8 @@ public class FXMLController implements Runnable, Initializable {
 						String roomID = entry.getValue().getRoomId();
 						// String roomID = entry.getValue().
 						// TODO 선택한 게임에 대해 테이블 띄우기
-//						ObservableList<GameRoom> tData = (ObservableList<GameRoom>) entry.getValue();
+						// ObservableList<GameRoom> tData =
+						// (ObservableList<GameRoom>) entry.getValue();
 
 						// TODO makeRoom 해야지 확인 가능
 					}
@@ -715,6 +718,9 @@ public class FXMLController implements Runnable, Initializable {
 						makerID = new ArrayList<>();
 						roomtitlearr = new ArrayList<>();
 
+						column01.setCellValueFactory(new PropertyValueFactory<>("hostID"));
+						column02.setCellValueFactory(new PropertyValueFactory<>("roomTitle"));
+
 						for (Entry<String, GameRoom> entry : roomList.entrySet()) {
 
 							String roomID = entry.getValue().getRoomId();
@@ -730,7 +736,10 @@ public class FXMLController implements Runnable, Initializable {
 
 							makerID.add(roomMakerId);
 							roomtitlearr.add(roomTitle);
+							tdata.add(new modelClass(roomMakerId, roomTitle));
 						}
+
+						tableView.setItems(tdata);
 
 						// ObservableList ob =
 						// FXCollections.observableArrayList(
@@ -740,17 +749,16 @@ public class FXMLController implements Runnable, Initializable {
 						// tableView.setItems(ob);
 						// System.out.println(tableView.getColumns().add(pp)+"1111");
 
-//						column01.setCellValueFactory(new PropertyValueFactory("hostID"));
-//						column02.setCellValueFactory(new PropertyValueFactory("roomTitle"));
-//						column03.setCellValueFactory(new PropertyValueFactory("roomTitle"));
-						
-						ObservableList<GameRoom> ob = FXCollections.observableArrayList(room,room,room);
-						 System.out.println(ob + "ob");
-						 
-						 tableView.setItems(ob);
-//						 tableView.getItems().addAll(ob);
-						
-						 System.out.println(tableView.getItems()+"123");
+						// column01.setCellValueFactory(new
+						// PropertyValueFactory("hostID"));
+						// column02.setCellValueFactory(new
+						// PropertyValueFactory("roomTitle"));
+						// column03.setCellValueFactory(new
+						// PropertyValueFactory("roomTitle"));
+
+						// tableView.getItems().addAll(ob);
+
+						// System.out.println(tableView.getItems()+"123");
 						// ObservableList<ArrayList<String>> row1 =
 						// FXCollections.observableArrayList();
 						// ObservableList<ArrayList<String>> row2 =
@@ -833,19 +841,11 @@ public class FXMLController implements Runnable, Initializable {
 					connectedUserList = data.getUserList();
 					renewalConUserList();
 
-					// 로그아웃한 사람만
-					if (loginUser.getId().equals(data.getUser())) {
-						System.out.println("로그아웃한 사람만 실행");
-						loginBox.setVisible(true);
-						loginInfoPane.setVisible(false);
-
-						// GUI활성화
-						CommandPane.setDisable(true);
-						txtArea_chatLog.setDisable(true);
-						chatGroup.setDisable(true);
-						roomListPane.setDisable(true);
-						mainPane.setDisable(true);
-					}
+//					// 로그아웃한 사람만, 버튼에다가 넣자(이미 빠져서 와서 당사자 갱신 방법이 없음)
+//					if (loginUser.getId().equals(data.getUser())) {
+//						System.out.println("로그아웃한 사람만 실행");
+//						
+//					}
 
 					break;
 				default:
@@ -896,6 +896,15 @@ public class FXMLController implements Runnable, Initializable {
 		data.setUser(loginUser);
 		sendData(data);
 		System.out.println("로그아웃 명령 보냄");
+		loginBox.setVisible(true);
+		loginInfoPane.setVisible(false);
+
+		// GUI활성화
+		CommandPane.setDisable(true);
+		txtArea_chatLog.setDisable(true);
+		chatGroup.setDisable(true);
+		roomListPane.setDisable(true);
+		mainPane.setDisable(true);
 	}
 
 	@FXML
@@ -1004,9 +1013,9 @@ public class FXMLController implements Runnable, Initializable {
 			}
 
 		});
-		
-//		tableView.getItems();
-//		System.out.println(tableView.getItems());
+
+		// tableView.getItems();
+		// System.out.println(tableView.getItems());
 
 	}
 

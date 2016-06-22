@@ -27,9 +27,9 @@ public class ServerThread implements Runnable {
 																	// 클라이언트의
 																	// ObjectOutputStream이
 																	// 저정되어 있음
-	static HashMap<String, GameRoom> gameRoomList1 = new HashMap<>(); //game1
-	static HashMap<String, GameRoom> gameRoomList2 = new HashMap<>(); //game2
-	static HashMap<String, GameRoom> gameRoomList3 = new HashMap<>(); //game3
+	static HashMap<String, GameRoom> gameRoomList1 = new HashMap<>(); // game1
+	static HashMap<String, GameRoom> gameRoomList2 = new HashMap<>(); // game2
+	static HashMap<String, GameRoom> gameRoomList3 = new HashMap<>(); // game3
 	private Data data;
 	private User loginUser;
 	private GameRoom ri;
@@ -99,7 +99,11 @@ public class ServerThread implements Runnable {
 							data.setError("이미 로그인 중");
 							data.setUser(null);
 						} else {// false 이면 로그인 안한 상태라는 것
+<<<<<<< HEAD
 							loginUser = user;
+=======
+							loginUser= user;
+>>>>>>> a8b6b2bbf5fb2889130b47d52dd36c1178ef4355
 							connectedUserList.add(user);
 							System.out.println(connectedUserList + "서버에서 추가한 유저리스트");
 							friendList = db.getFriendList(user.getId());
@@ -109,7 +113,7 @@ public class ServerThread implements Runnable {
 						}
 					}
 					send(data);
-					
+
 					Data ndata = new Data(Data.GUL);
 					ndata.setUserList(connectedUserList);
 					broadCasting(ndata);
@@ -142,17 +146,17 @@ public class ServerThread implements Runnable {
 
 					break;
 				case Data.SELECT_GAME:
-					//gametype에 따라 gameRoomList를 보낸다.
+					// gametype에 따라 gameRoomList를 보낸다.
 					int gametype = data.getGameType();
-					if(gametype==300){
-						
-					}else if(gametype==350){
+					if (gametype == 300) {
+
+					} else if (gametype == 350) {
 						data.setRoomList(gameRoomList2);
-					}else if(gametype==400){
+					} else if (gametype == 400) {
 						data.setRoomList(gameRoomList3);
 					}
 					send(data);
-					break; 
+					break;
 				case Data.CHAT_MESSAGE:
 					broadCasting(data);
 					break;
@@ -161,8 +165,9 @@ public class ServerThread implements Runnable {
 					break;
 				case Data.MAKE_ROOM:
 					int type = data.getGameType();
-					System.out.println("게임타입: "+type);
+					System.out.println("게임타입: " + type);
 					GameRoom gr = data.getGameRoom();
+<<<<<<< HEAD
 					
 					if(type==350){//아재 마인드
 					gameRoomList2.put(gr.getUser().getId(), gr);
@@ -172,6 +177,18 @@ public class ServerThread implements Runnable {
 					data.setRoomList(gameRoomList3);
 					}
  				broadCasting(data);
+=======
+
+					if (type == 350) {// 아재 마인드
+						gameRoomList2.put(gr.getUser().getId(), gr);
+						data.setRoomList(gameRoomList2);
+					} else if (type == 400) {// 사악 마인드
+						gameRoomList3.put(gr.getUser().getId(), gr);
+						data.setRoomList(gameRoomList3);
+					}
+
+					broadCasting(data);
+>>>>>>> a8b6b2bbf5fb2889130b47d52dd36c1178ef4355
 
 					break;
 				case Data.GAME_READY:
@@ -180,7 +197,7 @@ public class ServerThread implements Runnable {
 					break;
 				case Data.DRAW_READY:
 					ginfo = data.getGameInfo();
-					painter = data.getUser();//FIXME 다른 커맨드에서 해줘야 할 듯 함 
+					painter = data.getUser();// FIXME 다른 커맨드에서 해줘야 할 듯 함
 					data.setUserList(connectedUserList);
 					broadCasting(data);
 
@@ -188,7 +205,7 @@ public class ServerThread implements Runnable {
 				case Data.DRAW_START:
 					ginfo = data.getGameInfo();
 					System.out.println(ginfo + " ginfo");
-					//FIXME 게임 시작 시 넣어준 데이터를 유지하니 안해도 됨 
+					// FIXME 게임 시작 시 넣어준 데이터를 유지하니 안해도 됨
 					// painter = data.getUser();
 					// data.setUserList(connectedUserList);
 					broadCasting(data);
@@ -204,7 +221,10 @@ public class ServerThread implements Runnable {
 				case Data.EXIT:// 로그 아웃 currentUserList에서 빼고 갱신된 유저리스트 브로드캐스팅
 								// 해주기.
 					System.out.println("로그아웃 명령 수신");
+<<<<<<< HEAD
 					
+=======
+>>>>>>> a8b6b2bbf5fb2889130b47d52dd36c1178ef4355
 					for (int i = 0; i < connectedUserList.size(); i++) {
 						if (connectedUserList.get(i).getId().equals(loginUser.getId())) {
 							connectedUserList.remove(i);
@@ -254,9 +274,9 @@ public class ServerThread implements Runnable {
 	public void broadCasting(Data data) throws IOException {
 		for (User userr : connectedUserList) {
 			System.out.println("broadcasting");
-			System.out.println( "서버유저목록 : " + connectedUserList);
-			System.out.println("방송보낸대상 : " +userr);
-			System.out.println("데이터 : "+data);
+			System.out.println("서버유저목록 : " + connectedUserList);
+			System.out.println("방송보낸대상 : " + userr);
+			System.out.println("데이터 : " + data);
 			userr.getOos().writeObject(data);
 			userr.getOos().reset();
 		}
