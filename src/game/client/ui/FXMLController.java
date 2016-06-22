@@ -699,12 +699,16 @@ public class FXMLController implements Runnable, Initializable {
 					this.renewAllTable(roomList);
 
 					break;
-				case Data.JOIN:
+				case Data.JOIN: //같은 게임룸에 들어간 사람만 받음. Data에는 gameRoom(userlist,words) 가 있음
 					data.getUser();//방장분기조건 
 					data.getGameType();//게임타입분기조건
 					boolean check1 = this.myjoinRoomID.equals(data.getJoinRoomID());//조인한 사람만(방장제외 들어온 사람)
 					boolean check2 = this.loginUser.equals(data.getJoinRoomID());//내가 만든 방인 경우 
 					if (check1||check2) {
+						//TODO  boolean ready = false;  
+						//userlist size 검사 해서 2명 이상 입장했을 때(gameRoomd의 유저리스트 size가 2이상일 때) 
+						//reay =true 로 바꾸기 
+						//방장의 시작버튼(비활성화 였다가) ready가 true면 활성화
 						//TODO 조인 -- 게임방유저목록 추가해주고 
 						
 						//TODO 채팅창에 알려주고 
