@@ -536,11 +536,11 @@
                     <content>
                       <AnchorPane maxWidth="470.0" minHeight="0.0" minWidth="0.0" prefHeight="153.0" prefWidth="470.0">
                            <children>
-                              <TableView fx:id="tableView" maxWidth="470.0" minWidth="255.0" prefHeight="797.0" prefWidth="464.0" AnchorPane.bottomAnchor="-644.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
-                                <columns>
-                                  <TableColumn fx:id="column01" prefWidth="75.0" text="방장아이디" />
-                                    <TableColumn fx:id="column01" prefWidth="392.0" text="방제목" />
-                                </columns>
+                              <TableView fx:id="tableView" fixedCellSize="24.0" maxWidth="470.0" minWidth="255.0" prefHeight="797.0" prefWidth="464.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
+                                 <columns>
+                                    <TableColumn fx:id="column01" prefWidth="75.0" text="방장" />
+                                    <TableColumn fx:id="column02" prefWidth="185.0" text="Column X" />
+                                 </columns>
                               </TableView>
                            </children></AnchorPane>
                     </content>

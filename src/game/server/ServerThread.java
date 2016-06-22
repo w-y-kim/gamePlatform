@@ -144,12 +144,13 @@ public class ServerThread implements Runnable {
 					//gametype에 따라 gameRoomList를 보낸다.
 					int gametype = data.getGameType();
 					if(gametype==300){
+						
 					}else if(gametype==350){
 						data.setRoomList(gameRoomList2);
 					}else if(gametype==400){
 						data.setRoomList(gameRoomList3);
 					}
-					broadCasting(data);
+					send(data);
 					break; 
 				case Data.CHAT_MESSAGE:
 					broadCasting(data);
