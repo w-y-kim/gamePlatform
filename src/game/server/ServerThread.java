@@ -179,19 +179,7 @@ public class ServerThread implements Runnable {
 					gameRoomList3.put(gr.getUser().getId(), gr);
 					data.setRoomList(gameRoomList3);
 					}
- 				broadCasting(data);
-
-
-					if (type == 350) {// 아재 마인드
-						gameRoomList2.put(gr.getUser().getId(), gr);
-						data.setRoomList(gameRoomList2);
-					} else if (type == 400) {// 사악 마인드
-						gameRoomList3.put(gr.getUser().getId(), gr);
-						data.setRoomList(gameRoomList3);
-					}
-
 					broadCasting(data);
-
 
 					break;
 				case Data.GAME_READY:
