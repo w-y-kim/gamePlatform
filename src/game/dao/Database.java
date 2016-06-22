@@ -335,8 +335,5 @@ public class Database {
 	       }
 	   return words;
    }
-   public static void main(String[] args) {
-	Database db = new Database();
-	System.out.println(db.getSugWords("아재마인드"));
-}
+  
 }

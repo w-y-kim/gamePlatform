@@ -99,11 +99,11 @@ public class ServerThread implements Runnable {
 							data.setError("이미 로그인 중");
 							data.setUser(null);
 						} else {// false 이면 로그인 안한 상태라는 것
-<<<<<<< HEAD
+
 							loginUser = user;
-=======
+
 							loginUser= user;
->>>>>>> a8b6b2bbf5fb2889130b47d52dd36c1178ef4355
+
 							connectedUserList.add(user);
 							System.out.println(connectedUserList + "서버에서 추가한 유저리스트");
 							friendList = db.getFriendList(user.getId());
@@ -167,17 +167,20 @@ public class ServerThread implements Runnable {
 					int type = data.getGameType();
 					System.out.println("게임타입: " + type);
 					GameRoom gr = data.getGameRoom();
-<<<<<<< HEAD
-					
+
 					if(type==350){//아재 마인드
+					ArrayList<String> sug_words = db.getSugWords("아재마인드");
+					gr.setWords(sug_words);
 					gameRoomList2.put(gr.getUser().getId(), gr);
 					data.setRoomList(gameRoomList2);
 					}else if(type==400){//사악 마인드
+					ArrayList<String> sug_words1 = db.getSugWords("사악마인드");
+					gr.setWords(sug_words1);
 					gameRoomList3.put(gr.getUser().getId(), gr);
 					data.setRoomList(gameRoomList3);
 					}
  				broadCasting(data);
-=======
+
 
 					if (type == 350) {// 아재 마인드
 						gameRoomList2.put(gr.getUser().getId(), gr);
@@ -188,7 +191,7 @@ public class ServerThread implements Runnable {
 					}
 
 					broadCasting(data);
->>>>>>> a8b6b2bbf5fb2889130b47d52dd36c1178ef4355
+
 
 					break;
 				case Data.GAME_READY:
@@ -221,10 +224,9 @@ public class ServerThread implements Runnable {
 				case Data.EXIT:// 로그 아웃 currentUserList에서 빼고 갱신된 유저리스트 브로드캐스팅
 								// 해주기.
 					System.out.println("로그아웃 명령 수신");
-<<<<<<< HEAD
+
 					
-=======
->>>>>>> a8b6b2bbf5fb2889130b47d52dd36c1178ef4355
+
 					for (int i = 0; i < connectedUserList.size(); i++) {
 						if (connectedUserList.get(i).getId().equals(loginUser.getId())) {
 							connectedUserList.remove(i);
