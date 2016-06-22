@@ -183,7 +183,7 @@ public class ServerThread implements Runnable {
 					int type = data.getGameType();
 					System.out.println("게임타입: " + type);
 					GameRoom gr = data.getGameRoom();
-
+					gr.getUserList().add(loginUser);
 					if (type == 350) {// 아재 마인드
 						 ArrayList<String> sug_words = db.getSugWords("아재마인드");
 						 gr.setWords(sug_words);
