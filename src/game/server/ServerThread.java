@@ -177,6 +177,7 @@ public class ServerThread implements Runnable {
 						gameRoomList2.get(roomId).setUserList(roomusers);
 					}
 					data.setGameRoom(garo);
+					data.setUser(loginUser);
 					sendDataRoommate(data);
 					break;
 				case Data.MAKE_ROOM:
@@ -195,7 +196,7 @@ public class ServerThread implements Runnable {
 						gameRoomList3.put(gr.getUser().getId(), gr);
 						data.setRoomList(gameRoomList3);
 					}
-
+					data.setUser(loginUser);
 					broadCasting(data);
 
 					break;
