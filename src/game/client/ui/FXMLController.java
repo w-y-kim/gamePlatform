@@ -712,6 +712,7 @@ public class FXMLController implements Runnable, Initializable {
 						//게임판 보여주고 
 						this.showGamePane();
 						
+						
 					}
 					break;
 				case Data.MAKE_ROOM:
