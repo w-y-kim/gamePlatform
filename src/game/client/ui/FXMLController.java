@@ -350,7 +350,7 @@ public class FXMLController implements Runnable, Initializable {
 			btnSpread.setVisible(true);
 			canvas.autosize();
 		} else if (e.getSource() == btnSpread) {
-			splitPane.setDividerPosition(0, 0.5);
+			splitPane.setDividerPosition(0, 0);
 			btnFold.setVisible(true);
 			btnSpread.setVisible(false);
 			// canvas.setWidth(1000);
@@ -430,7 +430,6 @@ public class FXMLController implements Runnable, Initializable {
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		loadingPane.setVisible(false);
@@ -529,13 +528,9 @@ public class FXMLController implements Runnable, Initializable {
 				data.setGameRoom(room);
 
 				this.sendData(data);
-
-				RoomPane.setVisible(false);
-				gamePane.setVisible(true);
-
-				btnCreateRoom.setDisable(true);
-				btnCreateCancel.setDisable(true);
-
+				
+				this.showGamePane();
+				
 			} else
 				JOptionPane.showMessageDialog(null, "정보를 입력해주세요");
 		} else if (s == btnMkCancel) {// 방만들기 취소
@@ -562,6 +557,16 @@ public class FXMLController implements Runnable, Initializable {
 			
 			tdata.clear();
 		}
+	}
+
+	private void showGamePane() {
+		RoomPane.setVisible(false);
+		gamePane.setVisible(true);
+
+		btnCreateRoom.setDisable(true);
+		btnCreateCancel.setDisable(true);
+		
+		splitPane.setDividerPosition(0, 0);
 	}
 
 	private void makeNewCanvas() {
@@ -695,6 +700,19 @@ public class FXMLController implements Runnable, Initializable {
 
 					break;
 				case Data.JOIN:
+					data.getUser();//방장분기조건 
+					data.getGameType();//게임타입분기조건
+					boolean check1 = this.myjoinRoomID.equals(data.getJoinRoomID());//조인한 사람만(방장제외 들어온 사람)
+					boolean check2 = this.loginUser.equals(data.getJoinRoomID());//내가 만든 방인 경우 
+					if (check1||check2) {
+						//TODO 조인 -- 게임방유저목록 추가해주고 
+						
+						//TODO 채팅창에 알려주고 
+						
+						//게임판 보여주고 
+						this.showGamePane();
+						
+					}
 					break;
 				case Data.MAKE_ROOM:
 					System.out.println(data.getUser() + "서버에서 보내는 데이터의 유저(최초생성자)");
@@ -885,7 +903,21 @@ public class FXMLController implements Runnable, Initializable {
 	@FXML
 	private void renewalConUserList() {
 		// TODO: connectedUserList 전체 접속자 리스트에 띄우기
-		allUserList.setItems(null);// FIXEM 지워주는 용도, 잘 작동할지는 모름
+		allUserList.setItems(null);// FIXME 지워주는 용도, 잘 작동할지는 모름
+		ArrayList<String> connUserName = new ArrayList<String>();
+
+		for (User user : connectedUserList) {
+			String name = user.getId();
+			connUserName.add(name);
+		}
+
+		ObservableList<Object> ob = FXCollections.observableArrayList(connUserName);
+		allUserList.setItems(ob);
+	}
+	@FXML
+	private void renewGameConUserList() {
+		// TODO: connectedUserList 전체 접속자 리스트에 띄우기
+		allUserList.setItems(null);// FIXME 지워주는 용도, 잘 작동할지는 모름
 		ArrayList<String> connUserName = new ArrayList<String>();
 
 		for (User user : connectedUserList) {
@@ -897,6 +929,8 @@ public class FXMLController implements Runnable, Initializable {
 		allUserList.setItems(ob);
 	}
 
+	
+	
 	// //그림 그리는 메소드 연결해놓음
 	// public void paintAction(MouseEvent event) {
 	// gc.lineTo(event.getX(), event.getY());
@@ -929,6 +963,7 @@ public class FXMLController implements Runnable, Initializable {
 	private String userMsg;
 	private HashMap<String, GameRoom> roomList;
 	private GameRoom room;
+	private String myjoinRoomID;
 
 	@FXML
 	public void mouseDrag(MouseEvent event) {
@@ -1071,9 +1106,9 @@ public class FXMLController implements Runnable, Initializable {
 		modelClass mo = (modelClass) tableView.getSelectionModel().getSelectedItem();
 		if (JOptionPane.showConfirmDialog(null, "해당 방에 입장하시겠습니까?", "방선택",
 				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-			// yes option 방에 입장
-			String joinRoomID = mo.getHostID();
-			data.setJoinRoomID(joinRoomID);
+			myjoinRoomID = mo.getHostID();
+			data.setJoinRoomID(myjoinRoomID);
+			data.setCommand(Data.JOIN);
 			this.sendData(data);
 
 		}

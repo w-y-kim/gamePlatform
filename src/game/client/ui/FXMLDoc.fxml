@@ -170,22 +170,160 @@
                               </Pane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="게임창" fx:id="gamePane" layoutX="6.0" layoutY="6.0" prefHeight="626.0" prefWidth="530.0" style="-fx-background-color: #ffffff;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane id="게임창" fx:id="gamePane" layoutX="6.0" layoutY="6.0" prefHeight="626.0" prefWidth="530.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Region fx:id="canvasRegion" layoutX="24.0" layoutY="48.0" prefHeight="497.0" prefWidth="493.0" style="-fx-background-color: #dddddd;" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="48.0" />
-                              <Canvas fx:id="canvas" height="497.0" layoutX="20.0" layoutY="58.0" onMouseDragged="#mouseDrag" onMousePressed="#mousePress" onMouseReleased="#mouseRelease" width="500.0" AnchorPane.topAnchor="48.0">
+                              <AnchorPane id="플레이어창" layoutX="286.0" layoutY="18.0" prefHeight="712.0" prefWidth="222.0" style="-fx-background-color: #ffffff; -fx-border-color: BLACK;" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="18.0">
+                                 <children>
+                                    <AnchorPane id="player01" layoutX="1.0" layoutY="33.0" prefHeight="137.0" prefWidth="223.0" style="-fx-border-color: #000000;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <children>
+                                          <Group>
+                                             <children>
+                                                <Text fx:id="joinerID011121" layoutX="100.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="STAT input">
+                                                   <font>
+                                                      <Font size="19.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fx:id="joinerID01111" layoutX="96.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                                <Text fx:id="joinerID01112" layoutX="100.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID input">
+                                                   <font>
+                                                      <Font size="19.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fx:id="joinerID0111" layoutX="96.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="아이디 : " />
+                                                <ImageView fx:id="joinerIMG0111" fitHeight="127.0" fitWidth="93.0" layoutX="9.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../data/img/profile_img.jpg" />
+                                                   </image>
+                                                </ImageView>
+                                                <Text fx:id="joinerID01113" layoutX="96.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="상태  : " wrappingWidth="48.0" />
+                                             </children>
+                                          </Group>
+                                       </children>
+                                    </AnchorPane>
+                                    <Text layoutX="69.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="플레이어">
+                                       <font>
+                                          <Font name="System Bold" size="21.0" />
+                                       </font></Text>
+                                    <AnchorPane id="player02" layoutX="2.0" layoutY="170.0" prefHeight="137.0" prefWidth="234.0" style="-fx-border-color: #000000;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <children>
+                                          <Group>
+                                             <children>
+                                                <Text fx:id="joinerID0111211" layoutX="100.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="STAT input">
+                                                   <font>
+                                                      <Font size="19.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fx:id="joinerID011111" layoutX="96.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                                <Text fx:id="joinerID011121" layoutX="100.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID input">
+                                                   <font>
+                                                      <Font size="19.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fx:id="joinerID01111" layoutX="96.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="아이디 : " />
+                                                <ImageView fx:id="joinerIMG01111" fitHeight="127.0" fitWidth="93.0" layoutX="9.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../data/img/profile_img.jpg" />
+                                                   </image>
+                                                </ImageView>
+                                                <Text fx:id="joinerID011131" layoutX="96.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="상태  : " wrappingWidth="48.0" />
+                                             </children>
+                                          </Group>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane id="player03" layoutX="2.0" layoutY="307.0" prefHeight="136.0" prefWidth="234.0" style="-fx-border-color: #000000;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <children>
+                                          <Group>
+                                             <children>
+                                                <Text fx:id="joinerID01112111" layoutX="100.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="STAT input">
+                                                   <font>
+                                                      <Font size="19.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fx:id="joinerID0111111" layoutX="96.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                                <Text fx:id="joinerID0111211" layoutX="100.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID input">
+                                                   <font>
+                                                      <Font size="19.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fx:id="joinerID011111" layoutX="96.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="아이디 : " />
+                                                <ImageView fx:id="joinerIMG011111" fitHeight="127.0" fitWidth="93.0" layoutX="9.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../data/img/profile_img.jpg" />
+                                                   </image>
+                                                </ImageView>
+                                                <Text fx:id="joinerID0111311" layoutX="96.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="상태  : " wrappingWidth="48.0" />
+                                             </children>
+                                          </Group>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane id="player04" layoutX="1.0" layoutY="442.0" prefHeight="136.0" prefWidth="234.0" style="-fx-border-color: #000000;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <children>
+                                          <Group>
+                                             <children>
+                                                <Text fx:id="joinerID011121111" layoutX="100.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="STAT input">
+                                                   <font>
+                                                      <Font size="19.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fx:id="joinerID01111111" layoutX="96.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                                <Text fx:id="joinerID01112111" layoutX="100.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID input">
+                                                   <font>
+                                                      <Font size="19.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fx:id="joinerID0111111" layoutX="96.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="아이디 : " />
+                                                <ImageView fx:id="joinerIMG0111111" fitHeight="127.0" fitWidth="93.0" layoutX="9.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../data/img/profile_img.jpg" />
+                                                   </image>
+                                                </ImageView>
+                                                <Text fx:id="joinerID01113111" layoutX="96.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="상태  : " wrappingWidth="48.0" />
+                                             </children>
+                                          </Group>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane id="player04" layoutY="578.0" prefHeight="136.0" prefWidth="234.0" style="-fx-border-color: #000000;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <children>
+                                          <Group>
+                                             <children>
+                                                <Text fx:id="joinerID0111211111" layoutX="100.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="STAT input">
+                                                   <font>
+                                                      <Font size="19.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fx:id="joinerID011111111" layoutX="96.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                                <Text fx:id="joinerID011121111" layoutX="100.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID input">
+                                                   <font>
+                                                      <Font size="19.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fx:id="joinerID01111111" layoutX="96.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="아이디 : " />
+                                                <ImageView fx:id="joinerIMG01111111" fitHeight="127.0" fitWidth="93.0" layoutX="9.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../data/img/profile_img.jpg" />
+                                                   </image>
+                                                </ImageView>
+                                                <Text fx:id="joinerID011131111" layoutX="96.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="상태  : " wrappingWidth="48.0" />
+                                             </children>
+                                          </Group>
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </AnchorPane>
+                              <Canvas fx:id="canvas" height="809.0" layoutX="20.0" layoutY="20.0" onMouseDragged="#mouseDrag" onMousePressed="#mousePress" onMouseReleased="#mouseRelease" width="511.0" AnchorPane.topAnchor="20.0">
                                  <cursor>
                                     <Cursor fx:constant="CROSSHAIR" />
-                                 </cursor></Canvas>
-                              <AnchorPane id="그림도구" layoutX="5.0" layoutY="554.0" prefHeight="51.0" prefWidth="530.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="-5.0">
+                                 </cursor>
+                              </Canvas>
+                              <AnchorPane id="그림도구" layoutX="5.0" layoutY="554.0" prefHeight="51.0" prefWidth="530.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
                                  <children>
-                                    <VBox layoutX="389.0" layoutY="17.0" maxWidth="200.0" minWidth="-Infinity" prefHeight="50.0" prefWidth="106.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="35.0">
+                                    <VBox layoutX="389.0" layoutY="17.0" maxWidth="200.0" minWidth="-Infinity" prefHeight="50.0" prefWidth="106.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="389.0">
                                        <children>
                                           <Text layoutX="380.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="선굵기" AnchorPane.leftAnchor="381.0" AnchorPane.rightAnchor="48.0" />
                                           <Slider fx:id="slider" layoutX="381.0" layoutY="43.0" max="20.0" min="1.0" onDragExited="#setDrawLine" prefHeight="36.0" prefWidth="150.0" showTickLabels="true" showTickMarks="true" AnchorPane.leftAnchor="381.0" AnchorPane.rightAnchor="48.0" />
                                        </children>
                                     </VBox>
-                                    <HBox alignment="CENTER" layoutX="30.0" layoutY="15.0" prefHeight="37.0" prefWidth="346.0" spacing="10.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="154.0">
+                                    <HBox alignment="CENTER" layoutX="30.0" layoutY="15.0" prefHeight="37.0" prefWidth="346.0" spacing="10.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
                                        <children>
                                           <Button fx:id="clearCanvas" layoutX="14.0" layoutY="22.0" mnemonicParsing="false" onAction="#clearAction" prefHeight="36.0" prefWidth="54.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000; -fx-border-style-border: 5;" text="지우기">
                                              <font>
