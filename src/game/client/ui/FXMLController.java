@@ -668,8 +668,8 @@ public class FXMLController implements Runnable, Initializable {
 						loginBox.setVisible(false);// 로그인 정보 입력 패널 숨기기
 						loginInfoPane.setVisible(true);
 						welcomeTxt.setText("아이디 : " + loginUser.getId());
-
-						this.showloadingPane(3000);// 스트림 보내고 리스너 기다리는 동안
+						//FIXME 0으로 임시 변경
+						this.showloadingPane(0);// 스트림 보내고 리스너 기다리는 동안
 						JOptionPane.showMessageDialog(null, loginUser.getId() + "님 접속을 환영합니다.");
 
 						// GUI활성화
@@ -721,6 +721,7 @@ public class FXMLController implements Runnable, Initializable {
 						column01.setCellValueFactory(new PropertyValueFactory<>("hostID"));
 						column02.setCellValueFactory(new PropertyValueFactory<>("roomTitle"));
 
+							tdata.clear();//FIXME 
 						for (Entry<String, GameRoom> entry : roomList.entrySet()) {
 
 							String roomID = entry.getValue().getRoomId();
@@ -736,37 +737,10 @@ public class FXMLController implements Runnable, Initializable {
 
 							makerID.add(roomMakerId);
 							roomtitlearr.add(roomTitle);
+							
 							tdata.add(new modelClass(roomMakerId, roomTitle));
 						}
-
 						tableView.setItems(tdata);
-
-						// ObservableList ob =
-						// FXCollections.observableArrayList(
-						// new Phoe("1-1","1-2")
-						// );
-						// System.out.println(ob +"ob");
-						// tableView.setItems(ob);
-						// System.out.println(tableView.getColumns().add(pp)+"1111");
-
-						// column01.setCellValueFactory(new
-						// PropertyValueFactory("hostID"));
-						// column02.setCellValueFactory(new
-						// PropertyValueFactory("roomTitle"));
-						// column03.setCellValueFactory(new
-						// PropertyValueFactory("roomTitle"));
-
-						// tableView.getItems().addAll(ob);
-
-						// System.out.println(tableView.getItems()+"123");
-						// ObservableList<ArrayList<String>> row1 =
-						// FXCollections.observableArrayList();
-						// ObservableList<ArrayList<String>> row2 =
-						// FXCollections.observableArrayList();
-						// row1.add(makerID);
-						// row2.add(roomtitle);
-						// tableView.getItems().add(row1);
-						// tableView.getItems().add(row2);
 
 					}
 
@@ -1091,4 +1065,18 @@ public class FXMLController implements Runnable, Initializable {
 
 	}
 
+	@FXML 
+	public void joinMouseAction(MouseEvent e){
+		modelClass mo = (modelClass) tableView.getSelectionModel().getSelectedItem();
+		if (JOptionPane.showConfirmDialog(null, "해당 방에 입장하시겠습니까?", "방선택",
+		        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+		    // yes option 방에 입장 
+			String joinRoomID = mo.getHostID();
+			data.setJoinRoomID(joinRoomID);
+			this.sendData(data); 
+			
+			
+			
+		}
+	}
 }

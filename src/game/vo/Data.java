@@ -22,6 +22,7 @@ public class Data implements Serializable {
 	private MainInfo mainInfo;
 	private ArrayList<String> allUserIds;
 	private int gameType;//게임선택 
+	private String joinRoomID;
 
 	public static final int GAME_FIRST = 300; // 게임방 생성
 	public static final int GAME_SECOND = 350; // 아재 게임방 생성
@@ -180,5 +181,16 @@ public class Data implements Serializable {
 				+ ", user=" + user + ", userList=" + userList + ", roomList=" + roomList + ", clientMessage="
 				+ clientMessage + ", friend=" + friend + ", mainInfo=" + mainInfo + "]";
 	}
+
+
+
+	public String getJoinRoomID() {
+		return joinRoomID;
+	}
+
+	public void setJoinRoomID(String joinRoomID) {
+		this.joinRoomID = joinRoomID;
+	}
+	
 
 }
