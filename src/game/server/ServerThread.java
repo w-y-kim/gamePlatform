@@ -149,7 +149,7 @@ public class ServerThread implements Runnable {
 					}else if(gametype==400){
 						data.setRoomList(gameRoomList3);
 					}
-					broadCasting(data);
+					send(data);
 					break; 
 				case Data.CHAT_MESSAGE:
 					
@@ -170,10 +170,7 @@ public class ServerThread implements Runnable {
 					gameRoomList3.put(gr.getUser().getId(), gr);
 					data.setRoomList(gameRoomList3);
 					}
-
-				
-
-					broadCasting(data);
+ 				broadCasting(data);
 
 					break;
 				case Data.GAME_READY:
