@@ -159,15 +159,24 @@ public class ServerThread implements Runnable {
 
 				case Data.JOIN:
 //					int gmtype = data.getGameType();
-					String roomId = data.getGameRoom().getRoomId();
+					String roomId = data.getJoinRoomID();
+					ArrayList<User> roomusers;
+					GameRoom garo = null;
 					if(gametype == Data.GAME_SECOND){
-						gameRoomList2.get(roomId).getUserList().add(loginUser);
-						data.setRoomList(gameRoomList2);
+						garo = gameRoomList2.get(roomId);
+						roomusers = garo.getUserList();
+						roomusers.add(loginUser);
+						garo.setUserList(roomusers);
+						gameRoomList2.get(roomId).setUserList(roomusers);
 					}else if(gametype == Data.GAME_THIRD){
-						gameRoomList3.get(roomId).getUserList().add(loginUser);
-						data.setRoomList(gameRoomList3);
+						garo = gameRoomList3.get(roomId);
+						roomusers = garo.getUserList();
+						roomusers.add(loginUser);
+						garo.setUserList(roomusers);
+						gameRoomList2.get(roomId).setUserList(roomusers);
 					}
-					
+					data.setGameRoom(garo);
+					sendDataRoommate(data);
 					break;
 				case Data.MAKE_ROOM:
 					int type = data.getGameType();
@@ -259,10 +268,22 @@ public class ServerThread implements Runnable {
 	public void sendMemo(User rcUser) throws IOException { // 받는 사람 user id
 		// 로그인한 유저에게 쪽지 보냄
 		rcUser.getOos().writeObject(data);
+		rcUser.getOos().reset();
 	}
-
+//userList에 있는 유저들 한테만 oos
 	public void sendDataRoommate(Data data) {
-
+		ArrayList<User> gamelists =data.getGameRoom().getUserList();
+		for (User user : gamelists) {
+			try {
+				user.getOos().writeObject(data);
+				user.getOos().reset();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
 	}
 
 	public void broadCasting(Data data) throws IOException {
