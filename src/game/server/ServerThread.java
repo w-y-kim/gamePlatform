@@ -158,6 +158,16 @@ public class ServerThread implements Runnable {
 					break;
 
 				case Data.JOIN:
+					int gmtype = data.getGameType();
+					String roomId = data.getGameRoom().getRoomId();
+					if(gmtype == Data.GAME_SECOND){
+						gameRoomList2.get(roomId).getUserList().add(loginUser);
+						data.setRoomList(gameRoomList2);
+					}else if(gmtype == Data.GAME_THIRD){
+						gameRoomList3.get(roomId).getUserList().add(loginUser);
+						data.setRoomList(gameRoomList3);
+					}
+					
 					break;
 				case Data.MAKE_ROOM:
 					int type = data.getGameType();
@@ -165,9 +175,13 @@ public class ServerThread implements Runnable {
 					GameRoom gr = data.getGameRoom();
 
 					if (type == 350) {// 아재 마인드
+						 ArrayList<String> sug_words = db.getSugWords("아재마인드");
+						 gr.setWords(sug_words);
 						gameRoomList2.put(gr.getUser().getId(), gr);
 						data.setRoomList(gameRoomList2);
 					} else if (type == 400) {// 사악 마인드
+						 ArrayList<String> sug_words1 = db.getSugWords("사악마인드");
+						 gr.setWords(sug_words1);
 						gameRoomList3.put(gr.getUser().getId(), gr);
 						data.setRoomList(gameRoomList3);
 					}
