@@ -76,8 +76,10 @@ import javafx.scene.paint.*;
  */
 public class FXMLController implements Runnable, Initializable {
 
-	ArrayList<String> makerID;
-	ArrayList<String> roomtitlearr;
+	ArrayList<String> makerID = new ArrayList<>();
+	ArrayList<String> roomtitlearr = new ArrayList<>();
+	
+
 	// 접속단계
 	@FXML
 	private ListView<Object> allUserList;
@@ -557,7 +559,8 @@ public class FXMLController implements Runnable, Initializable {
 			txtArea_main02.setDisable(true);
 			txtArea_main03.setDisable(true);
 			data.setGameType(0);// 디폴트로 바꿔줌
-
+			
+			tdata.clear();
 		}
 	}
 
@@ -668,7 +671,7 @@ public class FXMLController implements Runnable, Initializable {
 						loginBox.setVisible(false);// 로그인 정보 입력 패널 숨기기
 						loginInfoPane.setVisible(true);
 						welcomeTxt.setText("아이디 : " + loginUser.getId());
-						//FIXME 0으로 임시 변경
+						// FIXME 0으로 임시 변경
 						this.showloadingPane(0);// 스트림 보내고 리스너 기다리는 동안
 						JOptionPane.showMessageDialog(null, loginUser.getId() + "님 접속을 환영합니다.");
 
@@ -688,15 +691,7 @@ public class FXMLController implements Runnable, Initializable {
 					break;
 				case Data.SELECT_GAME:
 					roomList = data.getRoomList();
-					for (Entry<String, GameRoom> entry : roomList.entrySet()) {
-						String roomID = entry.getValue().getRoomId();
-						// String roomID = entry.getValue().
-						// TODO 선택한 게임에 대해 테이블 띄우기
-						// ObservableList<GameRoom> tData =
-						// (ObservableList<GameRoom>) entry.getValue();
-
-						// TODO makeRoom 해야지 확인 가능
-					}
+					this.renewAllTable(roomList);
 
 					break;
 				case Data.JOIN:
@@ -715,32 +710,8 @@ public class FXMLController implements Runnable, Initializable {
 					if (loginUser.getSelectedGame() == data.getGameType()) {
 						// 지금 내 게임 타입이 서버에서 보내주는 데이터에 기록된 게임 타입과 같은 경우 >>
 						roomList = data.getRoomList();
-						makerID = new ArrayList<>();
-						roomtitlearr = new ArrayList<>();
-
-						column01.setCellValueFactory(new PropertyValueFactory<>("hostID"));
-						column02.setCellValueFactory(new PropertyValueFactory<>("roomTitle"));
-
-							tdata.clear();//FIXME 
-						for (Entry<String, GameRoom> entry : roomList.entrySet()) {
-
-							String roomID = entry.getValue().getRoomId();
-							room = entry.getValue();
-
-							String roomMakerId = entry.getValue().getUser().getId();
-							String roomTitle = entry.getValue().getRoomId();
-							String roomPw = entry.getValue().getRoomPw();
-
-							System.out.println(roomMakerId);
-							System.out.println(roomTitle);
-							System.out.println(roomPw);
-
-							makerID.add(roomMakerId);
-							roomtitlearr.add(roomTitle);
-							
-							tdata.add(new modelClass(roomMakerId, roomTitle));
-						}
-						tableView.setItems(tdata);
+						
+						this.renewAllTable(roomList);
 
 					}
 
@@ -815,11 +786,11 @@ public class FXMLController implements Runnable, Initializable {
 					connectedUserList = data.getUserList();
 					renewalConUserList();
 
-//					// 로그아웃한 사람만, 버튼에다가 넣자(이미 빠져서 와서 당사자 갱신 방법이 없음)
-//					if (loginUser.getId().equals(data.getUser())) {
-//						System.out.println("로그아웃한 사람만 실행");
-//						
-//					}
+					// // 로그아웃한 사람만, 버튼에다가 넣자(이미 빠져서 와서 당사자 갱신 방법이 없음)
+					// if (loginUser.getId().equals(data.getUser())) {
+					// System.out.println("로그아웃한 사람만 실행");
+					//
+					// }
 
 					break;
 				default:
@@ -837,6 +808,36 @@ public class FXMLController implements Runnable, Initializable {
 				}
 			} // catch
 		} // while
+	}
+
+	/**테이블 갱신 
+	 * 셀렉트게임, 메이크룸에서 사용 
+	 * @param roomList 
+	 * 
+	 */
+	private void renewAllTable(HashMap<String, GameRoom> roomList) {
+		column01.setCellValueFactory(new PropertyValueFactory<>("hostID"));
+		column02.setCellValueFactory(new PropertyValueFactory<>("roomTitle"));
+		tdata.clear();
+		for (Entry<String, GameRoom> entry : roomList.entrySet()) {
+
+			String roomID = entry.getValue().getRoomId();
+			room = entry.getValue();
+
+			String roomMakerId = entry.getValue().getUser().getId();
+			String roomTitle = entry.getValue().getRoomId();
+			String roomPw = entry.getValue().getRoomPw();
+
+			System.out.println(roomMakerId);
+			System.out.println(roomTitle);
+			System.out.println(roomPw);
+
+			makerID.add(roomMakerId);
+			roomtitlearr.add(roomTitle);
+
+			tdata.add(new modelClass(roomMakerId, roomTitle));
+		}
+		tableView.setItems(tdata);		
 	}
 
 	private void showloadingPane(long time) {
@@ -1065,18 +1066,16 @@ public class FXMLController implements Runnable, Initializable {
 
 	}
 
-	@FXML 
-	public void joinMouseAction(MouseEvent e){
+	@FXML
+	public void joinMouseAction(MouseEvent e) {
 		modelClass mo = (modelClass) tableView.getSelectionModel().getSelectedItem();
 		if (JOptionPane.showConfirmDialog(null, "해당 방에 입장하시겠습니까?", "방선택",
-		        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-		    // yes option 방에 입장 
+				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+			// yes option 방에 입장
 			String joinRoomID = mo.getHostID();
 			data.setJoinRoomID(joinRoomID);
-			this.sendData(data); 
-			
-			
-			
+			this.sendData(data);
+
 		}
 	}
 }

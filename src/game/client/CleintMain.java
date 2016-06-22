@@ -63,7 +63,7 @@ public class CleintMain extends Application {
 	}
 
 	public void Sound(String file, boolean Loop) {
-		// 사운드재생용메소드
+		// 사운드재생용메소드~
 		// 메인 클래스에 추가로 메소드를 하나 더 만들었습니다.
 		// 사운드파일을받아들여해당사운드를재생시킨다.
 		Clip clip;
