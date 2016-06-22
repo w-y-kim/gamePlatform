@@ -748,15 +748,18 @@ public class FXMLController implements Runnable, Initializable {
 					data.getUser();// 방장분기조건
 					data.getGameType();// 게임타입분기조건
 					glist = data.getGameRoom().getUserList();
+					System.out.println(data.getJoinRoomID()+"1111111111111111111"+myjoinRoomID);
 					boolean check1 = this.myjoinRoomID.equals(data.getJoinRoomID());// 조인한
 																					// 사람만(방장제외
 																					// 들어온
 																					// 사람)
-					boolean check2 = this.loginUser.equals(data.getJoinRoomID());// 내가
+					boolean check2 = this.loginUser.getId().equals(data.getJoinRoomID());// 내가
 																					// 만든
 																					// 방인
 																					// 경우
 					ready = false;
+					System.out.println(check1+"조건1");
+					System.out.println(check2+"조건2");
 					if (check1 || check2) {
 
 						txtArea_chatLog.appendText(data.getUser().getId() + "님이 입장하셨습니다." + "\n");
@@ -786,22 +789,27 @@ public class FXMLController implements Runnable, Initializable {
 							switch (i) {
 							case 0:
 								playerPane01.setVisible(true);
+								playerID_01.setText("");
 								playerID_01.setText(myName);
 								break;
 							case 1:
 								playerPane02.setVisible(true);
+								playerID_02.setText("");
 								playerID_02.setText(myName);
 								break;
 							case 2:
 								playerPane03.setVisible(true);
+								playerID_03.setText("");
 								playerID_03.setText(myName);
 								break;
 							case 3:
 								playerPane04.setVisible(true);
+								playerID_04.setText("");
 								playerID_04.setText(myName);
 								break;
 							case 4:
 								playerPane05.setVisible(true);
+								playerID_05.setText("");
 								playerID_05.setText(myName);
 								break;
 
@@ -822,6 +830,14 @@ public class FXMLController implements Runnable, Initializable {
 					if (loginUser.getId().equals(data.getUser().getId())) {
 						groupBtnRoom.setDisable(true);// 방만들었으니 만들기 버튼그룹 불활성화
 
+						playerPane01.setVisible(true);
+						playerID_01.setText("");
+						playerID_01.setText(loginUser.getId());
+						
+						
+						
+						
+						
 					}
 					// 타입구분, 게임룸 펼치기
 					// 방만들어지면 해당 게임 선택한 사람들한테만 리스트 갱신해 줌
