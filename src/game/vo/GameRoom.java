@@ -56,7 +56,9 @@ public class GameRoom implements Serializable{
 	public void setWords(ArrayList<String> words) {
 		this.words = words;
 	}
-
+//턴메소드
+	
+//제시어 뱉어내는 메소드
 	
 
 }
