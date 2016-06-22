@@ -48,6 +48,7 @@ import javafx.scene.control.TableView.TableViewFocusModel;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -75,6 +76,8 @@ import javafx.scene.paint.*;
  */
 public class FXMLController implements Runnable, Initializable {
 
+	ArrayList<String> makerID;
+	ArrayList<String> roomtitlearr;
 	// 접속단계
 	@FXML
 	private ListView<Object> allUserList;
@@ -188,8 +191,12 @@ public class FXMLController implements Runnable, Initializable {
 	// 게임 선택 후 게임방목록 테이블
 	@FXML
 	private TableView tableView;
+	@FXML
 	private TableColumn column01;
+	@FXML
 	private TableColumn column02;
+	@FXML
+	private TableColumn column03;
 
 	// 게임방
 	@FXML
@@ -438,8 +445,9 @@ public class FXMLController implements Runnable, Initializable {
 		JOptionPane.showMessageDialog(null, "아재마인드 게임을 선택하셨습니다. " + "\n" + "방만들기를 하시거나 우측테이블에서 방을 클릭해주세요");
 
 		groupBtnRoom.setDisable(false);
-		data.getUser().setSelectedGame(Data.GAME_SECOND);//내 정보에도 저장 
-		
+		data.setUser(loginUser);
+		data.getUser().setSelectedGame(Data.GAME_SECOND);// 내 정보에도 저장
+
 		data.setCommand(Data.SELECT_GAME);
 		data.setGameType(Data.GAME_SECOND);
 		this.sendData(data);
@@ -639,62 +647,119 @@ public class FXMLController implements Runnable, Initializable {
 					System.out.println("2. 로그인명령 처리결과 들어옴");
 
 					User user = data.getUser();// 로그인한사람
-				if (user == null) {//비번이 틀렸거나 이미 로그인 중일 때 
-					String errorMsg = data.getError();
-					if (errorMsg.equals("이미 로그인 중")) {
-						JOptionPane.showMessageDialog(null, "이미 로그인 중인 아이디 입니다.");
-					}else JOptionPane.showMessageDialog(null, "비밀번호가 틀렸습니다.");
-					
-				}else{//정상로그인
-					System.out.println(user + "로그인명령에서 받아온 유저데이터");
+					if (user == null) {// 비번이 틀렸거나 이미 로그인 중일 때
+						String errorMsg = data.getError();
+						if (errorMsg.equals("이미 로그인 중")) {
+							JOptionPane.showMessageDialog(null, "이미 로그인 중인 아이디 입니다.");
+						} else
+							JOptionPane.showMessageDialog(null, "비밀번호가 틀렸습니다.");
+
+					} else {// 정상로그인
+						System.out.println(user + "로그인명령에서 받아온 유저데이터");
+						connectedUserList = data.getUserList();
+						System.out.println(connectedUserList + "로그인명령에서 받아온 유저리스트");
+						ArrayList<Friend> friendList = data.getFriendList();
+						// renewalConUserList();
+						System.out.println("3. 로그인명령 처리 결과 UI반영");
+						// GUI 로그인 안보이도록 함
+
+						loginBox.setVisible(false);// 로그인 정보 입력 패널 숨기기
+						loginInfoPane.setVisible(true);
+						welcomeTxt.setText("아이디 : " + loginUser.getId());
+
+						this.showloadingPane(3000);// 스트림 보내고 리스너 기다리는 동안
+						JOptionPane.showMessageDialog(null, loginUser.getId() + "님 접속을 환영합니다.");
+
+						// GUI활성화
+						CommandPane.setDisable(false);
+						txtArea_chatLog.setDisable(false);
+						chatGroup.setDisable(false);
+						roomListPane.setDisable(false);
+						mainPane.setDisable(false);
+						// mainPane.setVisible(true);//바로 홈 보이기, 메인버튼
+					}
+					break;
+				case Data.GUL:
 					connectedUserList = data.getUserList();
-					System.out.println(connectedUserList + "로그인명령에서 받아온 유저리스트");
-					ArrayList<Friend> friendList = data.getFriendList();
-					// renewalConUserList();
-					System.out.println("3. 로그인명령 처리 결과 UI반영");
-					// GUI 로그인 안보이도록 함
-
-					loginBox.setVisible(false);// 로그인 정보 입력 패널 숨기기
-					loginInfoPane.setVisible(true);
-					welcomeTxt.setText("아이디 : " + loginUser.getId());
-
-					this.showloadingPane(3000);// 스트림 보내고 리스너 기다리는 동안
-					JOptionPane.showMessageDialog(null, loginUser.getId() + "님 접속을 환영합니다.");
-
-					//접속자갱신
-					this.renewalConUserList();
-					// GUI활성화
-					CommandPane.setDisable(false);
-					txtArea_chatLog.setDisable(false);
-					chatGroup.setDisable(false);
-					roomListPane.setDisable(false);
-					mainPane.setDisable(false);
-					// mainPane.setVisible(true);//바로 홈 보이기, 메인버튼
-				}
+					// 접속자갱신
+					renewalConUserList();
 					break;
 				case Data.SELECT_GAME:
-					// TODO 선택한 게임에 따른 방만들기, 테이블 보여줄 것
-					// 유니캐스트 받음 
-					HashMap<String, GameRoom> roomList = data.getRoomList();
+					roomList = data.getRoomList();
 					for (Entry<String, GameRoom> entry : roomList.entrySet()) {
 						String roomID = entry.getValue().getRoomId();
 						// String roomID = entry.getValue().
+						// TODO 선택한 게임에 대해 테이블 띄우기
+//						ObservableList<GameRoom> tData = (ObservableList<GameRoom>) entry.getValue();
+
+						// TODO makeRoom 해야지 확인 가능
 					}
 
 					break;
 				case Data.JOIN:
 					break;
 				case Data.MAKE_ROOM:
-					System.out.println(data.getUser().getId()+" 로부터"+loginUser+" 에게 Make_Room리스너 들어옴 ");
-					//만든 사람만 보여줄 퍼포먼스 
+					System.out.println(data.getUser() + "서버에서 보내는 데이터의 유저(최초생성자)");
+					System.out.println(data.getUser().getId() + " 로부터" + loginUser + " 에게 Make_Room리스너 들어옴 ");
+
+					// 만든 사람만 보여줄 퍼포먼스[게임 종류 상관없음]
 					if (loginUser.getId().equals(data.getUser().getId())) {
 						groupBtnRoom.setDisable(true);// 방만들었으니 만들기 버튼그룹 불활성화
+
 					}
-					
-					// 방만들어지면 해당 게임 선택한 사람들한테만 리스트 갱신해 줌 
+					// 타입구분, 게임룸 펼치기
+					// 방만들어지면 해당 게임 선택한 사람들한테만 리스트 갱신해 줌
 					if (loginUser.getSelectedGame() == data.getGameType()) {
-						ObservableList<GameRoom> tData = (ObservableList<GameRoom>) data.getGameRoom();
-						tableView.setItems(tData);
+						// 지금 내 게임 타입이 서버에서 보내주는 데이터에 기록된 게임 타입과 같은 경우 >>
+						roomList = data.getRoomList();
+						makerID = new ArrayList<>();
+						roomtitlearr = new ArrayList<>();
+
+						for (Entry<String, GameRoom> entry : roomList.entrySet()) {
+
+							String roomID = entry.getValue().getRoomId();
+							room = entry.getValue();
+
+							String roomMakerId = entry.getValue().getUser().getId();
+							String roomTitle = entry.getValue().getRoomId();
+							String roomPw = entry.getValue().getRoomPw();
+
+							System.out.println(roomMakerId);
+							System.out.println(roomTitle);
+							System.out.println(roomPw);
+
+							makerID.add(roomMakerId);
+							roomtitlearr.add(roomTitle);
+						}
+
+						// ObservableList ob =
+						// FXCollections.observableArrayList(
+						// new Phoe("1-1","1-2")
+						// );
+						// System.out.println(ob +"ob");
+						// tableView.setItems(ob);
+						// System.out.println(tableView.getColumns().add(pp)+"1111");
+
+//						column01.setCellValueFactory(new PropertyValueFactory("hostID"));
+//						column02.setCellValueFactory(new PropertyValueFactory("roomTitle"));
+//						column03.setCellValueFactory(new PropertyValueFactory("roomTitle"));
+						
+						ObservableList<GameRoom> ob = FXCollections.observableArrayList(room,room,room);
+						 System.out.println(ob + "ob");
+						 
+						 tableView.setItems(ob);
+//						 tableView.getItems().addAll(ob);
+						
+						 System.out.println(tableView.getItems()+"123");
+						// ObservableList<ArrayList<String>> row1 =
+						// FXCollections.observableArrayList();
+						// ObservableList<ArrayList<String>> row2 =
+						// FXCollections.observableArrayList();
+						// row1.add(makerID);
+						// row2.add(roomtitle);
+						// tableView.getItems().add(row1);
+						// tableView.getItems().add(row2);
+
 					}
 
 					break;
@@ -767,13 +832,13 @@ public class FXMLController implements Runnable, Initializable {
 					System.out.println("로그아웃명령실행");
 					connectedUserList = data.getUserList();
 					renewalConUserList();
-					
-					//로그아웃한 사람만 
+
+					// 로그아웃한 사람만
 					if (loginUser.getId().equals(data.getUser())) {
 						System.out.println("로그아웃한 사람만 실행");
 						loginBox.setVisible(true);
 						loginInfoPane.setVisible(false);
-						
+
 						// GUI활성화
 						CommandPane.setDisable(true);
 						txtArea_chatLog.setDisable(true);
@@ -781,7 +846,7 @@ public class FXMLController implements Runnable, Initializable {
 						roomListPane.setDisable(true);
 						mainPane.setDisable(true);
 					}
-					
+
 					break;
 				default:
 					break;
@@ -862,7 +927,7 @@ public class FXMLController implements Runnable, Initializable {
 		gc.stroke();
 		System.out.println(event.getX() + "," + event.getY() + "프레스송신");// 찍는 위치
 		ginfo = new GameInfo(event.getX(), event.getY());
-		data.setUser(loginUser);
+
 		data.setCommand(Data.DRAW_READY);
 		data.setGameInfo(ginfo);
 		this.sendData(data);
@@ -878,6 +943,8 @@ public class FXMLController implements Runnable, Initializable {
 	ArrayList<double[]> geographicInfo;
 	private ArrayList<double[]> xyArray;
 	private String userMsg;
+	private HashMap<String, GameRoom> roomList;
+	private GameRoom room;
 
 	@FXML
 	public void mouseDrag(MouseEvent event) {
@@ -937,6 +1004,9 @@ public class FXMLController implements Runnable, Initializable {
 			}
 
 		});
+		
+//		tableView.getItems();
+//		System.out.println(tableView.getItems());
 
 	}
 
