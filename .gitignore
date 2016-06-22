@@ -3,3 +3,5 @@
 *.class
 *.fxml
 *.ctl
+*.ini
+*.gitignore
