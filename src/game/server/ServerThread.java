@@ -165,6 +165,7 @@ public class ServerThread implements Runnable {
 					if(gametype == Data.GAME_SECOND){
 						garo = gameRoomList2.get(roomId);
 						roomusers = garo.getUserList();
+						System.out.println(roomusers+"dddddddddddddddddddddddddddddddd");
 						roomusers.add(loginUser);
 						garo.setUserList(roomusers);
 						gameRoomList2.get(roomId).setUserList(roomusers);

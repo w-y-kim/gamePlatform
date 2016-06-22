@@ -212,37 +212,36 @@ public class FXMLController implements Runnable, Initializable {
 	private AnchorPane playerPane04;
 	@FXML
 	private AnchorPane playerPane05;
-	@FXML 
-	private Text playerID_01; 
-	@FXML 
-	private Text playerID_02; 
-	@FXML 
-	private Text playerID_03; 
-	@FXML 
-	private Text playerID_04; 
-	@FXML 
-	private Text playerID_05; 
-	@FXML 
+	@FXML
+	private Text playerID_01;
+	@FXML
+	private Text playerID_02;
+	@FXML
+	private Text playerID_03;
+	@FXML
+	private Text playerID_04;
+	@FXML
+	private Text playerID_05;
+	@FXML
 	private Text playerSTAT_01;
-	@FXML 
+	@FXML
 	private Text playerSTAT_02;
-	@FXML 
+	@FXML
 	private Text playerSTAT_03;
-	@FXML 
+	@FXML
 	private Text playerSTAT_04;
-	@FXML 
+	@FXML
 	private Text playerSTAT_05;
-	@FXML 
+	@FXML
 	private ImageView playerIMG_01;
-	@FXML 
+	@FXML
 	private ImageView playerIMG_02;
-	@FXML 
+	@FXML
 	private ImageView playerIMG_03;
-	@FXML 
+	@FXML
 	private ImageView playerIMG_04;
-	@FXML 
+	@FXML
 	private ImageView playerIMG_05;
-	
 
 	// 게임방
 	@FXML
@@ -261,6 +260,8 @@ public class FXMLController implements Runnable, Initializable {
 	private Button btnOut;
 	@FXML
 	private Text TxtAnswer; // 제시어
+	@FXML
+	private Button btn_gstart;
 
 	private GraphicsContext gc;
 	private int i;
@@ -741,9 +742,12 @@ public class FXMLController implements Runnable, Initializable {
 					this.renewAllTable(roomList);
 
 					break;
-				case Data.JOIN:
+
+				case Data.JOIN: // 같은 게임룸에 들어간 사람만 받음. Data에는
+								// gameRoom(userlist,words) 가 있음
 					data.getUser();// 방장분기조건
 					data.getGameType();// 게임타입분기조건
+					glist = data.getGameRoom().getUserList();
 					boolean check1 = this.myjoinRoomID.equals(data.getJoinRoomID());// 조인한
 																					// 사람만(방장제외
 																					// 들어온
@@ -752,11 +756,59 @@ public class FXMLController implements Runnable, Initializable {
 																					// 만든
 																					// 방인
 																					// 경우
+					ready = false;
 					if (check1 || check2) {
+
+						txtArea_chatLog.appendText(data.getUser().getId() + "님이 입장하셨습니다." + "\n");
+						if (glist.size() >= 2) {
+							ready = true;
+							// userlist size 검사 해서 2명 이상 입장했을 때(gameRoomd의 유저리스트
+							// size가 2이상일 때)
+							// ready =true 로 바꾸기
+							if (check2) {// 방장만
+								JOptionPane.showMessageDialog(null, "게임 시작가능합니다.");
+								btn_gstart.setDisable(false);
+							}
+						}
+
+						// 방장의 시작버튼(비활성화 였다가) ready가 true면 활성화
 						// TODO 조인 -- 게임방유저목록 추가해주고
+						// for (User e : glist) {
+						// String myName = e.getId();
+						// int myimg = e.getPfimg();
+						//// playerSTAT_01.
+						//// playerIMG_01.setImage(value);
+						// }
+						for (int i = 0; i < glist.size(); i++) {
+							String myName = glist.get(i).getId();
+							int myimg = glist.get(i).getPfimg();
 
-						// TODO 채팅창에 알려주고
+							switch (i) {
+							case 0:
+								playerPane01.setVisible(true);
+								playerID_01.setText(myName);
+								break;
+							case 1:
+								playerPane02.setVisible(true);
+								playerID_02.setText(myName);
+								break;
+							case 2:
+								playerPane03.setVisible(true);
+								playerID_03.setText(myName);
+								break;
+							case 3:
+								playerPane04.setVisible(true);
+								playerID_04.setText(myName);
+								break;
+							case 4:
+								playerPane05.setVisible(true);
+								playerID_05.setText(myName);
+								break;
 
+							default:
+								break;
+							}
+						}
 						// 게임판 보여주고
 						this.showGamePane();
 
@@ -1012,6 +1064,8 @@ public class FXMLController implements Runnable, Initializable {
 	private HashMap<String, GameRoom> roomList;
 	private GameRoom room;
 	private String myjoinRoomID;
+	private boolean ready;
+	private ArrayList<User> glist;
 
 	@FXML
 	public void mouseDrag(MouseEvent event) {

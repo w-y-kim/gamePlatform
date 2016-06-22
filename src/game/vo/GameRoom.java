@@ -8,7 +8,7 @@ public class GameRoom implements Serializable{
 	private User user; //방장
 	private String title; 
 	private String roomPw; 
-	private ArrayList<User> userList;
+	private ArrayList<User> userList = new ArrayList<User>();
 	private ArrayList<String> words;
 	
 	public GameRoom(User loginUser, String roomId, String roomPw) {
