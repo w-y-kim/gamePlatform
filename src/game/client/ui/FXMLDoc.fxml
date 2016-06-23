@@ -427,11 +427,11 @@
                                                 <Font name="System Bold" size="12.0" />
                                              </font>
                                           </Button>
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="28.0" layoutX="86.0" layoutY="26.0" stroke="BLACK" strokeType="INSIDE" width="29.0" />
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f7ef00" height="28.0" layoutX="119.0" layoutY="26.0" stroke="BLACK" strokeType="INSIDE" width="29.0" />
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#12ff31" height="28.0" layoutX="152.0" layoutY="26.0" stroke="BLACK" strokeType="INSIDE" width="29.0" />
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="28.0" layoutX="185.0" layoutY="26.0" stroke="BLACK" strokeType="INSIDE" width="29.0" />
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" height="28.0" layoutX="251.0" layoutY="26.0" stroke="BLACK" strokeType="INSIDE" width="29.0" />
+                                          <Rectangle fx:id="changeRed" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="28.0" layoutX="86.0" layoutY="26.0" onMouseClicked="#changeColor" stroke="BLACK" strokeType="INSIDE" width="29.0" />
+                                          <Rectangle fx:id="changeYellow" arcHeight="5.0" arcWidth="5.0" fill="#f7ef00" height="28.0" layoutX="119.0" layoutY="26.0" onMouseClicked="#changeColor" stroke="BLACK" strokeType="INSIDE" width="29.0" />
+                                          <Rectangle fx:id="changeGreen" arcHeight="5.0" arcWidth="5.0" fill="#12ff31" height="28.0" layoutX="152.0" layoutY="26.0" onMouseClicked="#changeColor" stroke="BLACK" strokeType="INSIDE" width="29.0" />
+                                          <Rectangle fx:id="changeBlue" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="28.0" layoutX="185.0" layoutY="26.0" onMouseClicked="#changeColor" stroke="BLACK" strokeType="INSIDE" width="29.0" />
+                                          <Rectangle fx:id="changeBlack" arcHeight="5.0" arcWidth="5.0" height="28.0" layoutX="251.0" layoutY="26.0" onMouseClicked="#changeColor" stroke="BLACK" strokeType="INSIDE" width="29.0" />
                                           <ColorPicker fx:id="colorPicker" layoutX="284.0" layoutY="21.0" prefHeight="37.0" prefWidth="82.0" />
                                        </children>
                                     </HBox>
