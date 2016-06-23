@@ -39,7 +39,8 @@ public class CleintMain extends Application {
 		stage.setScene(scene);
 		// stage.initStyle(StageStyle.UTILITY);//스테이지 모양
 	 	stage.show();
-	
+	 	
+	 	
 		stage.setOnHiding(new EventHandler<WindowEvent>() {
 
 			//클라이언트 종료
@@ -88,4 +89,5 @@ public class CleintMain extends Application {
 		
 
 	}
+	
 }
