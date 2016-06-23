@@ -79,6 +79,9 @@ public class FXMLController implements Runnable, Initializable {
 	ArrayList<String> makerID = new ArrayList<>();
 	ArrayList<String> roomtitlearr = new ArrayList<>();
 
+	@FXML
+	private AnchorPane root;
+
 	// 접속단계
 	@FXML
 	private ListView<Object> allUserList;
@@ -260,11 +263,16 @@ public class FXMLController implements Runnable, Initializable {
 	private Button btnOut;
 	@FXML
 	private Text TxtAnswer; // 제시어
+	@FXML 
+	private StackPane wordsPane;
 	@FXML
 	private Button btn_gstart;
 
 	private GraphicsContext gc;
 	private int i;
+
+	// 턴 옮길 때
+	private User turnUser;
 
 	// 스레드 실행 위함
 	private Socket socket;
@@ -487,7 +495,6 @@ public class FXMLController implements Runnable, Initializable {
 	@FXML
 	public void catchmindExeAction(MouseEvent e) {
 		// TODO 테이블에 방 들어감
-
 		JOptionPane.showMessageDialog(null, "아재마인드 게임을 선택하셨습니다. " + "\n" + "방만들기를 하시거나 우측테이블에서 방을 클릭해주세요");
 
 		groupBtnRoom.setDisable(false);
@@ -503,6 +510,8 @@ public class FXMLController implements Runnable, Initializable {
 	}
 
 	public void saakmindExeAction(MouseEvent e) {
+		splitPane.setDividerPosition(0, 0);// 펼치기
+
 		JOptionPane.showMessageDialog(null, "사악마인드 게임을 선택하셨습니다. " + "\n" + "방만들기를 하시거나 우측테이블에서 방을 클릭해주세요");
 		groupBtnRoom.setDisable(false);
 		groupBtnRoom.setDisable(false);
@@ -512,6 +521,7 @@ public class FXMLController implements Runnable, Initializable {
 		txtArea_main01.setDisable(true);// 선택한 게임의 설명 텍스트에리어 활성화
 		txtArea_main02.setDisable(true);
 		txtArea_main03.setDisable(false);
+
 	}
 
 	/**
@@ -524,6 +534,8 @@ public class FXMLController implements Runnable, Initializable {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		gc.setStroke(Color.BLACK);
 		gc.setLineWidth(1);// 선 굵기
+		gc.clearRect(0, 0, gamePane.getWidth(), gamePane.getHeight());
+
 		gc.strokeRect(0, // x of the upper left corner
 				0, // y of the upper left corner
 				1000, // width of the rectangle
@@ -613,13 +625,13 @@ public class FXMLController implements Runnable, Initializable {
 	}
 
 	private void makeNewCanvas() {
-		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		gc.setStroke(Color.BLACK);
 		gc.setLineWidth(1);// 선 굵기
 		gc.strokeRect(0, // x of the upper left corner
 				0, // y of the upper left corner
 				1000, // width of the rectangle
 				gamePane.getHeight()); // height of the rectangle
+		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
 	}
 
@@ -653,271 +665,80 @@ public class FXMLController implements Runnable, Initializable {
 				data = (Data) ois.readObject();
 				switch (data.getCommand()) {
 				case Data.CONNECTION: // 전체 접속자 정보 받아와서 ui에 띄워주기
-					connectedUserList = data.getUserList();
-					// TODO:userList 갱신 메소드 만들기
-
-					// loadingPane.setVisible(false);
-					Platform.runLater(new Runnable() {
-
-						@Override
-						public void run() {
-							if (connectedUserList.isEmpty() == false) {
-								System.out.println("입력스레드시작");
-								renewalConUserList();
-							} else {
-
-							}
-							loadingPane.setVisible(false);
-						}
-
-					});
-					System.out.println("CONNECTION명령 리슨 완료");
+					this.connectionCommand();
 					break;
 				case Data.SIGNUP:
-					System.out.println("SIGNUP 명령 받음");
-					/**
-					 * 회원가입 버튼 눌렀을 때 UI 액션리스너에서 서버에 oos로 넘길 내용 TODO: id, pw, em,
-					 * pfimg 선택(랜덤), 받아서 User 객체 만들기 하나라도 입력 안하면 오류남! 에러 처리 해줄것!
-					 * 서버에 user Data.SIGNIN setCommand 해서 넘겨주기 TODO: 서버에서
-					 * boolean(database 등록되었는지 안되었는지 받음) 결과에 따라
-					 */
-					boolean addrs = data.isUserAddrs();
-					if (addrs) { // TODO:등록되었을 경우 - 메세지창:"등록 완료되었습니다."
-						JOptionPane.showMessageDialog(null, "가입되셨습니다. 로그인해주세요");
-					} else {
-						// TODO:등록되지 않았을 경우 - 메세지창: "이미 등록된 아이디입니다. 다른 아이디를 입력해
-						// 주세요"
-						// 회원가입 textfield 아이디 창만 리셋해주기
-						JOptionPane.showMessageDialog(null, "이미 등록된 아이디입니다. ");
-					}
-					System.out.println("SIGNUP 처리완료");
+					this.signupCommand();
 					break;
 				case Data.LOGIN:
-					/**
-					 * 로그인 버튼
-					 *
-					 */
-					System.out.println("2. 로그인명령 처리결과 들어옴");
-
-					User user = data.getUser();// 로그인한사람
-					if (user == null) {// 비번이 틀렸거나 이미 로그인 중일 때
-						String errorMsg = data.getError();
-						if (errorMsg.equals("이미 로그인 중")) {
-							JOptionPane.showMessageDialog(null, "이미 로그인 중인 아이디 입니다.");
-						} else
-							JOptionPane.showMessageDialog(null, "비밀번호가 틀렸습니다.");
-
-					} else {// 정상로그인
-						System.out.println(user + "로그인명령에서 받아온 유저데이터");
-						connectedUserList = data.getUserList();
-						System.out.println(connectedUserList + "로그인명령에서 받아온 유저리스트");
-						ArrayList<Friend> friendList = data.getFriendList();
-						// renewalConUserList();
-						System.out.println("3. 로그인명령 처리 결과 UI반영");
-						// GUI 로그인 안보이도록 함
-
-						loginBox.setVisible(false);// 로그인 정보 입력 패널 숨기기
-						loginInfoPane.setVisible(true);
-						welcomeTxt.setText("아이디 : " + loginUser.getId());
-						// FIXME 0으로 임시 변경
-						this.showloadingPane(0);// 스트림 보내고 리스너 기다리는 동안
-						JOptionPane.showMessageDialog(null, loginUser.getId() + "님 접속을 환영합니다.");
-
-						// GUI활성화
-						CommandPane.setDisable(false);
-						txtArea_chatLog.setDisable(false);
-						chatGroup.setDisable(false);
-						roomListPane.setDisable(false);
-						mainPane.setDisable(false);
-						// mainPane.setVisible(true);//바로 홈 보이기, 메인버튼
-					}
+					this.loginCommand();
 					break;
 				case Data.GUL:
 					connectedUserList = data.getUserList();
-					// 접속자갱신
-					renewalConUserList();
+					renewalConUserList();// 접속자갱신
 					break;
 				case Data.SELECT_GAME:
 					roomList = data.getRoomList();
 					this.renewAllTable(roomList);
-
 					break;
 
-				case Data.JOIN: // 같은 게임룸에 들어간 사람만 받음. Data에는
-								// gameRoom(userlist,words) 가 있음
-					data.getUser();// 방장분기조건
-					data.getGameType();// 게임타입분기조건
-					glist = data.getGameRoom().getUserList();
-					boolean check1 = this.myjoinRoomID.equals(data.getJoinRoomID());// 조인한
-																					// 사람만(방장제외
-																					// 들어온
-																					// 사람)
-					boolean check2 = this.loginUser.getId().equals(data.getJoinRoomID());// 내가
-																					// 만든
-																					// 방인
-																					// 경우
-					ready = false;
-					System.out.println(check1+"조건1");
-					System.out.println(check2+"조건2");
-					if (check1 || check2) {
-
-						txtArea_chatLog.appendText(data.getUser().getId() + "님이 입장하셨습니다." + "\n");
-						if (glist.size() >= 2) {
-							ready = true;
-							// userlist size 검사 해서 2명 이상 입장했을 때(gameRoomd의 유저리스트
-							// size가 2이상일 때)
-							// ready =true 로 바꾸기
-							if (check2) {// 방장만
-								JOptionPane.showMessageDialog(null, "게임 시작가능합니다.");
-								btn_gstart.setDisable(false);
-							}
-						}
-
-						// 방장의 시작버튼(비활성화 였다가) ready가 true면 활성화
-						// TODO 조인 -- 게임방유저목록 추가해주고
-						// for (User e : glist) {
-						// String myName = e.getId();
-						// int myimg = e.getPfimg();
-						//// playerSTAT_01.
-						//// playerIMG_01.setImage(value);
-						// }
-						for (int i = 0; i < glist.size(); i++) {
-							String myName = glist.get(i).getId();
-							int myimg = glist.get(i).getPfimg();
-
-							switch (i) {
-							case 0:
-								playerPane01.setVisible(true);
-								playerID_01.setText("");
-								playerID_01.setText(myName);
-								break;
-							case 1:
-								playerPane02.setVisible(true);
-								playerID_02.setText("");
-								playerID_02.setText(myName);
-								break;
-							case 2:
-								playerPane03.setVisible(true);
-								playerID_03.setText("");
-								playerID_03.setText(myName);
-								break;
-							case 3:
-								playerPane04.setVisible(true);
-								playerID_04.setText("");
-								playerID_04.setText(myName);
-								break;
-							case 4:
-								playerPane05.setVisible(true);
-								playerID_05.setText("");
-								playerID_05.setText(myName);
-								break;
-
-							default:
-								break;
-							}
-						}
-						// 게임판 보여주고
-						System.out.println("게임판 보여주기 시작");
-						this.showGamePane();
-						System.out.println("게임판 보여주기 완료");
-
-					}	
-					break;
 				case Data.MAKE_ROOM:
-					System.out.println(data.getUser() + "서버에서 보내는 데이터의 유저(최초생성자)");
-					System.out.println(data.getUser().getId() + " 로부터" + loginUser + " 에게 Make_Room리스너 들어옴 ");
-
-					// 만든 사람만 보여줄 퍼포먼스[게임 종류 상관없음]
-					if (loginUser.getId().equals(data.getUser().getId())) {
-						groupBtnRoom.setDisable(true);// 방만들었으니 만들기 버튼그룹 불활성화
-
-						playerPane01.setVisible(true);
-						playerID_01.setText("");
-						playerID_01.setText(loginUser.getId());
-						
-						
-						
-						
-						
-					}
-					// 타입구분, 게임룸 펼치기
-					// 방만들어지면 해당 게임 선택한 사람들한테만 리스트 갱신해 줌
-					if (loginUser.getSelectedGame() == data.getGameType()) {
-						// 지금 내 게임 타입이 서버에서 보내주는 데이터에 기록된 게임 타입과 같은 경우 >>
-						roomList = data.getRoomList();
-						System.out.println("실행되나요? ㄴㅇㄴㅇㄴ");
-						this.renewAllTable(roomList);
-
-					}
-
+					this.makeRoomCommand();
 					break;
-				case Data.GAME_READY:
+
+				case Data.JOIN:
+					this.joinCommand();
+					
 					break;
 				case Data.GAME_START:
-					break;
-				case Data.DRAW_READY:
-					System.out.println(loginUser + "그림그리기 리슨");
-					//FIXME 왜 바뀜? 조인에서 getUser가 바뀌면서 꼬인 듯 
-					if (loginUser.getId().equals(data.getUser().getId()) == true) {
-						System.out.println("새 패스 시작");
-						x = data.getGameInfo().getX_point();
-						y = data.getGameInfo().getY_point();
-						gc.moveTo(x, y);
-						// gc.stroke();
-						System.out.println("[시작 x,y :" + x + "," + y + "]");
+					//스타트명령 
+					txtArea_chatLog.appendText("게임을 시작하였습니다." + "\n");
+					JOptionPane.showMessageDialog(null, "게임을 시작하였습니다.");
+					
+					
+					ri.turnUserSet();
+					turnUser = this.setTurn();// 턴돌때 
+					sug  = ri.getword();//제시어 바꿔줌 
+					
+					if (this.loginUser.getId().equals(turnUser.getId())) {// 내 턴이면
+						// sug를 제시어 칸에 보이게 띄운다.
+						wordsPane.setVisible(true);
+						TxtAnswer.setText(sug);
 					}
 					break;
-				case Data.DRAW_START:
-					System.out.println(loginUser + "그림패스 리슨");
-					if (loginUser.getId().equals(data.getUser().getId()) == true) {
-						// System.out.println(i + "수신");
-						GameInfo received_ginfo = data.getGameInfo();
-						System.out.println(x + "," + y + "새패스정보 드래그시 수신");// 찍는
-																			// 위치
-						xyArray = received_ginfo.getGeographicInfo();
-						// gc.moveTo(x, y);
-
-						// 배열로 받기
-						for (double[] e : xyArray) {
-							System.out.println(x + "," + y + "새패스정보 드래그시 수신(for)");// 찍는
-																					// 위치
-							double x = e[0];
-							double y = e[1];
-							gc.lineTo(x, y);
-							gc.stroke();
-							System.out.println(x + "," + y + "새패스정보 드래그시 수신(for122222)");
-							// gc.closePath();//쓰면 채워지는 문제, 되지도 않고
-							// gc.beginPath();//흐려지는 문제
-
-						}
-						xyArray.removeAll(xyArray);
-						xyArray.clear();
-						System.out.println("패스완성");
-						// xyArray.removeAll(xyArray);//지워도 소용없네, 일단 배열의 초기화는
-						// 선언시 하는게 나을지도
-
-						// 드래그 끝나서 하나의 패스 완성
-						i++;
-
-					} // 게임데이터 송신자 이외 사람만 값 뽑아냄
-
-					break;
-				case Data.CLEAR_CANVAS:
-					if (loginUser.getId().equals(data.getUser().getId()) == false) {
-						this.clearActionOrder();
-					}
-					break;
+				
 				case Data.SEND_TURN:
 
 					break;
 				case Data.SEND_WINNING_RESULT:
 
 					break;
+				case Data.DRAW_READY:
+					this.drawReadyCommand();
+					break;
+				case Data.DRAW_START:
+					this.drawStartCommand();
+					break;
+				case Data.CLEAR_CANVAS:
+					if (loginUser.getId().equals(data.getUser().getId()) == false) {
+						this.clearActionOrder();
+					}
+					break;
 				case Data.CHAT_MESSAGE:
 					// TODO 게임룸 만들고 분기처리
 					String received_msg = data.getMessage();
 					txtArea_chatLog.appendText(received_msg + "\n");
+					
+					String answer = dilimiter(received_msg, 3); //답
+					String anUser = dilimiter(received_msg, 1); //답 말한 유저 아이디
+					if(sug.equals(answer)){ //제시어와 답이 같으면
+					//anUser님이 맞추셨습니다. 답: answer 로 띄우기
+						txtArea_chatLog.appendText(anUser+"님이 정답을 맞췄습니다." + "\n");
+						JOptionPane.showMessageDialog(null, anUser+"님이 정답을 맞췄습니다.");
 
+		                turnUser = this.setTurn(); 
+		                sug = ri.getword();   
+					}
 					break;
 				case Data.EXIT:
 					System.out.println("로그아웃명령실행");
@@ -946,6 +767,264 @@ public class FXMLController implements Runnable, Initializable {
 				}
 			} // catch
 		} // while
+	}
+
+	private void drawStartCommand() {
+		System.out.println(loginUser + "그림패스 리슨");
+		if (loginUser.getId().equals(data.getUser().getId()) == true) {
+			// System.out.println(i + "수신");
+			GameInfo received_ginfo = data.getGameInfo();
+			System.out.println(x + "," + y + "새패스정보 드래그시 수신");// 찍는
+																// 위치
+			xyArray = received_ginfo.getGeographicInfo();
+			// gc.moveTo(x, y);
+
+			// 배열로 받기
+			for (double[] e : xyArray) {
+				System.out.println(x + "," + y + "새패스정보 드래그시 수신(for)");// 찍는
+																		// 위치
+				double x = e[0];
+				double y = e[1];
+				gc.lineTo(x, y);
+				gc.stroke();
+				System.out.println(x + "," + y + "새패스정보 드래그시 수신(for122222)");
+				// gc.closePath();//쓰면 채워지는 문제, 되지도 않고
+				// gc.beginPath();//흐려지는 문제
+
+			}
+			xyArray.removeAll(xyArray);
+			xyArray.clear();
+			System.out.println("패스완성");
+			// xyArray.removeAll(xyArray);//지워도 소용없네, 일단 배열의 초기화는
+			// 선언시 하는게 나을지도
+
+			// 드래그 끝나서 하나의 패스 완성
+			i++;
+
+		} // 게임데이터 송신자 이외 사람만 값 뽑아냄
+
+	}
+
+	private void drawReadyCommand() {
+		System.out.println(loginUser + "그림그리기 리슨");
+		// FIXME 왜 바뀜? 조인에서 getUser가 바뀌면서 꼬인 듯
+		if (loginUser.getId().equals(data.getUser().getId()) == true) {
+			System.out.println("새 패스 시작");
+			x = data.getGameInfo().getX_point();
+			y = data.getGameInfo().getY_point();
+			gc.moveTo(x, y);
+			// gc.stroke();
+			System.out.println("[시작 x,y :" + x + "," + y + "]");
+		}
+	}
+
+	private void joinCommand() {
+		// 같은 게임룸에 들어간 사람만 받음. Data에는
+		// gameRoom(userlist,words) 가 있음
+		data.getUser();// 방장분기조건
+		data.getGameType();// 게임타입분기조건
+		ri = data.getGameRoom();
+		glist = data.getGameRoom().getUserList();
+		boolean check1 = this.myjoinRoomID.equals(data.getJoinRoomID());// 조인한
+		// 사람만(방장제외
+		// 들어온
+		// 사람)
+		boolean check2 = this.loginUser.getId().equals(data.getJoinRoomID());// 내가
+		// 만든
+		// 방인
+		// 경우
+		ready = false;
+		System.out.println(check1 + "조건1");
+		System.out.println(check2 + "조건2");
+		if (check1 || check2) {
+
+			txtArea_chatLog.appendText(data.getUser().getId() + "님이 입장하셨습니다." + "\n");
+			if (glist.size() >= 2) {
+				ready = true;
+				// userlist size 검사 해서 2명 이상 입장했을 때(gameRoomd의 유저리스트
+				// size가 2이상일 때)
+				// ready =true 로 바꾸기
+				if (check2) {// 방장만
+					JOptionPane.showMessageDialog(null, "게임 시작가능합니다.");
+					btn_gstart.setDisable(false);
+				} else {
+					this.showFullScreen(true);// 입장한사람 전체화면
+				}
+			}
+
+			// 방장의 시작버튼(비활성화 였다가) ready가 true면 활성화
+			// TODO 조인 -- 게임방유저목록 추가해주고
+			// for (User e : glist) {
+			// String myName = e.getId();
+			// int myimg = e.getPfimg();
+			//// playerSTAT_01.
+			//// playerIMG_01.setImage(value);
+			// }
+			for (int i = 0; i < glist.size(); i++) {
+				String myName = glist.get(i).getId();
+				int myimg = glist.get(i).getPfimg();
+
+				switch (i) {
+				case 0:
+					playerPane01.setVisible(true);
+					playerID_01.setText("");
+					playerID_01.setText(myName);
+					break;
+				case 1:
+					playerPane02.setVisible(true);
+					playerID_02.setText("");
+					playerID_02.setText(myName);
+					break;
+				case 2:
+					playerPane03.setVisible(true);
+					playerID_03.setText("");
+					playerID_03.setText(myName);
+					break;
+				case 3:
+					playerPane04.setVisible(true);
+					playerID_04.setText("");
+					playerID_04.setText(myName);
+					break;
+				case 4:
+					playerPane05.setVisible(true);
+					playerID_05.setText("");
+					playerID_05.setText(myName);
+					break;
+
+				default:
+					break;
+				}
+			}
+			// 게임판 보여주고
+			System.out.println("게임판 보여주기 시작");
+			this.showGamePane();
+			System.out.println("게임판 보여주기 완료");
+
+		}
+	}
+
+	private void makeRoomCommand() {
+		System.out.println(data.getUser() + "서버에서 보내는 데이터의 유저(최초생성자)");
+		System.out.println(data.getUser().getId() + " 로부터" + loginUser + " 에게 Make_Room리스너 들어옴 ");
+
+		// 만든 사람만 보여줄 퍼포먼스[게임 종류 상관없음]
+		if (loginUser.getId().equals(data.getUser().getId())) {
+			groupBtnRoom.setDisable(true);// 방만들었으니 만들기 버튼그룹 불활성화
+
+			playerPane01.setVisible(true);
+			playerID_01.setText("");
+			playerID_01.setText(loginUser.getId());
+			System.out.println("방장 만 만들었음");
+			this.showFullScreen(true);
+			// Stage s = (Stage) root.getScene().getWindow();
+			// s.setFullScreen(true);// 전체화면
+			// splitPane.setDividerPosition(0, 0);// 펼치기
+
+		}
+		// 타입구분, 게임룸 펼치기
+		// 방만들어지면 해당 게임 선택한 사람들한테만 리스트 갱신해 줌
+		if (loginUser.getSelectedGame() == data.getGameType()) {
+			// 지금 내 게임 타입이 서버에서 보내주는 데이터에 기록된 게임 타입과 같은 경우 >>
+			roomList = data.getRoomList();
+			this.renewAllTable(roomList);
+
+		}
+
+	}
+
+	private void connectionCommand() {
+		connectedUserList = data.getUserList();
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				if (connectedUserList.isEmpty() == false) {
+					System.out.println("입력스레드시작");
+					renewalConUserList();
+				} else {
+
+				}
+				loadingPane.setVisible(false);
+			}
+
+		});
+		System.out.println("CONNECTION명령 리슨 완료");
+
+	}
+
+	private void loginCommand() {
+		/**
+		 * 로그인 버튼
+		 *
+		 */
+		System.out.println("2. 로그인명령 처리결과 들어옴");
+
+		User user = data.getUser();// 로그인한사람
+		if (user == null) {// 비번이 틀렸거나 이미 로그인 중일 때
+			String errorMsg = data.getError();
+			if (errorMsg.equals("이미 로그인 중")) {
+				JOptionPane.showMessageDialog(null, "이미 로그인 중인 아이디 입니다.");
+			} else
+				JOptionPane.showMessageDialog(null, "비밀번호가 틀렸습니다.");
+
+		} else {// 정상로그인
+			System.out.println(user + "로그인명령에서 받아온 유저데이터");
+			connectedUserList = data.getUserList();
+			System.out.println(connectedUserList + "로그인명령에서 받아온 유저리스트");
+			ArrayList<Friend> friendList = data.getFriendList();
+			// renewalConUserList();
+			System.out.println("3. 로그인명령 처리 결과 UI반영");
+			// GUI 로그인 안보이도록 함
+
+			loginBox.setVisible(false);// 로그인 정보 입력 패널 숨기기
+			loginInfoPane.setVisible(true);
+			welcomeTxt.setText("아이디 : " + loginUser.getId());
+			// FIXME 0으로 임시 변경
+			this.showloadingPane(0);// 스트림 보내고 리스너 기다리는 동안
+			JOptionPane.showMessageDialog(null, loginUser.getId() + "님 접속을 환영합니다.");
+
+			// GUI활성화
+			CommandPane.setDisable(false);
+			txtArea_chatLog.setDisable(false);
+			chatGroup.setDisable(false);
+			roomListPane.setDisable(false);
+			mainPane.setDisable(false);
+			// mainPane.setVisible(true);//바로 홈 보이기, 메인버튼
+		}
+	}
+
+	private void signupCommand() {
+		System.out.println("SIGNUP 명령 받음");
+		/**
+		 * 회원가입 버튼 눌렀을 때 UI 액션리스너에서 서버에 oos로 넘길 내용 TODO: id, pw, em, pfimg
+		 * 선택(랜덤), 받아서 User 객체 만들기 하나라도 입력 안하면 오류남! 에러 처리 해줄것! 서버에 user
+		 * Data.SIGNIN setCommand 해서 넘겨주기 TODO: 서버에서 boolean(database 등록되었는지
+		 * 안되었는지 받음) 결과에 따라
+		 */
+		boolean addrs = data.isUserAddrs();
+		if (addrs) { // TODO:등록되었을 경우 - 메세지창:"등록 완료되었습니다."
+			JOptionPane.showMessageDialog(null, "가입되셨습니다. 로그인해주세요");
+		} else {
+			// TODO:등록되지 않았을 경우 - 메세지창: "이미 등록된 아이디입니다. 다른 아이디를 입력해
+			// 주세요"
+			// 회원가입 textfield 아이디 창만 리셋해주기
+			JOptionPane.showMessageDialog(null, "이미 등록된 아이디입니다. ");
+		}
+		System.out.println("SIGNUP 처리완료");
+	}
+
+	private void showFullScreen(boolean on) {
+
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				Stage s = (Stage) root.getScene().getWindow();
+				s.setFullScreen(on);// 전체화면
+				splitPane.setDividerPosition(0, 0);// 펼치기
+			}
+		});
+
 	}
 
 	/**
@@ -1051,12 +1130,6 @@ public class FXMLController implements Runnable, Initializable {
 		allUserList.setItems(ob);
 	}
 
-	// //그림 그리는 메소드 연결해놓음
-	// public void paintAction(MouseEvent event) {
-	// gc.lineTo(event.getX(), event.getY());
-	// gc.stroke();
-	// }
-
 	// 마우스 누를때 발생하는 동작을 정의한 액션리스너
 	@FXML
 	public void mousePress(MouseEvent event) {
@@ -1086,13 +1159,13 @@ public class FXMLController implements Runnable, Initializable {
 	private static String myjoinRoomID = "1";
 	private boolean ready;
 	private ArrayList<User> glist;
+	private String sug ="제시어데이터";
 
 	@FXML
 	public void mouseDrag(MouseEvent event) {
 
 		gc.lineTo(event.getX(), event.getY());
 		gc.stroke();
-		// ginfo = new GameInfo(event);
 		double x = event.getX();
 		double y = event.getY();
 		double[] xy = { x, y };
@@ -1103,19 +1176,7 @@ public class FXMLController implements Runnable, Initializable {
 	// 마우스 놓을 때의 액션, 딱히 내용 없을 듯
 	@FXML
 	public void mouseRelease(MouseEvent event) {
-		// for (double[][] e : geographicInfo) {
-		// int i = e.
-		// double x = xy[0][0];
-		// double y = xy[0][1];
-		//
-		// }
-		// for (double[] e : geographicInfo) {
-		// double x = e[0];
-		// double y = e[1];
-		// ginfo.setX_point(x);
-		// ginfo.setY_point(y);
-		//
-		// }
+
 		System.out.println(geographicInfo + "드레그시 담긴 정보");// mouserPressed에서 한개의
 															// 패스의 경로가 매번 새로
 															// 담긴다.
@@ -1146,9 +1207,6 @@ public class FXMLController implements Runnable, Initializable {
 
 		});
 
-		// tableView.getItems();
-		// System.out.println(tableView.getItems());
-
 	}
 
 	/**
@@ -1175,20 +1233,20 @@ public class FXMLController implements Runnable, Initializable {
 	 * 
 	 * @param gc
 	 */
-	private void RestartDraw(GraphicsContext gc) {
-		double canvasWidth = canvasReign.getLayoutX();
-		double canvasHeight = canvasReign.getMaxHeight();
-
-		gc.setStroke(Color.BLACK);
-		gc.setLineWidth(5);
-
-		gc.fill();
-		gc.strokeRect(0, // x of the upper left corner
-				0, // y of the upper left corner
-				canvasWidth, // width oButtonActionf the rectangle
-				canvasHeight); // height of the rectangle
-
-	}
+	// private void RestartDraw(GraphicsContext gc) {
+	// double canvasWidth = canvasReign.getLayoutX();
+	// double canvasHeight = canvasReign.getMaxHeight();
+	//
+	// gc.setStroke(Color.BLACK);
+	// gc.setLineWidth(5);
+	//
+	// gc.fill();
+	// gc.strokeRect(0, // x of the upper left corner
+	// 0, // y of the upper left corner
+	// canvasWidth, // width oButtonActionf the rectangle
+	// canvasHeight); // height of the rectangle
+	//
+	// }
 
 	@FXML
 	public void chatFieldEnterPressed(KeyEvent e) {
@@ -1219,7 +1277,7 @@ public class FXMLController implements Runnable, Initializable {
 			data.setCommand(Data.CHAT_MESSAGE);
 			this.sendData(data);
 			field_chat.setText("");
-			
+
 		}
 
 	}
@@ -1236,4 +1294,30 @@ public class FXMLController implements Runnable, Initializable {
 
 		}
 	}
+
+	/**
+	 * 턴갱신
+	 * 
+	 * @return
+	 */
+	public User setTurn() {
+
+		ri.setTurnUser();
+		turnUser = ri.getTurnUser();
+
+		return turnUser;
+	}
+
+	@FXML
+	private void startAction(ActionEvent e) {
+		data.setCommand(Data.GAME_START);
+		sendData(data); 
+	}
+	
+	public String dilimiter(String msg, int i){
+        String answer="";
+        String[] parts = msg.split("\\s+");
+        answer = parts[i];
+        return answer;
+}
 }
