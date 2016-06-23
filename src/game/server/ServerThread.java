@@ -204,7 +204,19 @@ public class ServerThread implements Runnable {
 					break;
 				case Data.GAME_START:
 					//같은 방에 있는 사람들에게 broadcasting
+					System.out.println(data);
+					type = data.getGameType();
+					String key = data.getGameRoom().getRoomId();
+					if (type == Data.GAME_SECOND) {// 아재 마인드
+						ArrayList<User> oosUsers  = gameRoomList2.get(key).getUserList();
+						data.getGameRoom().setUserList(oosUsers);
+					} else if (type == Data.GAME_THIRD) {// 사악 마인드
+						ArrayList<User> oosUsers1 = gameRoomList3.get(key).getUserList();
+						data.getGameRoom().setUserList(oosUsers1);
+					}
+					
 					sendDataRoommate(data);
+					
 					break;
 				case Data.DRAW_READY:
 					ginfo = data.getGameInfo();
