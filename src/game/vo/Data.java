@@ -177,9 +177,11 @@ public class Data implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Data [message=" + message + ", command=" + command + ", gameRoom=" + gameRoom + ", gameInfo=" + gameInfo
-				+ ", user=" + user + ", userList=" + userList + ", roomList=" + roomList + ", clientMessage="
-				+ clientMessage + ", friend=" + friend + ", mainInfo=" + mainInfo + "]";
+		return "Data [message=" + message + ", error=" + error + ", command=" + command + ", gameRoom=" + gameRoom
+				+ ", gameInfo=" + gameInfo + ", user=" + user + ", userAddrs=" + userAddrs + ", friendList="
+				+ friendList + ", userList=" + userList + ", roomList=" + roomList + ", clientMessage=" + clientMessage
+				+ ", friend=" + friend + ", mainInfo=" + mainInfo + ", allUserIds=" + allUserIds + ", gameType="
+				+ gameType + ", joinRoomID=" + joinRoomID + "]";
 	}
 
 
