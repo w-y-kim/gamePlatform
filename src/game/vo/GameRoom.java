@@ -103,7 +103,7 @@ public class GameRoom implements Serializable{
 //제시어 뱉어내는 메소드
 	public String getword(){
 		int index = pointer%(words.size()-1);
-		String word = words.get(index);
+		String word = words.get(index-1);
 		return word;}
 	
 
