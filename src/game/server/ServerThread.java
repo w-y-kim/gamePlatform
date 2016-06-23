@@ -206,7 +206,9 @@ public class ServerThread implements Runnable {
 					//같은 방에 있는 사람들에게 broadcasting
 					System.out.println(data);
 					type = data.getGameType();
-					String key = data.getGameRoom().getRoomId();
+					String key = data.getGameRoom().getUser().getId();
+					System.out.println("key: "+key);
+					
 					if (type == Data.GAME_SECOND) {// 아재 마인드
 						ArrayList<User> oosUsers  = gameRoomList2.get(key).getUserList();
 						data.getGameRoom().setUserList(oosUsers);
