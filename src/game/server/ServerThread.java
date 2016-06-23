@@ -185,12 +185,12 @@ public class ServerThread implements Runnable {
 					System.out.println("게임타입: " + type);
 					GameRoom gr = data.getGameRoom();
 					gr.getUserList().add(loginUser);//방장을 게임룸에 추가 
-					if (type == 350) {// 아재 마인드
+					if (type == Data.GAME_SECOND) {// 아재 마인드
 						 ArrayList<String> sug_words = db.getSugWords("아재마인드");
 						 gr.setWords(sug_words);
 						gameRoomList2.put(gr.getUser().getId(), gr);
 						data.setRoomList(gameRoomList2);
-					} else if (type == 400) {// 사악 마인드
+					} else if (type == Data.GAME_THIRD) {// 사악 마인드
 						 ArrayList<String> sug_words1 = db.getSugWords("사악마인드");
 						 gr.setWords(sug_words1);
 						gameRoomList3.put(gr.getUser().getId(), gr);
