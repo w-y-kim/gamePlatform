@@ -203,6 +203,8 @@ public class ServerThread implements Runnable {
 				case Data.GAME_READY:
 					break;
 				case Data.GAME_START:
+					//같은 방에 있는 사람들에게 broadcasting
+					sendDataRoommate(data);
 					break;
 				case Data.DRAW_READY:
 					ginfo = data.getGameInfo();
