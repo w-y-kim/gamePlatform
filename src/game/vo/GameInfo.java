@@ -4,14 +4,32 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 public class GameInfo implements Serializable {
 
 	private double x_point;
 	private double y_point;
+	private String color;//색 
+	private double slider; //선굵기 
 	
 	
 	
+	public double getSlider() {
+		return slider;
+	}
+	public void setSlider(double slider) {
+		this.slider = slider;
+	}
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+
+
 	private ArrayList<double[]> geographicInfo = new ArrayList<double[]>();
 	
 	public GameInfo (){

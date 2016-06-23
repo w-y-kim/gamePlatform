@@ -414,10 +414,10 @@
                               </Canvas>
                               <AnchorPane id="그림도구" layoutX="5.0" layoutY="554.0" prefHeight="51.0" prefWidth="530.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
                                  <children>
-                                    <VBox layoutX="389.0" layoutY="17.0" maxWidth="200.0" minWidth="-Infinity" prefHeight="50.0" prefWidth="106.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="389.0">
+                                    <VBox layoutX="389.0" layoutY="17.0" maxWidth="200.0" minWidth="-Infinity" prefHeight="50.0" prefWidth="140.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="389.0">
                                        <children>
                                           <Text layoutX="380.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="선굵기" AnchorPane.leftAnchor="381.0" AnchorPane.rightAnchor="48.0" />
-                                          <Slider fx:id="slider" layoutX="381.0" layoutY="43.0" max="20.0" min="1.0" onDragExited="#setDrawLine" prefHeight="36.0" prefWidth="150.0" showTickLabels="true" showTickMarks="true" AnchorPane.leftAnchor="381.0" AnchorPane.rightAnchor="48.0" />
+                                          <Slider fx:id="slider" layoutX="381.0" layoutY="43.0" max="50.0" min="1.0" onDragExited="#setDrawLine" prefHeight="36.0" prefWidth="200.0" showTickLabels="true" showTickMarks="true" AnchorPane.leftAnchor="381.0" AnchorPane.rightAnchor="48.0" />
                                        </children>
                                     </VBox>
                                     <HBox alignment="CENTER" layoutX="30.0" layoutY="15.0" prefHeight="37.0" prefWidth="346.0" spacing="10.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
@@ -437,6 +437,7 @@
                                     </HBox>
                                  </children>
                               </AnchorPane>
+                              <StackPane fx:id="gamePaneShild" prefHeight="626.0" prefWidth="530.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children></AnchorPane>
              
                      </children>

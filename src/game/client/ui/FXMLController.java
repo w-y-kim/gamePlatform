@@ -67,7 +67,6 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.*;
 
@@ -178,6 +177,8 @@ public class FXMLController implements Runnable, Initializable {
 	private ScrollPane roomListPane;
 
 	// 방만들기
+	private GameInfo ginfo;
+
 	@FXML
 	private Button btnCreateRoom;
 	@FXML
@@ -249,6 +250,8 @@ public class FXMLController implements Runnable, Initializable {
 
 	// 게임방
 	@FXML
+	private StackPane gamePaneShild;
+	@FXML
 	private Canvas canvas;
 	@FXML
 	private Button clearCanvas;
@@ -281,6 +284,8 @@ public class FXMLController implements Runnable, Initializable {
 	@FXML
 	private Rectangle changeGreen;
 
+	private String color = "";
+
 	private GraphicsContext gc;
 	private int i;
 
@@ -303,7 +308,7 @@ public class FXMLController implements Runnable, Initializable {
 	private FXMLController fxControl;// FX의 컴포넌트 갱신 위해 스레드 실행 시 받아옴
 	private User loginUser;// 나나나 미미미
 
-	private GameInfo ginfo;
+	private Color returned_color;
 
 	public FXMLController() {//
 
@@ -417,10 +422,8 @@ public class FXMLController implements Runnable, Initializable {
 			splitPane.setDividerPosition(0, 0);
 			btnFold.setVisible(true);
 			btnSpread.setVisible(false);
-			// canvas.setWidth(1000);
-			// canvas.setHeight(canvasReign.getHeight());
 			canvas.autosize();
-			startDraw(gc);
+//			startDraw(gc);
 
 		} else if (e.getSource() == btnMain) {// 메인화면
 			mainPane.setVisible(true);
@@ -548,12 +551,11 @@ public class FXMLController implements Runnable, Initializable {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		gc.setStroke(Color.BLACK);
 		gc.setLineWidth(1);// 선 굵기
-		gc.clearRect(0, 0, gamePane.getWidth(), gamePane.getHeight());
+		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
 		gc.strokeRect(0, // x of the upper left corner
 				0, // y of the upper left corner
-				1000, // width of the rectangle
-				gamePane.getHeight()); // height of the rectangle
+				canvas.getWidth(), canvas.getHeight());
 
 		// 상대방에도 지우라고 명령보냄
 		data.setCommand(Data.CLEAR_CANVAS);// TODO 유저정보를 안넣어주었는걸?
@@ -561,14 +563,15 @@ public class FXMLController implements Runnable, Initializable {
 	}
 
 	private void clearActionOrder() {
+		System.out.println("지우기 명령 실행");
+		gc.closePath();
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		gc.setStroke(Color.BLACK);// 선색
 		gc.setLineWidth(1);// 선 굵기
-		gc.clip();
+		gc.beginPath();
 		gc.strokeRect(0, // x of the upper left corner
 				0, // y of the upper left corner
-				1000, // width of the rectangle
-				gamePane.getHeight()); // height of the rectangle
+				canvas.getWidth(), canvas.getHeight());
 
 	}
 
@@ -657,9 +660,7 @@ public class FXMLController implements Runnable, Initializable {
 	 */
 	@FXML
 	private void setDrawLine(DragEvent e) {
-		double val = slider.getValue();// 슬라이더 선택한 숫자
-		System.out.println(val);
-
+		// initalize에서 리스닝 해줌 , 여기서 한건 FX 특성상 반영 해서 보여줄 수 없음
 	}
 
 	/**
@@ -709,7 +710,7 @@ public class FXMLController implements Runnable, Initializable {
 					// 스타트명령
 					txtArea_chatLog.appendText("게임을 시작하였습니다." + "\n");
 					JOptionPane.showMessageDialog(null, "게임을 시작하였습니다.");
-
+					btn_gstart.setDisable(true);
 					ri.turnUserSet();
 					turnUser = this.setTurn();// 턴돌때
 					sug = ri.getword();// 제시어 바꿔줌
@@ -719,6 +720,7 @@ public class FXMLController implements Runnable, Initializable {
 						// sug를 제시어 칸에 보이게 띄운다.
 						wordsPane.setVisible(true);
 						TxtAnswer.setText(sug);
+						gamePaneShild.setVisible(false);
 					}
 					break;
 
@@ -729,6 +731,7 @@ public class FXMLController implements Runnable, Initializable {
 
 					break;
 				case Data.DRAW_READY:
+
 					this.drawReadyCommand();
 					break;
 				case Data.DRAW_START:
@@ -741,20 +744,7 @@ public class FXMLController implements Runnable, Initializable {
 					}
 					break;
 				case Data.CHAT_MESSAGE:
-					// TODO 게임룸 만들고 분기처리
-					String received_msg = data.getMessage();
-					txtArea_chatLog.appendText(received_msg + "\n");
-
-					String answer = dilimiter(received_msg, 3); // 답
-					String anUser = dilimiter(received_msg, 1); // 답 말한 유저 아이디
-					if (sug.equals(answer)) { // 제시어와 답이 같으면
-						// anUser님이 맞추셨습니다. 답: answer 로 띄우기
-						txtArea_chatLog.appendText(anUser + "님이 정답을 맞췄습니다." + "\n");
-						JOptionPane.showMessageDialog(null, anUser + "님이 정답을 맞췄습니다.");
-
-						turnUser = this.setTurn();
-						sug = ri.getword();
-					}
+					this.chatCommand();
 					break;
 				case Data.EXIT:
 					System.out.println("로그아웃명령실행");
@@ -785,35 +775,98 @@ public class FXMLController implements Runnable, Initializable {
 		} // while
 	}
 
+	private void chatCommand() {
+		// TODO 게임룸 만들고 분기처리
+		String received_msg = data.getMessage();
+		txtArea_chatLog.appendText(received_msg + "\n");
+
+		String answer = dilimiter(received_msg, 3); // 답
+		String anUser = dilimiter(received_msg, 1); // 답 말한 유저 아이디
+		if (sug.equals(answer)) { // 제시어와 답이 같으면
+			// anUser님이 맞추셨습니다. 답: answer 로 띄우기
+			txtArea_chatLog.appendText(anUser + "님이 정답을 맞췄습니다." + "\n");
+			JOptionPane.showMessageDialog(null, anUser + "님이 정답을 맞췄습니다.");
+
+			turnUser = this.setTurn();
+			sug = ri.getword();
+			if (this.loginUser.getId().equals(turnUser.getId())) {// 내 턴이면
+				// sug를 제시어 칸에 보이게 띄운다.
+				Platform.runLater(new Runnable() {
+
+					@Override
+					public void run() {
+						wordsPane.setVisible(true);
+						TxtAnswer.setText(sug);
+						gamePaneShild.setVisible(false);
+						System.out.println("게임진행자 화면");
+					}
+
+				});
+			} else { // 내 턴이 아니면 제시어 칸 비우기
+
+				Platform.runLater(new Runnable() {
+
+					@Override
+					public void run() {
+						TxtAnswer.setText("");
+						gamePaneShild.setVisible(true);
+						System.out.println("게임참가자 화면");
+
+					}
+
+				});
+
+			}
+		}
+	}
+
 	private void drawStartCommand() {
 		System.out.println(loginUser + "그림패스 리슨");
-		if (loginUser.getId().equals(data.getUser().getId()) == true) {
+		if (loginUser.getId().equals(turnUser.getId()) != true) {
 			// System.out.println(i + "수신");
 			GameInfo received_ginfo = data.getGameInfo();
-			System.out.println(x + "," + y + "새패스정보 드래그시 수신");// 찍는
-																// 위치
+			System.out.println(i + "번째 패스정보 수신" + x + "," + y);// 찍는
+			dot = received_ginfo.getSlider();
+			System.out.println(dot + "선굵기====================");
 			xyArray = received_ginfo.getGeographicInfo();
-			// gc.moveTo(x, y);
+			recevied_color = received_ginfo.getColor();
+			System.out.println(recevied_color + "받은 컬러명");
+			switch (recevied_color) {
+			case "red":
+				returned_color = Color.RED;
+				break;
+			case "yellow":
+				returned_color = Color.YELLOW;
+				break;
+			case "green":
+				returned_color = Color.GREEN;
+				break;
+			case "black":
+				returned_color = Color.BLACK;
+				break;
+			case "blue":
+				returned_color = Color.BLUE;
+				break;
+
+			default:
+				break;
+			}
 
 			// 배열로 받기
 			for (double[] e : xyArray) {
-				System.out.println(x + "," + y + "새패스정보 드래그시 수신(for)");// 찍는
-																		// 위치
+				// 위치
 				double x = e[0];
 				double y = e[1];
 				gc.lineTo(x, y);
+				gc.setStroke(returned_color);// 색전달 받은 것으로 바꾸기
+				gc.setLineWidth(dot);// 선굵기 변경 반영
 				gc.stroke();
-				System.out.println(x + "," + y + "새패스정보 드래그시 수신(for122222)");
-				// gc.closePath();//쓰면 채워지는 문제, 되지도 않고
 
 			}
 			xyArray.removeAll(xyArray);
 			xyArray.clear();
 			System.out.println("패스완성");
-			// xyArray.removeAll(xyArray);//지워도 소용없네, 일단 배열의 초기화는
-			// 선언시 하는게 나을지도
-
-			// 드래그 끝나서 하나의 패스 완성
+			gc.closePath();
 			i++;
 
 		} // 게임데이터 송신자 이외 사람만 값 뽑아냄
@@ -823,10 +876,11 @@ public class FXMLController implements Runnable, Initializable {
 	private void drawReadyCommand() {
 		System.out.println(loginUser + "그림그리기 리슨");
 		// FIXME 왜 바뀜? 조인에서 getUser가 바뀌면서 꼬인 듯
-		if (loginUser.getId().equals(data.getUser().getId()) == true) {
+		if (loginUser.getId().equals(turnUser.getId()) == false) {
 			System.out.println("새 패스 시작");
 			x = data.getGameInfo().getX_point();
 			y = data.getGameInfo().getY_point();
+			gc.beginPath();
 			gc.moveTo(x, y);
 			// gc.stroke();
 			System.out.println("[시작 x,y :" + x + "," + y + "]");
@@ -1117,32 +1171,47 @@ public class FXMLController implements Runnable, Initializable {
 
 	@FXML
 	private void renewalConUserList() {
-		// TODO: connectedUserList 전체 접속자 리스트에 띄우기
-		allUserList.setItems(null);// FIXME 지워주는 용도, 잘 작동할지는 모름
-		ArrayList<String> connUserName = new ArrayList<String>();
 
-		for (User user : connectedUserList) {
-			String name = user.getId();
-			connUserName.add(name);
-		}
+		Platform.runLater(new Runnable() {
 
-		ObservableList<Object> ob = FXCollections.observableArrayList(connUserName);
-		allUserList.setItems(ob);
+			@Override
+			public void run() {
+				// TODO: connectedUserList 전체 접속자 리스트에 띄우기
+				allUserList.setItems(null);// FIXME 지워주는 용도, 잘 작동할지는 모름
+				ArrayList<String> connUserName = new ArrayList<String>();
+
+				for (User user : connectedUserList) {
+					String name = user.getId();
+					connUserName.add(name);
+				}
+
+				ObservableList<Object> ob = FXCollections.observableArrayList(connUserName);
+				allUserList.setItems(ob);
+			}
+		});
+
 	}
 
 	@FXML
 	private void renewGameConUserList() {
-		// TODO: connectedUserList 전체 접속자 리스트에 띄우기
-		allUserList.setItems(null);// FIXME 지워주는 용도, 잘 작동할지는 모름
-		ArrayList<String> connUserName = new ArrayList<String>();
+		Platform.runLater(new Runnable() {
 
-		for (User user : connectedUserList) {
-			String name = user.getId();
-			connUserName.add(name);
-		}
+			@Override
+			public void run() {
+				// TODO: connectedUserList 전체 접속자 리스트에 띄우기
+				allUserList.setItems(null);// FIXME 지워주는 용도, 잘 작동할지는 모름
+				ArrayList<String> connUserName = new ArrayList<String>();
 
-		ObservableList<Object> ob = FXCollections.observableArrayList(connUserName);
-		allUserList.setItems(ob);
+				for (User user : connectedUserList) {
+					String name = user.getId();
+					connUserName.add(name);
+				}
+
+				ObservableList<Object> ob = FXCollections.observableArrayList(connUserName);
+				allUserList.setItems(ob);
+			}
+		});
+
 	}
 
 	// 마우스 누를때 발생하는 동작을 정의한 액션리스너
@@ -1152,8 +1221,13 @@ public class FXMLController implements Runnable, Initializable {
 		gc.moveTo(event.getX(), event.getY());
 		gc.stroke();
 		System.out.println(event.getX() + "," + event.getY() + "프레스송신");// 찍는 위치
-		ginfo = new GameInfo(event.getX(), event.getY());
-
+		ginfo = new GameInfo(event.getX(), event.getY());// 슬라이더를 객체 생성 전에 쓰는 경우
+															// 위해 셋으로 바꿈
+		ginfo.setSlider(val);
+		System.out.println(val + "보낼 선굵기 담음 =======");// 안담기는 문제
+		// ginfo.setX_point(event.getX());
+		// ginfo.setX_point(event.getY());
+		ginfo.setColor(color);
 		data.setCommand(Data.DRAW_READY);
 		data.setGameInfo(ginfo);
 		this.sendData(data);
@@ -1175,6 +1249,9 @@ public class FXMLController implements Runnable, Initializable {
 	private boolean ready;
 	private ArrayList<User> glist;
 	private String sug = "제시어데이터";
+	private String recevied_color;
+	private double val;
+	private double dot;
 
 	@FXML
 	public void mouseDrag(MouseEvent event) {
@@ -1200,8 +1277,8 @@ public class FXMLController implements Runnable, Initializable {
 		data.setCommand(Data.DRAW_START);
 		data.setGameInfo(ginfo);
 		this.sendData(data);
-		ginfo.setGeographicInfo(null);// VO에 안쌓이도록 flushing
-		// gc.closePath();
+		// ginfo.setGeographicInfo(null);// VO에 안쌓이도록 flushing
+		gc.closePath();
 
 	}
 
@@ -1216,7 +1293,7 @@ public class FXMLController implements Runnable, Initializable {
 
 			@Override
 			public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
-				double val = slider.getValue();
+				val = slider.getValue();
 				gc.setLineWidth(val);
 			}
 
@@ -1340,18 +1417,25 @@ public class FXMLController implements Runnable, Initializable {
 	public void changeColor(MouseEvent e) {
 		if (e.getSource() == changeRed) {
 			gc.setStroke(Color.RED);
+			color = "red";
+
 		}
 		if (e.getSource() == changeYellow) {
 			gc.setStroke(Color.YELLOW);
+			color = "yellow";
+
 		}
 		if (e.getSource() == changeGreen) {
 			gc.setStroke(Color.GREEN);
+			color = "green";
 		}
 		if (e.getSource() == changeBlack) {
 			gc.setStroke(Color.BLACK);
+			color = "black";
 		}
 		if (e.getSource() == changeBlue) {
 			gc.setStroke(Color.BLUE);
+			color = "blue";
 		}
 	}
 
