@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import game.vo.User;
 import game.vo.ClientMessage;
@@ -332,7 +334,8 @@ public class Database {
 	       }finally{
 	          ConnectionManager.close(con);
 	       }
-	   return words;
+	      Collections.shuffle(words);
+	      return words;
    }
    
    
