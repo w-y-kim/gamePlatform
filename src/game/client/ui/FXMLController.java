@@ -5,6 +5,8 @@
  */
 package game.client.ui;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -15,6 +17,9 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JOptionPane;
 
 import game.vo.Data;
@@ -322,6 +327,7 @@ public class FXMLController implements Runnable, Initializable {
 			// ClientListenerThread ct = new ClientListenerThread(socket, this);
 			Thread t = new Thread(this);
 			t.start();
+			
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -423,7 +429,7 @@ public class FXMLController implements Runnable, Initializable {
 			btnFold.setVisible(true);
 			btnSpread.setVisible(false);
 			canvas.autosize();
-//			startDraw(gc);
+			// startDraw(gc);
 
 		} else if (e.getSource() == btnMain) {// 메인화면
 			mainPane.setVisible(true);
@@ -489,7 +495,7 @@ public class FXMLController implements Runnable, Initializable {
 		txtArea_main03.setDisable(true);
 
 		try {
-			Runtime.getRuntime().exec("UnityShooting/");// FIXME 실행파일 경로 수정
+			Runtime.getRuntime().exec("UnityShooting/test1.exe");// FIXME 실행파일 경로 수정
 		} catch (IOException e2) {
 			e2.printStackTrace();
 			JOptionPane.showMessageDialog(null, "파일을 찾을 수 없습니다.");
@@ -722,6 +728,7 @@ public class FXMLController implements Runnable, Initializable {
 						TxtAnswer.setText(sug);
 						gamePaneShild.setVisible(false);
 					}
+					gamePaneShild.setOpacity(0);
 					break;
 
 				case Data.SEND_TURN:
@@ -918,6 +925,7 @@ public class FXMLController implements Runnable, Initializable {
 					btn_gstart.setDisable(false);
 				} else {
 					this.showFullScreen(true);// 입장한사람 전체화면
+					// Sound("Shooting Range_1.wav", false);//조인한 사람도 음악 꺼줌
 				}
 			}
 
@@ -988,6 +996,7 @@ public class FXMLController implements Runnable, Initializable {
 			// Stage s = (Stage) root.getScene().getWindow();
 			// s.setFullScreen(true);// 전체화면
 			// splitPane.setDividerPosition(0, 0);// 펼치기
+//			Sound(false, true);// 음악끄기
 
 		}
 		// 타입구분, 게임룸 펼치기
@@ -1298,6 +1307,7 @@ public class FXMLController implements Runnable, Initializable {
 			}
 
 		});
+		Sound(false, true);
 
 	}
 
@@ -1437,6 +1447,37 @@ public class FXMLController implements Runnable, Initializable {
 			gc.setStroke(Color.BLUE);
 			color = "blue";
 		}
+	}
+
+	@FXML
+	public void colorPickAction() {
+		colorPicker.getContextMenu();
+		System.out.println(colorPicker.getContextMenu());
+	}
+
+	public void Sound(boolean turn, boolean Loop) {
+		// 사운드재생용메소드~
+		// 메인 클래스에 추가로 메소드를 하나 더 만들었습니다.
+		// 사운드파일을받아들여해당사운드를재생시킨다.
+		if (turn) {
+
+			String file = "Shooting Range_1.wav";
+			Clip clip;
+			try {
+				AudioInputStream ais = AudioSystem
+						.getAudioInputStream(new BufferedInputStream(new FileInputStream(file)));
+				clip = AudioSystem.getClip();
+				clip.open(ais);
+				clip.start();
+				if (Loop)
+					clip.loop(-1);
+				// Loop 값이true면 사운드재생을무한반복시킵니다.
+				// false면 한번만재생시킵니다.
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 }

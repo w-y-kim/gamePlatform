@@ -432,12 +432,12 @@
                                           <Rectangle fx:id="changeGreen" arcHeight="5.0" arcWidth="5.0" fill="#12ff31" height="28.0" layoutX="152.0" layoutY="26.0" onMouseClicked="#changeColor" stroke="BLACK" strokeType="INSIDE" width="29.0" />
                                           <Rectangle fx:id="changeBlue" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="28.0" layoutX="185.0" layoutY="26.0" onMouseClicked="#changeColor" stroke="BLACK" strokeType="INSIDE" width="29.0" />
                                           <Rectangle fx:id="changeBlack" arcHeight="5.0" arcWidth="5.0" height="28.0" layoutX="251.0" layoutY="26.0" onMouseClicked="#changeColor" stroke="BLACK" strokeType="INSIDE" width="29.0" />
-                                          <ColorPicker fx:id="colorPicker" layoutX="284.0" layoutY="21.0" prefHeight="37.0" prefWidth="82.0" />
+                                          <ColorPicker fx:id="colorPicker" layoutX="284.0" layoutY="21.0" onContextMenuRequested="#colorPickAction" prefHeight="37.0" prefWidth="82.0" />
                                        </children>
                                     </HBox>
                                  </children>
                               </AnchorPane>
-                              <StackPane fx:id="gamePaneShild" prefHeight="626.0" prefWidth="530.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <StackPane id="쉴드" fx:id="gamePaneShild" opacity="0.85" prefHeight="626.0" prefWidth="530.0" style="-fx-background-color: #323232;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children></AnchorPane>
              
                      </children>
@@ -598,7 +598,7 @@
                               <Insets top="12.0" />
                            </padding>
                         </HBox>
-                        <StackPane fx:id="loginInfoPane" layoutX="-4.0" prefHeight="48.0" prefWidth="280.0" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <StackPane fx:id="loginInfoPane" layoutX="-4.0" prefHeight="48.0" prefWidth="280.0" style="-fx-background-color: #ffe145;" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Text fx:id="welcomeTxt" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER">
                                  <font>
