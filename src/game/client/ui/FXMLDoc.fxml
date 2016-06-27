@@ -271,7 +271,7 @@
                               </GridPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="게임창" fx:id="gamePane" layoutX="6.0" layoutY="6.0" prefHeight="626.0" prefWidth="530.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane id="게임창" fx:id="gamePane" layoutX="6.0" layoutY="6.0" prefHeight="626.0" prefWidth="530.0" style="-fx-background-color: #ffffff;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane id="플레이어창" layoutX="286.0" layoutY="18.0" prefHeight="712.0" prefWidth="222.0" style="-fx-background-color: #ffffff; -fx-border-color: BLACK;" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="18.0">
                                  <children>
