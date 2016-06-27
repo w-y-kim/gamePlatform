@@ -22,6 +22,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.JOptionPane;
 
+import game.vo.CountTimeTest;
 import game.vo.Data;
 import game.vo.Friend;
 import game.vo.GameInfo;
@@ -297,6 +298,9 @@ public class FXMLController implements Runnable, Initializable {
 	// 턴 옮길 때
 	private User turnUser;
 
+	@FXML
+	private Text timeLimit;
+
 	// 스레드 실행 위함
 	private Socket socket;
 	private ObjectInputStream ois;
@@ -315,6 +319,42 @@ public class FXMLController implements Runnable, Initializable {
 
 	private Color returned_color;
 
+	public GameRoom getRi() {
+		return ri;
+	}
+
+
+
+	public void setRi(GameRoom ri) {
+		this.ri = ri;
+	}
+
+
+
+	public void setTurnUser(User turnUser) {
+		this.turnUser = turnUser;
+	}
+
+
+
+	public Text getTimeLimit() {
+		return timeLimit;
+	}
+
+	
+	
+	public User getTurnUser() {
+		return turnUser;
+	}
+
+
+
+	public String getSug() {
+		return sug;
+	}
+
+
+
 	public FXMLController() {//
 
 		try {
@@ -327,7 +367,6 @@ public class FXMLController implements Runnable, Initializable {
 			// ClientListenerThread ct = new ClientListenerThread(socket, this);
 			Thread t = new Thread(this);
 			t.start();
-			
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -495,7 +534,8 @@ public class FXMLController implements Runnable, Initializable {
 		txtArea_main03.setDisable(true);
 
 		try {
-			Runtime.getRuntime().exec("UnityShooting/test1.exe");// FIXME 실행파일 경로 수정
+			Runtime.getRuntime().exec("UnityShooting/test1.exe");// FIXME 실행파일
+																	// 경로 수정
 		} catch (IOException e2) {
 			e2.printStackTrace();
 			JOptionPane.showMessageDialog(null, "파일을 찾을 수 없습니다.");
@@ -721,12 +761,16 @@ public class FXMLController implements Runnable, Initializable {
 					turnUser = this.setTurn();// 턴돌때
 					sug = ri.getword();// 제시어 바꿔줌
 
+					// TODO
+					this.timeCount();
+
 					if (this.loginUser.getId().equals(turnUser.getId())) {// 내
 																			// 턴이면
 						// sug를 제시어 칸에 보이게 띄운다.
 						wordsPane.setVisible(true);
 						TxtAnswer.setText(sug);
 						gamePaneShild.setVisible(false);
+
 					}
 					gamePaneShild.setOpacity(0);
 					break;
@@ -796,6 +840,8 @@ public class FXMLController implements Runnable, Initializable {
 
 			turnUser = this.setTurn();
 			sug = ri.getword();
+			 this.timeCount();
+			
 			if (this.loginUser.getId().equals(turnUser.getId())) {// 내 턴이면
 				// sug를 제시어 칸에 보이게 띄운다.
 				Platform.runLater(new Runnable() {
@@ -996,7 +1042,7 @@ public class FXMLController implements Runnable, Initializable {
 			// Stage s = (Stage) root.getScene().getWindow();
 			// s.setFullScreen(true);// 전체화면
 			// splitPane.setDividerPosition(0, 0);// 펼치기
-//			Sound(false, true);// 음악끄기
+			// Sound(false, true);// 음악끄기
 
 		}
 		// 타입구분, 게임룸 펼치기
@@ -1455,6 +1501,14 @@ public class FXMLController implements Runnable, Initializable {
 		System.out.println(colorPicker.getContextMenu());
 	}
 
+	@FXML
+	public void timeCount() {
+		CountTimeTest ct = new CountTimeTest(this);
+		Thread t = new Thread(ct);
+		t.start();
+
+	}
+
 	public void Sound(boolean turn, boolean Loop) {
 		// 사운드재생용메소드~
 		// 메인 클래스에 추가로 메소드를 하나 더 만들었습니다.
@@ -1479,5 +1533,14 @@ public class FXMLController implements Runnable, Initializable {
 		}
 
 	}
+
+
+
+	public void setSug(String sug) {
+		this.sug = sug;
+	}
+
+
+
 
 }
